@@ -1,0 +1,6 @@
+[Continents]
+China=0
+India=0
+
+[Territories]
+Asia,China
