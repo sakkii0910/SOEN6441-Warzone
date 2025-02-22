@@ -1,0 +1,16 @@
+[Map]
+author=TSPPS
+image=warzone_map.jpg
+wrap=no
+scroll=horizontal
+warn=yes
+
+[Continents]
+1 NorthAmerica 5
+2 Europe 3
+
+[Territories]
+1 Canada 100 200 1 2 3
+2 USA 150 250 1 1 4
+3 Mexico 200 300 1 2 4
+4 France 250 350 2 2 3

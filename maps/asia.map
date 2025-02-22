@@ -1,0 +1,11 @@
+
+[continents]
+Asia 3
+
+[countries]
+1 China 1
+2 Japan 1
+
+[borders]
+1 2
+2 1
