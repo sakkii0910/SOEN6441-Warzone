@@ -217,9 +217,12 @@ public class GameMap {
     /**
      * Adding country to the game map
      */
-    public void addCountry(String p_ContinentName, String p_CountryName) throws IllegalArgumentException {
+    public void addCountry(String p_CountryName, String p_ContinentName) throws IllegalArgumentException {
         if (countries.containsKey(p_CountryName)) {
             throw new IllegalArgumentException("Country " + p_CountryName + " already exists.");
+        }
+        if (!continents.containsKey(p_ContinentName)) {
+            throw new IllegalArgumentException("Continent " + p_ContinentName + " does not exist.");
         }
 
         Country l_Country = new Country();

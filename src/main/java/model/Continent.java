@@ -28,13 +28,13 @@ public class Continent implements Serializable {
     }
 
     public Set<Country> getD_ContinentCountries() {
+        if (d_ContinentCountries == null) {
+            d_ContinentCountries = new HashSet<>();
+        }
         return d_ContinentCountries;
     }
 
     public void setD_ContinentCountries(Set<Country> d_ContinentCountries) {
-        if(d_ContinentCountries == null){
-            d_ContinentCountries = new HashSet<>();
-        }
         this.d_ContinentCountries = d_ContinentCountries;
     }
 
