@@ -6,11 +6,12 @@ import java.util.*;
 /**
  * Represents the game map for the Warzone game.
  * Handles loading, saving, validating, editing, and displaying maps.
+ *
  * @author Sakshi Mulik
  */
 public class GameMap {
-    private Map<String, Continent> continents;
-    private Map<String, Country> countries;
+    private HashMap<String, Continent> continents;
+    private HashMap<String, Country> countries;
 
     /**
      * Constructor initializes map components.
@@ -62,7 +63,10 @@ public class GameMap {
                             int bonusValue = Integer.parseInt(parts[1].trim());
                             // Debugging: Print continent being loaded
                             System.out.println("Loaded continent: " + continentName + " with bonus: " + bonusValue);
-                            continents.put(continentName, new Continent(continentName, bonusValue));
+                            Continent continent = new Continent();
+                            continent.setD_ContinentArmies(bonusValue);
+                            continent.setD_ContinentName(continentName);
+                            continents.put(continentName, continent);
                         } catch (NumberFormatException e) {
                             System.out.println("Error: Invalid bonus value for continent " + continentName);
                         }
@@ -76,9 +80,11 @@ public class GameMap {
                         String continentName = parts[1].trim();
                         if (continents.containsKey(continentName)) {
                             Continent continent = continents.get(continentName);
-                            Country country = new Country(countryName, continent);
+                            Country country = new Country();
+                            country.setD_CountryName(countryName);
+                            country.setD_CountryContinent(continent);
                             countries.put(countryName, country);
-                            continent.addCountry(country);
+                            continent.getD_ContinentCountries().add(country);
                             // Debugging: Print country being loaded
                             System.out.println("Loaded country: " + countryName + " in continent: " + continentName);
                         } else {
@@ -95,9 +101,9 @@ public class GameMap {
                             for (int i = 1; i < parts.length; i++) {
                                 Country neighbor = countries.get(parts[i].trim());
                                 if (neighbor != null) {
-                                    country.addNeighbor(neighbor);
+                                    country.getD_CountryNeighbors().add(neighbor);
                                     // Debugging: Print border being added
-                                    System.out.println("Added border between " + country.getName() + " and " + neighbor.getName());
+                                    System.out.println("Added border between " + country.getD_CountryName() + " and " + neighbor.getD_CountryName());
                                 } else {
                                     System.out.println("Warning: Neighbor country " + parts[i] + " does not exist.");
                                 }
@@ -122,59 +128,6 @@ public class GameMap {
         }
     }
 
-    /*
-    public void addNeighbor(String country1Name, String country2Name) {
-        Country country1 = countries.get(country1Name);
-        Country country2 = countries.get(country2Name);
-
-        if (country1 == null || country2 == null) {
-            System.out.println("One or both countries do not exist.");
-            return;
-        }
-
-        country1.addNeighbor(country2);
-        country2.addNeighbor(country1);
-    }
-*/
-    /**
-     * Adding country to the game map
-     */
-    public boolean addCountry(String continentName, String countryName) {
-        Continent continent = getContinent(continentName);
-        if (continent == null) {
-            continent = new Continent(continentName, 0);
-            addContinent(continent);
-        }
-        Country country = new Country(countryName, continent);
-        continent.addCountry(country);
-        countries.put(countryName, country);
-        return true;
-    }
-
-    private Continent getContinent(String continentName) {
-        return continents.get(continentName);
-    }
-
-    private void addContinent(Continent continent) {
-        continents.put(continent.getName(), continent);
-    }
-
-    /**
-     * Adding border to the map neighboring two countries
-     */
-    public void addBorder(String country1Name, String country2Name) {
-        Country country1 = countries.get(country1Name);
-        Country country2 = countries.get(country2Name);
-
-        if (country1 == null || country2 == null) {
-            System.out.println("One or both countries do not exist.");
-            return;
-        }
-
-        country1.getNeighbors().add(country2);
-        country2.getNeighbors().add(country1);
-    }
-
     /**
      * Saves the current map to a file.
      */
@@ -182,14 +135,14 @@ public class GameMap {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write("[Continents]\n");
             for (Continent continent : continents.values()) {
-                writer.write(continent.getName() + "=" + continent.getBonusValue() + "\n");
+                writer.write(continent.getD_ContinentName() + "=" + continent.getD_ContinentArmies() + "\n");
             }
 
             writer.write("\n[Territories]\n");
             for (Country country : countries.values()) {
-                writer.write(country.getName() + "," + country.getContinent().getName());
-                for (Country neighbor : country.getNeighbors()) {
-                    writer.write("," + neighbor.getName());
+                writer.write(country.getD_CountryName() + "," + country.getD_CountryContinent().getD_ContinentName());
+                for (Country neighbor : country.getD_CountryNeighbors()) {
+                    writer.write("," + neighbor.getD_CountryName());
                 }
                 writer.write("\n");
             }
@@ -206,25 +159,25 @@ public class GameMap {
     public boolean validateMap() {
         // Validating continents
         for (Continent continent : continents.values()) {
-            if (continent.getCountries().isEmpty()) {
-                System.out.println("Validation failed: Continent " + continent.getName() + " has no countries.");
+            if (continent.getD_ContinentCountries().isEmpty()) {
+                System.out.println("Validation failed: Continent " + continent.getD_ContinentName() + " has no countries.");
                 return false;
             }
         }
 
         // Validating countries
         for (Country country : countries.values()) {
-            if (country.getContinent() == null) {
-                System.out.println("Validation failed: Country " + country.getName() + " has no continent.");
+            if (country.getD_CountryContinent() == null) {
+                System.out.println("Validation failed: Country " + country.getD_CountryName() + " has no continent.");
                 return false;
             }
         }
 
         // Validating borders
         for (Country country : countries.values()) {
-            for (Country neighbor : country.getNeighbors()) {
-                if (!countries.containsKey(neighbor.getName())) {
-                    System.out.println("Validation failed: Country " + country.getName() + " has invalid neighbor " + neighbor.getName());
+            for (Country neighbor : country.getD_CountryNeighbors()) {
+                if (!countries.containsKey(neighbor.getD_CountryName())) {
+                    System.out.println("Validation failed: Country " + country.getD_CountryName() + " has invalid neighbor " + neighbor.getD_CountryName());
                     return false;
                 }
             }
@@ -233,23 +186,118 @@ public class GameMap {
         return true;
     }
 
+    public void addNeighbor(String p_CountryName, String p_NeighborCountryName) throws IllegalArgumentException {
+        Country l_CountryOne = countries.get(p_CountryName);
+        Country l_NeighbourCountry = countries.get(p_NeighborCountryName);
+        if (Objects.isNull(l_CountryOne) || Objects.isNull(l_NeighbourCountry)) {
+            throw new IllegalArgumentException("Country " + p_CountryName + " or " + p_NeighborCountryName + " does not exist.");
+        }
+
+        l_CountryOne.getD_CountryNeighbors().add(l_NeighbourCountry);
+        l_NeighbourCountry.getD_CountryNeighbors().add(l_CountryOne);
+
+        System.out.println("Added neighbour for: " + l_CountryOne.getD_CountryName());
+    }
+
+    public void removeNeighbor(String p_CountryName, String p_NeighborCountryName) throws IllegalArgumentException {
+        Country l_CountryOne = countries.get(p_CountryName);
+        Country l_NeighbourCountry = countries.get(p_NeighborCountryName);
+        if (Objects.isNull(l_CountryOne) || Objects.isNull(l_NeighbourCountry)) {
+            throw new IllegalArgumentException("Country " + p_CountryName + " or " + p_NeighborCountryName + " does not exist.");
+        } else if (!l_CountryOne.getD_CountryNeighbors().contains(l_NeighbourCountry)) {
+            throw new IllegalArgumentException("Country " + p_NeighborCountryName + " is not a neighbor of " + l_CountryOne.getD_CountryName());
+        } else {
+            l_CountryOne.getD_CountryNeighbors().remove(l_NeighbourCountry);
+            l_NeighbourCountry.getD_CountryNeighbors().remove(l_CountryOne);
+            System.out.println("Removed neighbour for: " + l_CountryOne.getD_CountryName());
+        }
+
+    }
+
+    /**
+     * Adding country to the game map
+     */
+    public void addCountry(String p_CountryName, String p_ContinentName) throws IllegalArgumentException {
+        if (countries.containsKey(p_CountryName)) {
+            throw new IllegalArgumentException("Country " + p_CountryName + " already exists.");
+        }
+        if (!continents.containsKey(p_ContinentName)) {
+            throw new IllegalArgumentException("Continent " + p_ContinentName + " does not exist.");
+        }
+
+        Country l_Country = new Country();
+        l_Country.setD_CountryName(p_CountryName);
+        l_Country.setD_CountryContinent(continents.get(p_ContinentName));
+        countries.put(p_CountryName, l_Country);
+        continents.get(p_ContinentName).getD_ContinentCountries().add(l_Country);
+        System.out.println("Added country: " + l_Country.getD_CountryName());
+    }
+
+    public void removeCountry(String p_CountryName) throws IllegalArgumentException {
+        Country l_Country = this.getCountry(p_CountryName);
+        if (Objects.isNull(l_Country)) {
+            throw new IllegalArgumentException("Country " + p_CountryName + " does not exist.");
+        }
+        continents.get(l_Country.getD_CountryContinent().getD_ContinentName()).getD_ContinentCountries().remove(l_Country);
+        countries.remove(l_Country.getD_CountryName());
+        System.out.println("Country " + p_CountryName + " removed.");
+    }
+
+    public void addContinent(String p_continentName, int p_continentValue) throws IllegalArgumentException {
+        if (continents.containsKey(p_continentName)) {
+            throw new IllegalArgumentException("Continent " + p_continentName + " already exists.");
+        }
+
+        Continent l_Continent = new Continent();
+        l_Continent.setD_ContinentName(p_continentName);
+        l_Continent.setD_ContinentArmies(p_continentValue);
+        continents.put(l_Continent.getD_ContinentName(), l_Continent);
+        System.out.println("Added continent: " + l_Continent.getD_ContinentName());
+    }
+
+    public void removeContinent(String p_continentName) throws IllegalArgumentException {
+        if (continents.containsKey(p_continentName)) {
+            Set<Country> l_Countries = continents.get(p_continentName).getD_ContinentCountries();
+            for (Country l_Country : l_Countries) {
+                countries.remove(l_Country.getD_CountryName());
+            }
+            continents.remove(p_continentName);
+        } else {
+            throw new IllegalArgumentException("Continent " + p_continentName + " does not exist.");
+        }
+        System.out.println("Continent " + p_continentName + " removed.");
+    }
 
     /**
      * Displays the map in a readable format.
      */
     public void displayMap() {
-        System.out.println("=== Game Map ===");
-        for (Continent continent : continents.values()) {
-            System.out.println("Continent: " + continent.getName() + " (Bonus: " + continent.getBonusValue() + ")");
-            for (Country country : continent.getCountries()) {
-                System.out.print(" - " + country.getName() + " -> ");
-                for (Country neighbor : country.getNeighbors()) {
-                    System.out.print(neighbor.getName() + " ");
-                }
-                System.out.println();
+        System.out.println("=======================================================================");
+        System.out.println("                              GAME MAP                                  ");
+        System.out.println("=======================================================================");
+        System.out.printf("%-15s | %-10s | %-20s | %-30s%n", "Continent", "Armies", "Country", "Neighbors");
+        System.out.println("-----------------------------------------------------------------------");
+
+        for (Map.Entry<String, Continent> l_ContinentEntry : continents.entrySet()) {
+            String l_ContinentName = l_ContinentEntry.getKey();
+            Continent l_Continent = l_ContinentEntry.getValue();
+            int l_Armies = l_Continent.getD_ContinentArmies();
+
+            System.out.printf("%-15s | %-10d | %-20s | %-30s%n", l_ContinentName, l_Armies, "", "");
+
+            for (Country l_CountryEntry : l_Continent.getD_ContinentCountries()) {
+                String l_CountryName = l_CountryEntry.getD_CountryName();
+
+                String l_Neighbors = l_CountryEntry.getD_CountryNeighbors().isEmpty() ? "None" : String.join(", ",
+                        l_CountryEntry.getD_CountryNeighbors().stream().map(Country::getD_CountryName).toList());
+
+                System.out.printf("%-15s | %-10s | %-20s | %-30s%n", "", "", l_CountryName, l_Neighbors);
             }
+            System.out.println("-----------------------------------------------------------------------");
         }
+        System.out.println("=======================================================================");
     }
+
 
     public Country getCountry(String countryName) {
         return countries.get(countryName);
