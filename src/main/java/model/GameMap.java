@@ -298,8 +298,37 @@ public class GameMap {
         System.out.println("=======================================================================");
     }
 
-
     public Country getCountry(String countryName) {
         return countries.get(countryName);
+    }
+
+    // Method to display map data
+    public void showMap() {
+        // Showing Countries in the Continent and their details
+        System.out.println("\nThe countries in this Map and their details are : \n");
+        
+        // Define table format
+        String l_Table = "|%-20s|%-20s|%-100s|%n";
+
+        System.out.format("---------------------------------------------------------------------------------------------------------%n");
+        System.out.format("     Country     | Continent |   Neighbours                                      |%n");
+        System.out.format("---------------------------------------------------------------------------------------------------------%n");
+
+        // Iterate over continents using the instance variable directly
+        for (Map.Entry<String, Continent> l_ContinentEntry : continents.entrySet()) {
+            Continent l_Continent = l_ContinentEntry.getValue();
+
+            // Iterate over countries within the continent
+            for (Country l_Country : l_Continent.getD_ContinentCountries()) {
+                System.out.format(
+                    l_Table,
+                    l_Country.getD_CountryName(),
+                    l_Continent.getD_ContinentName(),
+                    l_Country.createANeighborList(l_Country.getD_CountryNeighbors())
+                );
+            }
+        }
+
+        System.out.format("---------------------------------------------------------------------------------------------------------%n");
     }
 }
