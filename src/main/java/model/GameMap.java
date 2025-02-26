@@ -13,12 +13,29 @@ public class GameMap {
     private HashMap<String, Continent> continents;
     private HashMap<String, Country> countries;
 
+    private HashMap<String, Player> d_players = new HashMap<>();
+
     /**
      * Constructor initializes map components.
      */
     public GameMap() {
         continents = new HashMap<>();
         countries = new HashMap<>();
+    }
+
+    /**
+     * Get the list of players
+     */
+    public HashMap<String, Player> getPlayers() {
+        return d_players;
+    }
+
+    /**
+     * Get a single player
+     * @param p_Id Unique Player name
+     */
+    public Player getPlayer(String p_Id) {
+        return d_players.get(p_Id);
     }
 
     /**
@@ -330,5 +347,30 @@ public class GameMap {
         }
 
         System.out.format("---------------------------------------------------------------------------------------------------------%n");
+    }
+
+    // Adds player to the game map.     
+    // @param p_PlayerName Player name    
+    public void addPlayer(String p_playerName) {
+        if (this.getPlayers().containsKey(p_playerName)) {
+            System.out.println("\nPlayer with this name already exists\n");
+            return;
+        }
+        Player l_Player = new Player();
+        l_Player.setD_Name(p_playerName);
+        this.getPlayers().put(p_playerName, l_Player);
+        System.out.println("Successfully added Player: " + p_playerName);
+    }
+
+    // Removes player from game map.
+    // @param p_PlayerName Player name
+    public void removePlayer(String p_PlayerName) {
+        Player l_Player = this.getPlayer(p_PlayerName);
+        if (Objects.isNull(l_Player)) {
+            System.out.println("\nPlayer with this name does not exist\n" + p_PlayerName);
+            return;
+        }
+        this.getPlayers().remove(l_Player.getD_Name());
+        System.out.println("Successfully deleted the player: " + p_PlayerName);
     }
 }
