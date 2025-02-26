@@ -1,0 +1,19 @@
+[map]
+author=Team 5
+mapname=01test.map
+
+[continents]
+Asia 3
+Europe 4
+
+[countries]
+1 China 1
+2 Finland 2
+3 Korea 1
+4 Russia 2
+
+[borders]
+1 3 4
+2 4
+3 1 4
+4 1 2 3
