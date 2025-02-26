@@ -47,6 +47,15 @@ public class Country implements Serializable {
         this.d_CountryNeighbors = d_CountryNeighbors;
     }
 
+    // Create country neighbors name string
+    public String createANeighborList(Set<Country> p_Neighbors) {
+        String l_result = "";
+        for (Country l_Neighbor : p_Neighbors) {
+            l_result += l_Neighbor.getD_CountryName() + "-";
+        }
+        return l_result.length() > 0 ? l_result.substring(0, l_result.length() - 1) : "";
+    }
+
     public int getD_CountryXCoordinate() {
         return d_CountryXCoordinate;
     }

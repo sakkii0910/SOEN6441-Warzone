@@ -13,6 +13,8 @@ public class GameMap {
     private HashMap<String, Country> countries;
     private static GameMap d_GameMap;
 
+    private HashMap<String, Player> d_players = new HashMap<>();
+
     /**
      * Constructor initializes map components.
      */
@@ -21,12 +23,29 @@ public class GameMap {
         countries = new HashMap<>();
     }
 
+
     public static GameMap getInstance() {
         if (Objects.isNull(d_GameMap)) {
             d_GameMap = new GameMap();
         }
         return d_GameMap;
     }
+
+    /**
+     * Get the list of players
+     */
+    public HashMap<String, Player> getPlayers() {
+        return d_players;
+    }
+
+    /**
+     * Get a single player
+     * @param p_Id Unique Player name
+     */
+    public Player getPlayer(String p_Id) {
+        return d_players.get(p_Id);
+    }
+
 
     public void resetGameMap() {
         GameMap.getInstance().continents.clear();
@@ -145,10 +164,10 @@ public class GameMap {
         System.out.println("=======================================================================");
     }
 
-
     public Country getCountry(String countryName) {
         return countries.get(countryName);
     }
+
 
     public HashMap<String, Continent> getContinents() {
         return continents;
@@ -156,5 +175,60 @@ public class GameMap {
 
     public HashMap<String, Country> getCountries() {
         return countries;
+    }
+
+    // Method to display map data
+    public void showMap() {
+        // Showing Countries in the Continent and their details
+        System.out.println("\nThe countries in this Map and their details are : \n");
+        
+        // Define table format
+        String l_Table = "|%-20s|%-20s|%-100s|%n";
+
+        System.out.format("---------------------------------------------------------------------------------------------------------%n");
+        System.out.format("     Country     | Continent |   Neighbours                                      |%n");
+        System.out.format("---------------------------------------------------------------------------------------------------------%n");
+
+        // Iterate over continents using the instance variable directly
+        for (Map.Entry<String, Continent> l_ContinentEntry : continents.entrySet()) {
+            Continent l_Continent = l_ContinentEntry.getValue();
+
+            // Iterate over countries within the continent
+            for (Country l_Country : l_Continent.getD_ContinentCountries()) {
+                System.out.format(
+                    l_Table,
+                    l_Country.getD_CountryName(),
+                    l_Continent.getD_ContinentName(),
+                    l_Country.createANeighborList(l_Country.getD_CountryNeighbors())
+                );
+            }
+        }
+
+        System.out.format("---------------------------------------------------------------------------------------------------------%n");
+    }
+
+    // Adds player to the game map.     
+    // @param p_PlayerName Player name    
+    public void addPlayer(String p_playerName) {
+        if (this.getPlayers().containsKey(p_playerName)) {
+            System.out.println("\nPlayer with this name already exists\n");
+            return;
+        }
+        Player l_Player = new Player();
+        l_Player.setD_Name(p_playerName);
+        this.getPlayers().put(p_playerName, l_Player);
+        System.out.println("Successfully added Player: " + p_playerName);
+    }
+
+    // Removes player from game map.
+    // @param p_PlayerName Player name
+    public void removePlayer(String p_PlayerName) {
+        Player l_Player = this.getPlayer(p_PlayerName);
+        if (Objects.isNull(l_Player)) {
+            System.out.println("\nPlayer with this name does not exist\n" + p_PlayerName);
+            return;
+        }
+        this.getPlayers().remove(l_Player.getD_Name());
+        System.out.println("Successfully deleted the player: " + p_PlayerName);
     }
 }
