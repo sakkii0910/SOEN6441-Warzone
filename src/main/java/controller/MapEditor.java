@@ -168,15 +168,24 @@ public class MapEditor {
                             }
                             break;
                         case "validatemap":
-                            // To be implemented
+                            if (MapReader.validateMap(d_GameMap)) {
+                                System.out.println("Map is valid.");
+                            } else {
+                                System.out.println("Map is invalid.");
+                            }
                             break;
                         case "savemap":
                             if (l_Commands.length == 2) {
-                                boolean l_HasSaved = MapReader.saveMap(d_GameMap, l_Commands[1]);
-                                if (l_HasSaved) {
-                                    System.out.println("Map validated & saved successfully.");
-                                } else {
-                                    System.out.println("Map validated but could not be saved.");
+                                if (MapReader.validateMap(d_GameMap)) {
+                                    boolean l_HasSaved = MapReader.saveMap(d_GameMap, l_Commands[1]);
+                                    if (l_HasSaved) {
+                                        System.out.println("Map validated & saved successfully.");
+                                    } else {
+                                        System.out.println("Map validated but could not be saved.");
+                                    }
+                                }
+                                else {
+                                    System.out.println("Map is invalid. Please validate the map before saving.");
                                 }
                             }
                             break;

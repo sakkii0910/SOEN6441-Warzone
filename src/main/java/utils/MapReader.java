@@ -142,6 +142,66 @@ public class MapReader {
         return true;
     }
 
+    public static boolean validateMap(GameMap p_GameMap) {
+        // continent empty or countries empty or duplicate continent or duplicate country or duplicate border
+        if (!isContinentEmpty(p_GameMap) ||
+                !isDuplicateContinent(p_GameMap) ||
+                !isDuplicateCountry(p_GameMap) ||
+                !isDuplicateBorder(p_GameMap)) {
+            return false;
+        }
+        
+        // TODO
+        // continent is a connected subgraph
+        // entire map is connected
+
+        return true;
+    }
+
+    static boolean isContinentEmpty(GameMap p_GameMap) {
+        if (p_GameMap.getContinents().isEmpty())
+            return false;
+
+        for (Continent l_Continent : p_GameMap.getContinents().values()) {
+            if (l_Continent.getD_ContinentCountries().isEmpty())
+                return false;
+        }
+
+        return true;
+    }
+
+    static boolean isDuplicateContinent(GameMap p_GameMap) {
+        Set<String> l_ContinentSet = new HashSet<>();
+        for (Continent l_Continent : p_GameMap.getContinents().values()) {
+            if (l_ContinentSet.contains(l_Continent.getD_ContinentName()))
+                return false;
+            l_ContinentSet.add(l_Continent.getD_ContinentName());
+        }
+        return true;
+    }
+
+    static boolean isDuplicateCountry(GameMap p_GameMap) {
+        HashMap<String, Country> l_Countries = p_GameMap.getCountries();
+        Set<String> l_CountrySet = l_Countries.keySet();
+        if (l_CountrySet.size() != l_Countries.size())
+            return false;
+        return true;
+    }
+
+    static boolean isDuplicateBorder(GameMap p_GameMap) {
+        HashMap<String, Country> l_Countries = p_GameMap.getCountries();
+        for (Country l_Country : l_Countries.values()) {
+            Set<Country> l_Neighbors = l_Country.getD_CountryNeighbors();
+            Set<String> l_NeighborSet = new HashSet<>();
+            for (Country l_Neighbor : l_Neighbors) {
+                if (l_NeighborSet.contains(l_Neighbor.getD_CountryName()))
+                    return false;
+                l_NeighborSet.add(l_Neighbor.getD_CountryName());
+            }
+        }
+        return true;
+    }
+
     public static HashMap<Integer, String> createContinentList(GameMap p_GameMap) {
         HashMap<Integer, String> l_CountryMap = new HashMap<>();
         int counter = 1;
