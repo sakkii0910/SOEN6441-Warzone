@@ -1,6 +1,5 @@
 package model;
 
-import java.io.*;
 import java.util.*;
 
 /**
@@ -12,178 +11,26 @@ import java.util.*;
 public class GameMap {
     private HashMap<String, Continent> continents;
     private HashMap<String, Country> countries;
+    private static GameMap d_GameMap;
 
     /**
      * Constructor initializes map components.
      */
-    public GameMap() {
+    private GameMap() {
         continents = new HashMap<>();
         countries = new HashMap<>();
     }
 
-    /**
-     * Loads a .map file and parses its content.
-     */
-    public boolean loadMap(String filePath) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            boolean isContinentSection = false;
-            boolean isCountrySection = false;
-            boolean isBorderSection = false;
-
-            while ((line = reader.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty() || line.startsWith(";")) continue;
-
-                // Debugging: Printing each line to ensure it's being read correctly
-                System.out.println("Reading line: " + line);
-
-                if (line.equalsIgnoreCase("[Continents]")) {
-                    isContinentSection = true;
-                    isCountrySection = false;
-                    isBorderSection = false;
-                    continue;
-                } else if (line.equalsIgnoreCase("[Territories]")) {
-                    isContinentSection = false;
-                    isCountrySection = true;
-                    isBorderSection = false;
-                    continue;
-                } else if (line.equalsIgnoreCase("[Borders]")) {
-                    isContinentSection = false;
-                    isCountrySection = false;
-                    isBorderSection = true;
-                    continue;
-                }
-
-                if (isContinentSection) {
-                    String[] parts = line.split("=");
-                    if (parts.length == 2) {
-                        String continentName = parts[0].trim();
-                        try {
-                            int bonusValue = Integer.parseInt(parts[1].trim());
-                            // Debugging: Print continent being loaded
-                            System.out.println("Loaded continent: " + continentName + " with bonus: " + bonusValue);
-                            Continent continent = new Continent();
-                            continent.setD_ContinentArmies(bonusValue);
-                            continent.setD_ContinentName(continentName);
-                            continents.put(continentName, continent);
-                        } catch (NumberFormatException e) {
-                            System.out.println("Error: Invalid bonus value for continent " + continentName);
-                        }
-                    } else {
-                        System.out.println("Warning: Invalid continent format: " + line);
-                    }
-                } else if (isCountrySection) {
-                    String[] parts = line.split(",");
-                    if (parts.length >= 3) {
-                        String countryName = parts[0].trim();
-                        String continentName = parts[1].trim();
-                        if (continents.containsKey(continentName)) {
-                            Continent continent = continents.get(continentName);
-                            Country country = new Country();
-                            country.setD_CountryName(countryName);
-                            country.setD_CountryContinent(continent);
-                            countries.put(countryName, country);
-                            continent.getD_ContinentCountries().add(country);
-                            // Debugging: Print country being loaded
-                            System.out.println("Loaded country: " + countryName + " in continent: " + continentName);
-                        } else {
-                            System.out.println("Warning: Continent " + continentName + " not found for country " + countryName);
-                        }
-                    } else {
-                        System.out.println("Warning: Invalid country format: " + line);
-                    }
-                } else if (isBorderSection) {
-                    String[] parts = line.split(" ");
-                    if (parts.length >= 2) {
-                        Country country = countries.get(parts[0].trim());
-                        if (country != null) {
-                            for (int i = 1; i < parts.length; i++) {
-                                Country neighbor = countries.get(parts[i].trim());
-                                if (neighbor != null) {
-                                    country.getD_CountryNeighbors().add(neighbor);
-                                    // Debugging: Print border being added
-                                    System.out.println("Added border between " + country.getD_CountryName() + " and " + neighbor.getD_CountryName());
-                                } else {
-                                    System.out.println("Warning: Neighbor country " + parts[i] + " does not exist.");
-                                }
-                            }
-                        } else {
-                            System.out.println("Warning: Country " + parts[0] + " does not exist.");
-                        }
-                    } else {
-                        System.out.println("Warning: Invalid border format: " + line);
-                    }
-                }
-            }
-
-            // Logging the number of continents and countries loaded
-            System.out.println("Loaded continents: " + continents.size());
-            System.out.println("Loaded countries: " + countries.size());
-
-            return true;
-        } catch (IOException e) {
-            System.err.println("Error loading map: " + e.getMessage());
-            return false;
+    public static GameMap getInstance() {
+        if (Objects.isNull(d_GameMap)) {
+            d_GameMap = new GameMap();
         }
+        return d_GameMap;
     }
 
-    /**
-     * Saves the current map to a file.
-     */
-    public boolean saveMap(String filePath) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-            writer.write("[Continents]\n");
-            for (Continent continent : continents.values()) {
-                writer.write(continent.getD_ContinentName() + "=" + continent.getD_ContinentArmies() + "\n");
-            }
-
-            writer.write("\n[Territories]\n");
-            for (Country country : countries.values()) {
-                writer.write(country.getD_CountryName() + "," + country.getD_CountryContinent().getD_ContinentName());
-                for (Country neighbor : country.getD_CountryNeighbors()) {
-                    writer.write("," + neighbor.getD_CountryName());
-                }
-                writer.write("\n");
-            }
-            return true;
-        } catch (IOException e) {
-            System.err.println("Error saving map: " + e.getMessage());
-            return false;
-        }
-    }
-
-    /**
-     * Validating the map structure.
-     */
-    public boolean validateMap() {
-        // Validating continents
-        for (Continent continent : continents.values()) {
-            if (continent.getD_ContinentCountries().isEmpty()) {
-                System.out.println("Validation failed: Continent " + continent.getD_ContinentName() + " has no countries.");
-                return false;
-            }
-        }
-
-        // Validating countries
-        for (Country country : countries.values()) {
-            if (country.getD_CountryContinent() == null) {
-                System.out.println("Validation failed: Country " + country.getD_CountryName() + " has no continent.");
-                return false;
-            }
-        }
-
-        // Validating borders
-        for (Country country : countries.values()) {
-            for (Country neighbor : country.getD_CountryNeighbors()) {
-                if (!countries.containsKey(neighbor.getD_CountryName())) {
-                    System.out.println("Validation failed: Country " + country.getD_CountryName() + " has invalid neighbor " + neighbor.getD_CountryName());
-                    return false;
-                }
-            }
-        }
-
-        return true;
+    public void resetGameMap() {
+        GameMap.getInstance().continents.clear();
+        GameMap.getInstance().countries.clear();
     }
 
     public void addNeighbor(String p_CountryName, String p_NeighborCountryName) throws IllegalArgumentException {
@@ -301,5 +148,13 @@ public class GameMap {
 
     public Country getCountry(String countryName) {
         return countries.get(countryName);
+    }
+
+    public HashMap<String, Continent> getContinents() {
+        return continents;
+    }
+
+    public HashMap<String, Country> getCountries() {
+        return countries;
     }
 }

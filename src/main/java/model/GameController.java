@@ -1,5 +1,5 @@
-package model;
+// package model;
 
-public interface GameController {
-    GamePhase startPhase(GamePhase p_GamePhase) throws Exception;
-}
+// public interface GameController {
+//     GamePhase startPhase(GamePhase p_GamePhase) throws Exception;
+// }

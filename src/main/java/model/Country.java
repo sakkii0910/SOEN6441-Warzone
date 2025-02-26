@@ -5,11 +5,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Country implements Serializable {
+    private int d_CountryId;
     private String d_CountryName;
     private Continent d_CountryContinent;
     private Set<Country> d_CountryNeighbors;
     private int d_CountryXCoordinate;
     private int d_CountryYCoordinate;
+
+    public int getD_CountryId() {
+        return d_CountryId;
+    }
+
+    public void setD_CountryId(int d_CountryId) {
+        this.d_CountryId = d_CountryId;
+    }
 
     public String getD_CountryName() {
         return d_CountryName;
