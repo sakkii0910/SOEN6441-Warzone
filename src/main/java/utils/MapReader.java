@@ -89,4 +89,75 @@ public class MapReader {
             }
         }
     }
+
+    public static boolean saveMap(GameMap p_GameMap, String p_FileName) throws Exception {
+        System.out.println("Saving map file: " + p_FileName);
+
+        // create a new file or overwrite the existing file
+        File l_File = new File("maps/" + p_FileName);
+        l_File.createNewFile();
+
+        BufferedWriter l_BufferedWriter = new BufferedWriter(new FileWriter(l_File));
+        String d_Content = "";
+
+        d_Content += "[map]\n";
+        d_Content += "author=Team 5\n";
+        d_Content += "mapname=" + p_FileName + "\n";
+
+        d_Content += "\n[continents]\n";
+        HashMap<Integer, String> l_Continents = createContinentList(p_GameMap);
+        for (Continent continent : p_GameMap.getContinents().values()) {
+            d_Content += continent.getD_ContinentName() + " " + continent.getD_ContinentArmies() + "\n";
+        }
+
+        d_Content += "\n[countries]\n";
+        HashMap<Integer, String> l_Countries = createCountryList(p_GameMap);
+        for (Map.Entry<Integer, String> l_Country : l_Countries.entrySet()) {
+            for (Map.Entry<Integer, String> l_Continent : l_Continents.entrySet()) {
+                if (l_Continent.getValue().equals(
+                        p_GameMap.getCountry(l_Country.getValue()).getD_CountryContinent().getD_ContinentName())) {
+                    d_Content += l_Country.getKey() + " " + l_Country.getValue() + " " + l_Continent.getKey() + "\n";
+                    break;
+                }
+            }
+        }
+
+        d_Content += "\n[borders]\n";
+        for (Map.Entry<Integer, String> l_Country : l_Countries.entrySet()) {
+            d_Content += l_Country.getKey();
+            for (Country l_Neighbor : p_GameMap.getCountry(l_Country.getValue()).getD_CountryNeighbors()) {
+                for (Map.Entry<Integer, String> l_NeighborCountry : l_Countries.entrySet()) {
+                    if (l_Neighbor.getD_CountryName().equals(l_NeighborCountry.getValue())) {
+                        d_Content += " " + l_NeighborCountry.getKey();
+                        break;
+                    }
+                }
+            }
+            d_Content += "\n";
+        }
+
+        l_BufferedWriter.write(d_Content);
+        l_BufferedWriter.close();
+
+        return true;
+    }
+
+    public static HashMap<Integer, String> createContinentList(GameMap p_GameMap) {
+        HashMap<Integer, String> l_CountryMap = new HashMap<>();
+        int counter = 1;
+        for (Continent l_Continent : p_GameMap.getContinents().values()) {
+            l_CountryMap.put(counter++, l_Continent.getD_ContinentName());
+        }
+        return l_CountryMap;
+    }
+
+    public static HashMap<Integer, String> createCountryList(GameMap p_GameMap) {
+        HashMap<Integer, String> l_CountryMap = new HashMap<>();
+        int counter = 1;
+        for (Country l_Country : p_GameMap.getCountries().values()) {
+            l_CountryMap.put(counter++, l_Country.getD_CountryName());
+        }
+        return l_CountryMap;
+    }
+
 }

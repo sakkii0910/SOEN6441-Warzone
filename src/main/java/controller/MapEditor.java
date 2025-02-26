@@ -171,7 +171,14 @@ public class MapEditor {
                             // To be implemented
                             break;
                         case "savemap":
-                            // To be implemented
+                            if (l_Commands.length == 2) {
+                                boolean l_HasSaved = MapReader.saveMap(d_GameMap, l_Commands[1]);
+                                if (l_HasSaved) {
+                                    System.out.println("Map validated & saved successfully.");
+                                } else {
+                                    System.out.println("Map validated but could not be saved.");
+                                }
+                            }
                             break;
                         default:
                             // To be implemented
