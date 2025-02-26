@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Continent class contains the information about the continent
+ */
 public class Continent implements Serializable {
     private int d_ContinentId;
     private String d_ContinentName;

@@ -1,6 +1,7 @@
 package controller;
 
 import model.GameMap;
+import utils.MapReader;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,14 +10,15 @@ import java.util.Scanner;
 public class MapEditor {
 
     private final Scanner SCANNER = new Scanner(System.in);
-    private final List<String> CLI_COMMANDS = Arrays.asList("editcontinent", "editcountry", "editneighbor", "showmap", "savemap", "editmap", "validatemap", "help", "exit");
+    private final List<String> CLI_COMMANDS = Arrays.asList("editcontinent", "editcountry", "editneighbor", "showmap",
+            "savemap", "editmap", "validatemap", "help", "exit");
     private GameMap d_GameMap;
 
     public MapEditor() {
-        this.d_GameMap = new GameMap();
+        this.d_GameMap = GameMap.getInstance();
     }
 
-    public void startPhase() {
+    public void startPhase() throws Exception {
         System.out.println("\t****** MAP EDITING MODE ******\t");
         while (true) {
             int i;
@@ -34,13 +36,15 @@ public class MapEditor {
                             System.out.println(" List of User Map Creation Commands ");
                             System.out.println("=========================================");
                             System.out.println("\nTo add or remove a continent:");
-                            System.out.println("  editcontinent -add <continentID> <continentValue> -remove <continentID>");
+                            System.out.println(
+                                    "  editcontinent -add <continentID> <continentValue> -remove <continentID>");
 
                             System.out.println("\nTo add or remove a country:");
                             System.out.println("  editcountry -add <countryID> <continentID> -remove <countryID>");
 
                             System.out.println("\nTo add or remove a neighbor to a country:");
-                            System.out.println("  editneighbor -add <countryID> <neighborCountryID> -remove <countryID> <neighborCountryID>");
+                            System.out.println(
+                                    "  editneighbor -add <countryID> <neighborCountryID> -remove <countryID> <neighborCountryID>");
 
                             System.out.println("\n-----------------------------------------");
                             System.out.println(" Map Commands (Edit/Save) ");
@@ -65,7 +69,8 @@ public class MapEditor {
                                     case "-add":
                                         if (i + 2 < l_Commands.length) {
                                             try {
-                                                d_GameMap.addContinent(l_Commands[i + 1], Integer.parseInt(l_Commands[i + 2]));
+                                                d_GameMap.addContinent(l_Commands[i + 1],
+                                                        Integer.parseInt(l_Commands[i + 2]));
                                             } catch (IllegalArgumentException e) {
                                                 System.out.println(e.getMessage());
                                             }
@@ -158,13 +163,34 @@ public class MapEditor {
                             d_GameMap.displayMap();
                             break;
                         case "editmap":
-                            // To be implemented.
-                            break;
-                        case "savemap":
-                            // To be implemented.
+                            if (l_Commands.length == 2) {
+                                MapReader.readMap(d_GameMap, l_Commands[1]);
+                            }
                             break;
                         case "validatemap":
-                            // To be implemented.
+                            if (MapReader.validateMap(d_GameMap)) {
+                                System.out.println("Map is valid.");
+                            } else {
+                                System.out.println("Map is invalid.");
+                            }
+                            break;
+                        case "savemap":
+                            if (l_Commands.length == 2) {
+                                if (MapReader.validateMap(d_GameMap)) {
+                                    boolean l_HasSaved = MapReader.saveMap(d_GameMap, l_Commands[1]);
+                                    if (l_HasSaved) {
+                                        System.out.println("Map validated & saved successfully.");
+                                    } else {
+                                        System.out.println("Map validated but could not be saved.");
+                                    }
+                                }
+                                else {
+                                    System.out.println("Map is invalid. Please validate the map before saving.");
+                                }
+                            }
+                            break;
+                        default:
+                            // To be implemented
                             break;
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
