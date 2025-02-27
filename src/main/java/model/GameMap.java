@@ -5,15 +5,13 @@ import java.util.*;
 /**
  * Represents the game map for the Warzone game.
  * Handles loading, saving, validating, editing, and displaying maps.
- *
- * @author Sakshi Mulik
  */
 public class GameMap {
     private HashMap<String, Continent> continents;
     private HashMap<String, Country> countries;
     private static GameMap d_GameMap;
 
-    private HashMap<String, Player> d_players = new HashMap<>();
+    private HashMap<String, Player> d_players;
 
     /**
      * Constructor initializes map components.
@@ -21,6 +19,7 @@ public class GameMap {
     private GameMap() {
         continents = new HashMap<>();
         countries = new HashMap<>();
+        d_players = new HashMap<>();
     }
 
 
@@ -178,6 +177,7 @@ public class GameMap {
     }
 
     // Method to display map data
+    // new part added
     public void showMap() {
         // Showing Countries in the Continent and their details
         System.out.println("\nThe countries in this Map and their details are : \n");

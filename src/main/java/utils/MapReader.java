@@ -144,17 +144,30 @@ public class MapReader {
 
     public static boolean validateMap(GameMap p_GameMap) {
         // continent empty or countries empty or duplicate continent or duplicate country or duplicate border
-        if (!isContinentEmpty(p_GameMap) ||
-                !isDuplicateContinent(p_GameMap) ||
-                !isDuplicateCountry(p_GameMap) ||
-                !isDuplicateBorder(p_GameMap)) {
+        if (!isContinentEmpty(p_GameMap)) return false;
+
+        if (!isDuplicateContinent(p_GameMap)) return false;
+
+        if (!isDuplicateCountry(p_GameMap)) return false;
+
+        if (!isDuplicateBorder(p_GameMap)) return false;
+
+        if (checkIfNeighbourExists(p_GameMap)) {
+            if (!checkContinentsConnected(p_GameMap)) {
+                System.out.println("Continents are not connected");
+                return false;
+            }
+
+            if (!checkIfMapIsConnected(p_GameMap.getCountries())) {
+                System.out.println("Map is not connected");
+                return false;
+            }
+        }
+        else {
+            System.out.println("Neighbour does not exist");
             return false;
         }
         
-        // TODO
-        // continent is a connected subgraph
-        // entire map is connected
-
         return true;
     }
 
@@ -201,6 +214,60 @@ public class MapReader {
         }
         return true;
     }
+
+    static boolean checkIfNeighbourExists(GameMap pGameMap) {
+        HashMap<String, Country> l_Countries = pGameMap.getCountries();
+        for (Country l_Country : l_Countries.values()) {
+            Set<Country> l_Neighbors = l_Country.getD_CountryNeighbors();
+            for (Country l_Neighbor : l_Neighbors) {
+                if (!l_Countries.containsKey(l_Neighbor.getD_CountryName())) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    static boolean checkIfMapIsConnected(HashMap<String, Country> p_Countries) {
+        List<String> l_ListOfCountries = new ArrayList<>();
+        for (String l_Name : p_Countries.keySet()) {
+            l_ListOfCountries.add(l_Name.toLowerCase());
+        }
+
+        int l_NoOfVertices = l_ListOfCountries.size();
+        ConnectedGraph l_Graph = new ConnectedGraph(l_NoOfVertices);
+        int l_Temp = 0;
+        for (Map.Entry<String, Country> l_Country : p_Countries.entrySet()) {
+            Set<Country> l_Neighbors = l_Country.getValue().getD_CountryNeighbors();
+            for (Country l_Current : l_Neighbors) {
+                int l_Index = l_ListOfCountries.indexOf(l_Current.getD_CountryName().toLowerCase());
+                if (l_Index != -1) {
+                    l_Graph.addEdge(l_Temp, l_Index);
+                }
+            }
+            l_Temp++;
+        }
+        return l_Graph.checkIfStronglyConnected();
+    }
+
+    public static boolean checkContinentsConnected(GameMap p_GameMap) {
+        for (Continent l_Continent : p_GameMap.getContinents().values()) {
+            if (!checkIfContinentConnected(l_Continent)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private static boolean checkIfContinentConnected(Continent p_Continent) {
+        HashMap<String, Country> l_CountriesMap = new HashMap<>();
+        Set<Country> l_Countries = p_Continent.getD_ContinentCountries();
+        for (Country l_Country : l_Countries) {
+            l_CountriesMap.put(l_Country.getD_CountryName(), l_Country);
+        }
+        return checkIfMapIsConnected(l_CountriesMap);
+    }
+
 
     public static HashMap<Integer, String> createContinentList(GameMap p_GameMap) {
         HashMap<Integer, String> l_CountryMap = new HashMap<>();
