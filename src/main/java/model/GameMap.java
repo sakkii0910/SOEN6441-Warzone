@@ -231,4 +231,25 @@ public class GameMap {
         this.getPlayers().remove(l_Player.getD_Name());
         System.out.println("Successfully deleted the player: " + p_PlayerName);
     }
+
+    // Assign country to player
+    public void assignCountries() {
+        List<Player> l_Players = new ArrayList<>(d_GameMap.getPlayers().values());
+        List<Country> l_CountryList = new ArrayList<>(d_GameMap.getCountries().values());
+    
+        // Shuffle country list
+        Collections.shuffle(l_CountryList);
+        
+        int l_PlayerCount = l_Players.size();
+        for (int i = 0; i < l_CountryList.size(); i++) {
+            // select player sequentially
+            Player l_Player = l_Players.get(i % l_PlayerCount);
+            Country l_Country = l_CountryList.get(i);
+            // add country to player's captured countries
+            l_Player.getCapturedCountries().add(l_Country);
+            // assign player to country
+            l_Country.setPlayer(l_Player);
+            System.out.println(l_Country.getD_CountryName() + " has been assigned to " + l_Player.getD_Name());
+        }
+    }
 }
