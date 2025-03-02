@@ -3,30 +3,37 @@ package model;
 import controller.Country;
 import controller.Order;
 
-//todo: change coding conventions
-//todo: need to create Order class
+/**
+ * Represents a deployment order issued by a player.
+ */
 public class DeployOrder extends Order {
-    private Player player;
-    private int countryID;
-    private int numArmies;
+    private Player d_player;
+    private int d_countryID;
+    private int d_numArmies;
 
-    public DeployOrder(Player player, int countryID, int numArmies) {
-        this.player = player;
-        this.countryID = countryID;
-        this.numArmies = numArmies;
+    /**
+     * Constructor for DeployOrder.
+     *
+     * @param p_player The player issuing the order.
+     * @param p_countryID The country to deploy armies to.
+     * @param p_numArmies The number of armies to deploy.
+     */
+    public DeployOrder(Player p_player, int p_countryID, int p_numArmies) {
+        this.d_player = p_player;
+        this.d_countryID = p_countryID;
+        this.d_numArmies = p_numArmies;
     }
 
-
+    /**
+     * Executes the deploy order.
+     */
     public void execute() {
-        //todo: ll also req country and game map to get country
-        Country country = GameMap.getCountryById(countryID);
-        if (country != null) {
-            country.addArmies(numArmies);
-            System.out.println("Deployed " + numArmies + " armies to country " + countryID);
+        Country l_country = GameMap.getCountryById(d_countryID);
+        if (l_country != null) {
+            l_country.addArmies(d_numArmies);
+            System.out.println("Deployed " + d_numArmies + " armies to country " + d_countryID);
         } else {
             System.out.println("Invalid country ID.");
         }
     }
-    //todo: instaed of terminating, ll need to loop for user input
 }
-
