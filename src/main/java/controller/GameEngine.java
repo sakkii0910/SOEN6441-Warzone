@@ -1,38 +1,57 @@
 package controller;
 
 import model.Player;
+import java.util.Queue;
+import java.util.LinkedList;
 
-//todo: creating alll the missing symbols/classes esp Order, orderQueue and completing the Player.java
+/**
+ * Manages the game's main logic, handling player actions and execution flow.
+ */
 public class GameEngine {
-    public void addOrder(Order order) {
-        orderQueue.add(order);
+    private Queue<Order> d_orderQueue = new LinkedList<>();
+    private List<Player> d_players = new ArrayList<>();
+
+    /**
+     * Adds an order to the execution queue.
+     *
+     * @param p_order The order to be added.
+     */
+    public void addOrder(Order p_order) {
+        d_orderQueue.add(p_order);
     }
+
+    /**
+     * Executes all orders in the queue.
+     */
     public void executeOrders() {
-        while (!orderQueue.isEmpty()) {
-            Order order = orderQueue.poll();
-            order.execute();
+        while (!d_orderQueue.isEmpty()) {
+            Order l_order = d_orderQueue.poll();
+            l_order.execute();
         }
     }
+
+    /**
+     * Main game loop that handles the reinforcement, order issuing, and execution phases.
+     */
     public void mainGameLoop() {
         while (true) {
             // Assign reinforcements
-            for (Player player : players) {
-                player.assignReinforcements(5);
+            for (Player l_player : d_players) {
+                l_player.assignReinforcements(5);
             }
 
             // Issue orders
-            for (Player player : players) {
-                player.issueOrder();
+            for (Player l_player : d_players) {
+                l_player.issueOrder();
             }
 
             // Execute orders
-            for (Player player : players) {
-                Order order;
-                while ((order = player.nextOrder()) != null) {
-                    order.execute();
+            for (Player l_player : d_players) {
+                Order l_order;
+                while ((l_order = l_player.nextOrder()) != null) {
+                    l_order.execute();
                 }
             }
         }
     }
-
 }
