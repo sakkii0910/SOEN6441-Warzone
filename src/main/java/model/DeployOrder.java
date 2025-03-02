@@ -1,7 +1,7 @@
 package model;
 
 import controller.Country;
-import controller.Order;
+import model.Order;
 
 /**
  * Represents a deployment order issued by a player.
