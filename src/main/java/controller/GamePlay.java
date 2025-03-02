@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 
 import model.GameMap;
+import model.abstractClasses.GameController;
+import model.abstractClasses.GamePhase;
 import utils.MapReader;
 
 /**
@@ -25,7 +27,7 @@ public class GamePlay extends GameController {
     }
     
     @Override
-    public void startPhase(GamePhase p_GamePhase) throws Exception {
+    public GamePhase startPhase(GamePhase p_GamePhase) throws Exception {
         System.out.println("\t****** GAME PLAY MODE ******\t");
         while (true) {
             int i;
@@ -34,7 +36,7 @@ public class GamePlay extends GameController {
             String[] l_Commands = l_Input.split(" ");
 
             if(l_Commands[0].equalsIgnoreCase("exit")) {
-                break;
+                return null; // will return next phase here
             } else if(inputValidator(l_Commands)) {
                 try {
                     switch (l_Commands[0].toLowerCase()) {
