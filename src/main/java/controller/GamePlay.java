@@ -13,7 +13,7 @@ import utils.MapReader;
  * @author Poorav Panchal
  */
 
-public class GamePlay {
+public class GamePlay extends GameController {
     private final Scanner SCANNER = new Scanner(System.in);
 
     private final List<String> CLI_COMMANDS = Arrays.asList("gameplayer", "assigncountries");
@@ -23,8 +23,9 @@ public class GamePlay {
     public GamePlay() {
         d_GameMap = GameMap.getInstance();
     }
-
-    public void startPhase() throws Exception {
+    
+    @Override
+    public void startPhase(GamePhase p_GamePhase) throws Exception {
         System.out.println("\t****** GAME PLAY MODE ******\t");
         while (true) {
             int i;
