@@ -56,4 +56,48 @@ public class Player implements Serializable {
     public int getReinforcementArmies() {
         return d_ReinforcementArmies;
     }
+
+
+    //todo: need to create Order, orders and reinforcementPool var
+    //todo: changes to coding conventions, comments
+    public Order nextOrder() {
+        if (orders.isEmpty()) {
+            return null;
+        }
+        return orders.remove(0);
+    }
+
+    public void assignReinforcements(int num) {
+        reinforcementPool += num;
+        System.out.println("Assigned " + num + " reinforcements.");
+    }
+
+    public void issueOrder() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter command (deploy countryID num): ");
+        String input = scanner.nextLine();
+        String[] parts = input.split(" ");
+
+        if (parts.length != 3 || !parts[0].equalsIgnoreCase("deploy")) {
+            System.out.println("Invalid command format. Use: deploy countryID num");
+            return;
+        }
+
+        try {
+            int countryID = Integer.parseInt(parts[1]);
+            int num = Integer.parseInt(parts[2]);
+
+            if (num > reinforcementPool) {
+                System.out.println("Not enough reinforcements available.");
+                return;
+            }
+
+            DeployOrder order = new DeployOrder(this, countryID, num);
+            orders.add(order);
+            reinforcementPool -= num;
+            System.out.println("Order added: Deploy " + num + " armies to country " + countryID);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number format.");
+        }
+    }
 }
