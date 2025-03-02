@@ -4,7 +4,7 @@ import model.abstractClasses.GamePhase;
 
 import java.util.Objects;
 
-public class GameEngine {
+public class PhaseManager {
 
     private GamePhase d_GamePhase;
 

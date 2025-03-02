@@ -5,7 +5,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Game {
-    private GameEngine d_GameEngine;
+    private PhaseManager d_PhaseManager;
 
     private GamePhase d_GamePhase;
 
@@ -29,7 +29,7 @@ public class Game {
 
         try {
             int option = SCANNER.nextInt();
-            d_GameEngine = new GameEngine();
+            d_PhaseManager = new PhaseManager();
             switch (option) {
                 case 1:
                     d_GamePhase = new MapEditorPhase();
@@ -46,8 +46,8 @@ public class Game {
             start();
         }
 
-        d_GameEngine.setGamePhase(d_GamePhase);
-        d_GameEngine.start();
+        d_PhaseManager.setGamePhase(d_GamePhase);
+        d_PhaseManager.start();
 
     }
 
