@@ -1,7 +1,7 @@
 package model;
 
 import controller.Country;
-import controller.Order;
+import model.Order;
 
 //todo: change coding conventions
 //todo: need to create Order class
