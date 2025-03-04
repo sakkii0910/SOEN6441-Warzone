@@ -1,6 +1,6 @@
 package model;
 
-import controller.Country;
+import model.Country;
 import model.Order;
 
 /**

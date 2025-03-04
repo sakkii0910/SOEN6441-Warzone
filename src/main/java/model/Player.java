@@ -115,6 +115,6 @@ public class Player implements Serializable {
         } catch (NumberFormatException e) {
             System.out.println("Invalid number format.");
         }
-    } 
     }
+
 }
