@@ -10,7 +10,6 @@ import java.util.List;
 public class StartUpPhase extends GamePhase {
 
     public List<Class<? extends GamePhase>> possiblePhases() {
-//      Next Phase to be implemented in next build
         return List.of(GameLoopPhase.class);
     }
 

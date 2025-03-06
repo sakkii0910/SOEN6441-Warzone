@@ -53,7 +53,7 @@ public class GamePlay extends GameController {
                             System.out.println("\nTo add or remove a player:");
                             System.out.println("  gameplayer -add playername -remove playername");
                             System.out.println("\nTo assign countries to all players: ");
-                            System.out.println("assigncountries");
+                            System.out.println("  assigncountries");
                             System.out.println("\nTo load a domination map from the provided file: ");
                             System.out.println("loadmap <filename>");
                             System.out.println("\nTo show all countries, continents, armies and ownership: ");
