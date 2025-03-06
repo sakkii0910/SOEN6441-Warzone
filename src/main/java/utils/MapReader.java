@@ -16,19 +16,38 @@ import model.Continent;
 import model.Country;
 import model.GameMap;
 
+/**
+ * A class to read, validate and save the map file
+ */
 public class MapReader {
 
-    private static List<String> d_Continents = new ArrayList<>();
-    private static HashMap<Integer, String> d_CountryMap = new HashMap<>();
     /**
-     * current line
+     * List of continents
+     */
+    private static List<String> d_Continents = new ArrayList<>();
+    
+    /**
+     * Map of countries (key: country ID, value: country name)
+     */
+    private static HashMap<Integer, String> d_CountryMap = new HashMap<>();
+    
+    /**
+     * current line - global
      */
     private static String d_CurrentLine;
+    
     /**
-     * buffer for reading
+     * buffer for reading - global
      */
     private static BufferedReader d_Buffer;
 
+    /**
+     * Reads a map file and creates a game map object.
+     *
+     * @param p_GameMap  The game map object to populate.
+     * @param p_FileName The name of the map file to read.
+     * @throws Exception If an error occurs while reading the map file.
+     */
     public static void readMap(GameMap p_GameMap, String p_FileName) throws Exception {
         System.out.println("Reading map file: " + p_FileName);
 
@@ -39,8 +58,8 @@ public class MapReader {
             FileReader l_FileReader = new FileReader(l_File);
 
             d_Buffer = new BufferedReader(l_FileReader);
+            
             while ((d_CurrentLine = d_Buffer.readLine()) != null) {
-                System.out.println("Processing line: " + d_CurrentLine); // Debug: Print each line
                 if (d_CurrentLine.equals("[continents]")) {
                     readContinents(p_GameMap);
                 } else if (d_CurrentLine.equals("[countries]")) {
@@ -55,6 +74,12 @@ public class MapReader {
         }
     }
 
+    /**
+     * Reads the continents from the map file.
+     *
+     * @param p_GameMap The game map object to populate.
+     * @throws Exception If an error occurs while reading the continents.
+     */
     public static void readContinents(GameMap p_GameMap) throws Exception {
         while ((d_CurrentLine = d_Buffer.readLine()) != null) {
             if (d_CurrentLine.equals("")) {
@@ -66,6 +91,12 @@ public class MapReader {
         }
     }
 
+    /**
+     * Reads the countries from the map file.
+     *
+     * @param p_GameMap The game map object to populate.
+     * @throws Exception If an error occurs while reading the countries.
+     */
     public static void readCountries(GameMap p_GameMap) throws Exception {
         while ((d_CurrentLine = d_Buffer.readLine()) != null) {
             if (d_CurrentLine.equals("")) {
@@ -77,6 +108,12 @@ public class MapReader {
         }
     }
 
+    /**
+     * Reads the borders from the map file.
+     *
+     * @param p_GameMap The game map object to populate.
+     * @throws Exception If an error occurs while reading the borders.
+     */
     public static void readBorders(GameMap p_GameMap) throws Exception {
         while ((d_CurrentLine = d_Buffer.readLine()) != null) {
             if (d_CurrentLine.equals("")) {
@@ -90,6 +127,14 @@ public class MapReader {
         }
     }
 
+    /**
+     * Saves a game map object to a map file.
+     *
+     * @param p_GameMap  The game map object to save.
+     * @param p_FileName The name of the map file to save.
+     * @return True if the map was saved successfully, false otherwise.
+     * @throws Exception If an error occurs while saving the map file.
+     */
     public static boolean saveMap(GameMap p_GameMap, String p_FileName) throws Exception {
         System.out.println("Saving map file: " + p_FileName);
 
@@ -148,8 +193,13 @@ public class MapReader {
         }
     }
 
+    /**
+     * Validates a game map object.
+     *
+     * @param p_GameMap The game map object to validate.
+     * @return True if the game map is valid, false otherwise.
+     */
     public static boolean validateMap(GameMap p_GameMap) {
-        // continent empty or countries empty or duplicate continent or duplicate country or duplicate border
         if (!isContinentEmpty(p_GameMap)) return false;
 
         if (!isDuplicateContinent(p_GameMap)) return false;
@@ -177,6 +227,11 @@ public class MapReader {
         return true;
     }
 
+    /**
+     * Checks if the continents are not empty and contain countries.
+     * @param p_GameMap
+     * @return True if the continents and respective countries are present, false otherwise.
+     */
     static boolean isContinentEmpty(GameMap p_GameMap) {
         if (p_GameMap.getContinents().isEmpty())
             return false;
@@ -189,6 +244,11 @@ public class MapReader {
         return true;
     }
 
+    /**
+     * Checks if the continents are not duplicated.
+     * @param p_GameMap
+     * @return True if the continents are not duplicated, false otherwise.
+     */
     static boolean isDuplicateContinent(GameMap p_GameMap) {
         Set<String> l_ContinentSet = new HashSet<>();
         for (Continent l_Continent : p_GameMap.getContinents().values()) {
@@ -199,6 +259,11 @@ public class MapReader {
         return true;
     }
 
+    /**
+     * Checks if the countries are not duplicated.
+     * @param p_GameMap
+     * @return True if the countries are not duplicated, false otherwise.
+     */
     static boolean isDuplicateCountry(GameMap p_GameMap) {
         HashMap<String, Country> l_Countries = p_GameMap.getCountries();
         Set<String> l_CountrySet = l_Countries.keySet();
@@ -207,6 +272,11 @@ public class MapReader {
         return true;
     }
 
+    /**
+     * Checks if the borders are not duplicated.
+     * @param p_GameMap
+     * @return True if the borders are not duplicated, false otherwise.
+     */
     static boolean isDuplicateBorder(GameMap p_GameMap) {
         HashMap<String, Country> l_Countries = p_GameMap.getCountries();
         for (Country l_Country : l_Countries.values()) {
@@ -221,6 +291,11 @@ public class MapReader {
         return true;
     }
 
+    /**
+     * Checks if the neighbors exist i.e the neighbors of a country are present in the map.
+     * @param pGameMap
+     * @return True if the neighbors exist, false otherwise.
+     */
     static boolean checkIfNeighbourExists(GameMap pGameMap) {
         HashMap<String, Country> l_Countries = pGameMap.getCountries();
         for (Country l_Country : l_Countries.values()) {
@@ -234,6 +309,11 @@ public class MapReader {
         return true;
     }
 
+    /**
+     * Checks if the map is strongly connected.
+     * @param p_Countries
+     * @return True if the map is connected, false otherwise.
+     */
     static boolean checkIfMapIsConnected(HashMap<String, Country> p_Countries) {
         List<String> l_ListOfCountries = new ArrayList<>();
         for (String l_Name : p_Countries.keySet()) {
@@ -256,6 +336,11 @@ public class MapReader {
         return l_Graph.checkIfStronglyConnected();
     }
 
+    /**
+     * Checks if the continents are connected i.e each continent is a connected subgraph.
+     * @param p_GameMap
+     * @return True if the continents are connected, false otherwise.
+     */
     public static boolean checkContinentsConnected(GameMap p_GameMap) {
         for (Continent l_Continent : p_GameMap.getContinents().values()) {
             if (!checkIfContinentConnected(l_Continent)) {
@@ -265,7 +350,12 @@ public class MapReader {
         return true;
     }
     
-    private static boolean checkIfContinentConnected(Continent p_Continent) {
+    /**
+     * Checks if a continent is connected i.e the countries in the continent are connected.
+     * @param p_Continent
+     * @return True if the continent is connected, false otherwise.
+     */
+    public static boolean checkIfContinentConnected(Continent p_Continent) {
         HashMap<String, Country> l_CountriesMap = new HashMap<>();
         Set<Country> l_Countries = p_Continent.getD_ContinentCountries();
         for (Country l_Country : l_Countries) {
@@ -274,7 +364,12 @@ public class MapReader {
         return checkIfMapIsConnected(l_CountriesMap);
     }
 
-
+    /**
+     * Helper method - Creates a list of continents.
+     *
+     * @param p_GameMap The game map object.
+     * @return A list of continents.
+     */
     public static HashMap<Integer, String> createContinentList(GameMap p_GameMap) {
         HashMap<Integer, String> l_CountryMap = new HashMap<>();
         int counter = 1;
@@ -284,6 +379,12 @@ public class MapReader {
         return l_CountryMap;
     }
 
+    /**
+     * Helper method - Creates a list of countries.
+     *
+     * @param p_GameMap The game map object.
+     * @return A list of countries.
+     */
     public static HashMap<Integer, String> createCountryList(GameMap p_GameMap) {
         HashMap<Integer, String> l_CountryMap = new HashMap<>();
         int counter = 1;
@@ -291,20 +392,5 @@ public class MapReader {
             l_CountryMap.put(counter++, l_Country.getD_CountryName());
         }
         return l_CountryMap;
-    }
-    /**
-     * Validates whether a continent is a connected subgraph.
-     *
-     * @param p_Continent The continent to validate.
-     * @return True if the continent is a connected subgraph, false otherwise.
-     */
-    public static boolean validateContinent(Continent p_Continent) {
-        // Simple validation: Check if all countries in the continent are connected
-        for (Country l_Country : p_Continent.getD_ContinentCountries()) {
-            if (l_Country.getD_CountryNeighbors().isEmpty()) {
-                return false; // Country has no neighbors, so the continent is not connected
-            }
-        }
-        return true;
     }
 }

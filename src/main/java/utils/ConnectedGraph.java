@@ -2,6 +2,9 @@ package utils;
 
 import java.util.ArrayList;
 
+/**
+ * A class to check if the graph is strongly connected or not
+ */
 public class ConnectedGraph {
     private int d_Vertices;
     private ArrayList[] d_Edges;
@@ -25,7 +28,7 @@ public class ConnectedGraph {
     }
 
     /**
-     * A function to perform the DFS Traversal
+     * A function to perform DFS Traversal
      *
      * @param p_Node    The node where the DFS Traversal starts
      * @param p_Visited The array which holds the boolean value if node visited or not
@@ -58,7 +61,7 @@ public class ConnectedGraph {
 
     /**
      * A function to check if the graph is strongly connected or not
-     *
+     * It checks if the graph is connected in both directions
      * @return true if strongly connected else false
      */
     Boolean checkIfStronglyConnected() {
