@@ -62,6 +62,6 @@ class ContinentTest {
         country2.getD_CountryNeighbors().add(country1);
 
         // Verify that the continent is a connected subgraph
-        assertTrue(MapReader.validateContinent(continent), "Continent should be a connected subgraph.");
+        assertTrue(MapReader.checkIfContinentConnected(continent), "Continent should be a connected subgraph.");
     }
 }

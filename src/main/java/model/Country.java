@@ -49,6 +49,7 @@ public class Country implements Serializable {
     }
 
     // Create country neighbors name string
+    // New part added
     public String createANeighborList(Set<Country> p_Neighbors) {
         String l_result = "";
         for (Country l_Neighbor : p_Neighbors) {

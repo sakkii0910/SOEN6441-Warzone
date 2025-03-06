@@ -12,6 +12,7 @@ import model.gamePhases.GameLoopPhase;
 /**
  * This class implements the Game Controller and it executes the current phases
  *
+ * @author Poorav Panchal
  */
 
 public class GamePlay extends GameController {
@@ -51,7 +52,7 @@ public class GamePlay extends GameController {
                             System.out.println("\nTo add or remove a player:");
                             System.out.println("  gameplayer -add playername -remove playername");
                             System.out.println("\nTo assign countries to all players: ");
-                            System.out.println("  assigncountries");
+                            System.out.println("assigncountries");
                             System.out.println("=========================================");
                             break;
                         case "gameplayer":

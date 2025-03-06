@@ -215,15 +215,6 @@ public class MapEditor extends GameController {
                                 }
                             }
                             break;
-                        case "loadmap": // Add this case for the loadmap command
-                            if (l_Commands.length == 2) {
-                                System.out.println("Loading map file: " + l_Commands[1]); // Debug
-                                MapReader.readMap(d_GameMap, l_Commands[1]); // Call the readMap method
-                                System.out.println("Map loaded successfully.");
-                            } else {
-                                System.out.println("Invalid command. Usage: loadmap <filename>");
-                            }
-                            break;
                         default:
                             // To be implemented
                             break;
