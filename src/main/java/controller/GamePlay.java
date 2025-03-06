@@ -8,6 +8,7 @@ import model.GameMap;
 import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
 import model.gamePhases.GameLoopPhase;
+import utils.MapReader;
 
 /**
  * This class implements the Game Controller and it executes the current phases
@@ -52,7 +53,11 @@ public class GamePlay extends GameController {
                             System.out.println("\nTo add or remove a player:");
                             System.out.println("  gameplayer -add playername -remove playername");
                             System.out.println("\nTo assign countries to all players: ");
-                            System.out.println("assigncountries");
+                            System.out.println("  assigncountries");
+                            System.out.println("\nTo load a domination map from the provided file: ");
+                            System.out.println("loadmap <filename>");
+                            System.out.println("\nTo show all countries, continents, armies and ownership: ");
+                            System.out.println("showmap");
                             System.out.println("=========================================");
                             break;
                         case "gameplayer":
@@ -90,6 +95,18 @@ public class GamePlay extends GameController {
                             break;
                         case "assigncountries":
                             d_GameMap.assignCountries();
+                            break;
+                        case "loadmap": // Add this case for the loadmap command
+                            if (l_Commands.length == 2) {
+                                System.out.println("Loading map file: " + l_Commands[1]); // Debug
+                                MapReader.readMap(d_GameMap, l_Commands[1]); // Call the readMap method
+                                System.out.println("Map loaded successfully.");
+                            } else {
+                                System.out.println("Invalid command. Usage: loadmap <filename>");
+                            }
+                            break;
+                        case "showmap":
+                            d_GameMap.showMap();
                             break;
                         default:
                             break;
