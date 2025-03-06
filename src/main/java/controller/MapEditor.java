@@ -1,24 +1,34 @@
 package controller;
 
+import model.abstractClasses.GameController;
 import model.GameMap;
+import model.abstractClasses.GamePhase;
+import model.gamePhases.StartUpPhase;
 import utils.MapReader;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-public class MapEditor {
+public class MapEditor extends GameController {
 
     private final Scanner SCANNER = new Scanner(System.in);
     private final List<String> CLI_COMMANDS = Arrays.asList("editcontinent", "editcountry", "editneighbor", "showmap",
             "savemap", "editmap", "validatemap", "help", "exit");
     private GameMap d_GameMap;
 
+    private GamePhase d_NextPhase = new StartUpPhase();
+
     public MapEditor() {
         this.d_GameMap = GameMap.getInstance();
     }
 
-    public void startPhase() throws Exception {
+    public GamePhase startPhase(GamePhase p_GamePhase) throws Exception {
+        System.out.println();
+        System.out.println("=========================================");
         System.out.println("\t****** MAP EDITING MODE ******\t");
         while (true) {
             int i;
@@ -27,7 +37,8 @@ public class MapEditor {
             String[] l_Commands = l_Input.split(" ");
 
             if (l_Commands[0].equalsIgnoreCase("exit")) {
-                break;
+                d_GameMap.setGamePhase(d_NextPhase);
+                return d_NextPhase;
             } else if (inputValidator(l_Commands)) {
                 try {
                     switch (l_Commands[0].toLowerCase()) {
@@ -189,6 +200,15 @@ public class MapEditor {
                                 }
                             }
                             break;
+                        case "loadmap": // Add this case for the loadmap command
+                            if (l_Commands.length == 2) {
+                                System.out.println("Loading map file: " + l_Commands[1]); // Debug
+                                MapReader.readMap(d_GameMap, l_Commands[1]); // Call the readMap method
+                                System.out.println("Map loaded successfully.");
+                            } else {
+                                System.out.println("Invalid command. Usage: loadmap <filename>");
+                            }
+                            break;
                         default:
                             // To be implemented
                             break;
@@ -203,6 +223,7 @@ public class MapEditor {
                 System.out.println("Invalid command");
             }
 
+
         }
 
     }
@@ -214,4 +235,9 @@ public class MapEditor {
         }
         return false;
     }
+
+    public GameMap getGameMap() {
+        return d_GameMap;
+    }
+
 }

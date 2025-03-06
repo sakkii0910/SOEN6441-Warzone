@@ -1,6 +1,7 @@
-[Continents]
-Asia
-
-[Countries]
-India, Asia
-China, Asia
+[continents]
+Asia 3
+Europe 4
+[countries]
+1 China 1
+1 India 3
+1 Germanay 5

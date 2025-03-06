@@ -1,5 +1,7 @@
 package model;
 
+import model.abstractClasses.GamePhase;
+
 import java.util.*;
 
 /**
@@ -30,6 +32,10 @@ public class GameMap {
         return d_GameMap;
     }
 
+    public Country getCountryByName(String d_CountryName) {
+        return countries.get(d_CountryName);
+    }
+
     /**
      * Get the list of players
      */
@@ -39,6 +45,7 @@ public class GameMap {
 
     /**
      * Get a single player
+     *
      * @param p_Id Unique Player name
      */
     public Player getPlayer(String p_Id) {
@@ -148,14 +155,22 @@ public class GameMap {
             Continent l_Continent = l_ContinentEntry.getValue();
             int l_Armies = l_Continent.getD_ContinentArmies();
 
+            // Print continent row
             System.out.printf("%-15s | %-10d | %-20s | %-30s%n", l_ContinentName, l_Armies, "", "");
 
+            // Print countries and their neighbors
             for (Country l_CountryEntry : l_Continent.getD_ContinentCountries()) {
                 String l_CountryName = l_CountryEntry.getD_CountryName();
 
-                String l_Neighbors = l_CountryEntry.getD_CountryNeighbors().isEmpty() ? "None" : String.join(", ",
-                        l_CountryEntry.getD_CountryNeighbors().stream().map(Country::getD_CountryName).toList());
+                // Format neighbors as "Neighbors: Country1 -> Country2"
+                String l_Neighbors = l_CountryEntry.getD_CountryNeighbors().isEmpty()
+                        ? "None"
+                        : "Neighbors: " + String.join(" -> ",
+                        l_CountryEntry.getD_CountryNeighbors().stream()
+                                .map(Country::getD_CountryName)
+                                .toList());
 
+                // Print country row
                 System.out.printf("%-15s | %-10s | %-20s | %-30s%n", "", "", l_CountryName, l_Neighbors);
             }
             System.out.println("-----------------------------------------------------------------------");
@@ -181,7 +196,7 @@ public class GameMap {
     public void showMap() {
         // Showing Countries in the Continent and their details
         System.out.println("\nThe countries in this Map and their details are : \n");
-        
+
         // Define table format
         String l_Table = "|%-20s|%-20s|%-100s|%n";
 
@@ -196,10 +211,10 @@ public class GameMap {
             // Iterate over countries within the continent
             for (Country l_Country : l_Continent.getD_ContinentCountries()) {
                 System.out.format(
-                    l_Table,
-                    l_Country.getD_CountryName(),
-                    l_Continent.getD_ContinentName(),
-                    l_Country.createANeighborList(l_Country.getD_CountryNeighbors())
+                        l_Table,
+                        l_Country.getD_CountryName(),
+                        l_Continent.getD_ContinentName(),
+                        l_Country.createANeighborList(l_Country.getD_CountryNeighbors())
                 );
             }
         }
@@ -211,13 +226,13 @@ public class GameMap {
     // @param p_PlayerName Player name    
     public void addPlayer(String p_playerName) {
         if (this.getPlayers().containsKey(p_playerName)) {
-            System.out.println("\nPlayer with this name already exists\n");
+            System.out.println("Player with this name already exists!!");
             return;
         }
         Player l_Player = new Player();
         l_Player.setD_Name(p_playerName);
         this.getPlayers().put(p_playerName, l_Player);
-        System.out.println("Successfully added Player: " + p_playerName);
+        System.out.println("Successfully added Player: " + p_playerName + ".");
     }
 
     // Removes player from game map.
@@ -231,4 +246,30 @@ public class GameMap {
         this.getPlayers().remove(l_Player.getD_Name());
         System.out.println("Successfully deleted the player: " + p_PlayerName);
     }
+
+    // Assign country to player
+    public void assignCountries() {
+        List<Player> l_Players = new ArrayList<>(d_GameMap.getPlayers().values());
+        List<Country> l_CountryList = new ArrayList<>(d_GameMap.getCountries().values());
+
+        // Shuffle country list
+        Collections.shuffle(l_CountryList);
+
+        int l_PlayerCount = l_Players.size();
+        for (int i = 0; i < l_CountryList.size(); i++) {
+            // select player sequentially
+            Player l_Player = l_Players.get(i % l_PlayerCount);
+            Country l_Country = l_CountryList.get(i);
+            // add country to player's captured countries
+            l_Player.getCapturedCountries().add(l_Country);
+            // assign player to country
+            l_Country.setPlayer(l_Player);
+            System.out.println(l_Country.getD_CountryName() + " has been assigned to " + l_Player.getD_Name());
+        }
+    }
+
+    public void setGamePhase(GamePhase dGamePhase) {
+
+    }
+
 }

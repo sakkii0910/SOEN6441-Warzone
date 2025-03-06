@@ -11,6 +11,7 @@ public class Country implements Serializable {
     private Set<Country> d_CountryNeighbors;
     private int d_CountryXCoordinate;
     private int d_CountryYCoordinate;
+    private Player d_Player;
 
     public int getD_CountryId() {
         return d_CountryId;
@@ -71,5 +72,20 @@ public class Country implements Serializable {
 
     public void setD_CountryYCoordinate(int d_CountryYCoordinate) {
         this.d_CountryYCoordinate = d_CountryYCoordinate;
+    }
+
+    // Get the player
+    public Player getPlayer() {
+        return d_Player;
+    }
+
+    // Set the player instance for the game play
+    // @param p_Player Player instance
+    public void setPlayer(Player p_Player) {
+        this.d_Player = p_Player;
+    }
+
+    public void addArmies(int dNumArmies) {
+
     }
 }
