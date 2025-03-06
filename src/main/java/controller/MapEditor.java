@@ -6,13 +6,14 @@ import model.abstractClasses.GamePhase;
 import model.gamePhases.StartUpPhase;
 import utils.MapReader;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Map Editor Class to handle all maps related command.
+ */
 public class MapEditor extends GameController {
 
     private final Scanner SCANNER = new Scanner(System.in);
@@ -22,10 +23,20 @@ public class MapEditor extends GameController {
 
     private GamePhase d_NextPhase = new StartUpPhase();
 
+    /**
+     * Instantiates a new Map editor using singleton design pattern.
+     */
     public MapEditor() {
         this.d_GameMap = GameMap.getInstance();
     }
 
+    /**
+     * Starts the phase for Map Editing, allowing user to execute commands.
+     *
+     * @param p_GamePhase
+     * @return d_NextPhase
+     * @throws Exception
+     */
     public GamePhase startPhase(GamePhase p_GamePhase) throws Exception {
         System.out.println();
         System.out.println("=========================================");
@@ -33,12 +44,17 @@ public class MapEditor extends GameController {
         while (true) {
             int i;
             System.out.print("Enter command (\"help\" for all commands): ");
+
+            // Splitting commands in a String array.
             String l_Input = SCANNER.nextLine();
             String[] l_Commands = l_Input.split(" ");
 
             if (l_Commands[0].equalsIgnoreCase("exit")) {
+
+                // Returns the next phase when user exits map phase.
                 d_GameMap.setGamePhase(d_NextPhase);
                 return d_NextPhase;
+
             } else if (inputValidator(l_Commands)) {
                 try {
                     switch (l_Commands[0].toLowerCase()) {
@@ -194,8 +210,7 @@ public class MapEditor extends GameController {
                                     } else {
                                         System.out.println("Map validated but could not be saved.");
                                     }
-                                }
-                                else {
+                                } else {
                                     System.out.println("Map is invalid. Please validate the map before saving.");
                                 }
                             }
@@ -228,6 +243,12 @@ public class MapEditor extends GameController {
 
     }
 
+    /**
+     * Input validator for commands.
+     *
+     * @param p_InputCommands the p input commands
+     * @return the boolean
+     */
     public boolean inputValidator(String[] p_InputCommands) {
         if (p_InputCommands.length > 0) {
             String l_MainCommand = p_InputCommands[0];
@@ -236,6 +257,11 @@ public class MapEditor extends GameController {
         return false;
     }
 
+    /**
+     * Gets game map.
+     *
+     * @return the game map
+     */
     public GameMap getGameMap() {
         return d_GameMap;
     }

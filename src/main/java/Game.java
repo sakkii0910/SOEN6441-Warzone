@@ -1,5 +1,6 @@
 import model.abstractClasses.GamePhase;
 import model.gamePhases.MapEditorPhase;
+import model.gamePhases.StartUpPhase;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -23,6 +24,7 @@ public class Game {
         System.out.println("               MAIN MENU                 ");
         System.out.println("=========================================");
         System.out.println("  [1] Start New Game");
+        System.out.println("  [2] Map Editing");
         System.out.println("  [5] Exit");
         System.out.println("=========================================");
         System.out.print("\tSelect an option: ");
@@ -32,6 +34,9 @@ public class Game {
             d_PhaseManager = new PhaseManager();
             switch (option) {
                 case 1:
+                    d_GamePhase = new StartUpPhase();
+                    break;
+                case 2:
                     d_GamePhase = new MapEditorPhase();
                     break;
                 case 5:

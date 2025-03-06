@@ -6,9 +6,6 @@ import java.util.*;
 
 /**
  * Represents the game map for the Warzone game.
- * Handles loading, saving, validating, editing, and displaying maps.
- *
- * @author Sakshi Mulik
  */
 public class GameMap {
     private HashMap<String, Continent> continents;
@@ -27,6 +24,11 @@ public class GameMap {
     }
 
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static GameMap getInstance() {
         if (Objects.isNull(d_GameMap)) {
             d_GameMap = new GameMap();
@@ -34,12 +36,20 @@ public class GameMap {
         return d_GameMap;
     }
 
+    /**
+     * Gets country by name.
+     *
+     * @param d_CountryName the country name
+     * @return the country by name
+     */
     public Country getCountryByName(String d_CountryName) {
         return countries.get(d_CountryName);
     }
 
     /**
      * Get the list of players
+     *
+     * @return the players
      */
     public HashMap<String, Player> getPlayers() {
         return d_players;
@@ -49,17 +59,28 @@ public class GameMap {
      * Get a single player
      *
      * @param p_Id Unique Player name
+     * @return the player
      */
     public Player getPlayer(String p_Id) {
         return d_players.get(p_Id);
     }
 
 
+    /**
+     * Reset game map.
+     */
     public void resetGameMap() {
         GameMap.getInstance().continents.clear();
         GameMap.getInstance().countries.clear();
     }
 
+    /**
+     * Add neighbor.
+     *
+     * @param p_CountryName         the country name
+     * @param p_NeighborCountryName the neighbor country name
+     * @throws IllegalArgumentException the illegal argument exception
+     */
     public void addNeighbor(String p_CountryName, String p_NeighborCountryName) throws IllegalArgumentException {
         Country l_CountryOne = countries.get(p_CountryName);
         Country l_NeighbourCountry = countries.get(p_NeighborCountryName);
@@ -73,6 +94,13 @@ public class GameMap {
         System.out.println("Added neighbour for: " + l_CountryOne.getD_CountryName());
     }
 
+    /**
+     * Remove neighbor.
+     *
+     * @param p_CountryName         the country name
+     * @param p_NeighborCountryName the neighbor country name
+     * @throws IllegalArgumentException the illegal argument exception
+     */
     public void removeNeighbor(String p_CountryName, String p_NeighborCountryName) throws IllegalArgumentException {
         Country l_CountryOne = countries.get(p_CountryName);
         Country l_NeighbourCountry = countries.get(p_NeighborCountryName);
@@ -85,11 +113,14 @@ public class GameMap {
             l_NeighbourCountry.getD_CountryNeighbors().remove(l_CountryOne);
             System.out.println("Removed neighbour for: " + l_CountryOne.getD_CountryName());
         }
-
     }
 
     /**
      * Adding country to the game map
+     *
+     * @param p_CountryName   the country name
+     * @param p_ContinentName the continent name
+     * @throws IllegalArgumentException the illegal argument exception
      */
     public void addCountry(String p_CountryName, String p_ContinentName) throws IllegalArgumentException {
         if (countries.containsKey(p_CountryName)) {
@@ -107,6 +138,12 @@ public class GameMap {
         System.out.println("Added country: " + l_Country.getD_CountryName());
     }
 
+    /**
+     * Remove country.
+     *
+     * @param p_CountryName the country name
+     * @throws IllegalArgumentException the illegal argument exception
+     */
     public void removeCountry(String p_CountryName) throws IllegalArgumentException {
         Country l_Country = this.getCountry(p_CountryName);
         if (Objects.isNull(l_Country)) {
@@ -117,6 +154,13 @@ public class GameMap {
         System.out.println("Country " + p_CountryName + " removed.");
     }
 
+    /**
+     * Add continent.
+     *
+     * @param p_continentName  the continent name
+     * @param p_continentValue the continent value
+     * @throws IllegalArgumentException the illegal argument exception
+     */
     public void addContinent(String p_continentName, int p_continentValue) throws IllegalArgumentException {
         if (continents.containsKey(p_continentName)) {
             throw new IllegalArgumentException("Continent " + p_continentName + " already exists.");
@@ -129,6 +173,12 @@ public class GameMap {
         System.out.println("Added continent: " + l_Continent.getD_ContinentName());
     }
 
+    /**
+     * Remove continent.
+     *
+     * @param p_continentName the continent name
+     * @throws IllegalArgumentException the illegal argument exception
+     */
     public void removeContinent(String p_continentName) throws IllegalArgumentException {
         if (continents.containsKey(p_continentName)) {
             Set<Country> l_Countries = continents.get(p_continentName).getD_ContinentCountries();
@@ -180,20 +230,37 @@ public class GameMap {
         System.out.println("=======================================================================");
     }
 
+    /**
+     * Gets country.
+     *
+     * @param countryName the country name
+     * @return the country
+     */
     public Country getCountry(String countryName) {
         return countries.get(countryName);
     }
 
-
+    /**
+     * Gets continents.
+     *
+     * @return the continents
+     */
     public HashMap<String, Continent> getContinents() {
         return continents;
     }
 
+    /**
+     * Gets countries.
+     *
+     * @return the countries
+     */
     public HashMap<String, Country> getCountries() {
         return countries;
     }
 
-    // Method to display map data
+    /**
+     * Show map.
+     */
     public void showMap() {
         // Showing Countries in the Continent and their details
         System.out.println("\nThe countries in this Map and their details are : \n");
@@ -223,8 +290,11 @@ public class GameMap {
         System.out.format("---------------------------------------------------------------------------------------------------------%n");
     }
 
-    // Adds player to the game map.     
-    // @param p_PlayerName Player name    
+    /**
+     * Add player.
+     *
+     * @param p_playerName the player name
+     */
     public void addPlayer(String p_playerName) {
         if (this.getPlayers().containsKey(p_playerName)) {
             System.out.println("Player with this name already exists!!");
@@ -236,8 +306,11 @@ public class GameMap {
         System.out.println("Successfully added Player: " + p_playerName + ".");
     }
 
-    // Removes player from game map.
-    // @param p_PlayerName Player name
+    /**
+     * Remove player.
+     *
+     * @param p_PlayerName the player name
+     */
     public void removePlayer(String p_PlayerName) {
         Player l_Player = this.getPlayer(p_PlayerName);
         if (Objects.isNull(l_Player)) {
@@ -248,7 +321,9 @@ public class GameMap {
         System.out.println("Successfully deleted the player: " + p_PlayerName);
     }
 
-    // Assign country to player
+    /**
+     * Assign countries to player.
+     */
     public void assignCountries() {
         List<Player> l_Players = new ArrayList<>(d_GameMap.getPlayers().values());
         List<Country> l_CountryList = new ArrayList<>(d_GameMap.getCountries().values());
@@ -269,6 +344,11 @@ public class GameMap {
         }
     }
 
+    /**
+     * Sets game phase.
+     *
+     * @param dGamePhase the d game phase
+     */
     public void setGamePhase(GamePhase dGamePhase) {
 
     }
