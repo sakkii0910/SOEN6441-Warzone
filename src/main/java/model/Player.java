@@ -59,46 +59,62 @@ public class Player implements Serializable {
     }
 
 
-    //todo: need to create Order, orders and reinforcementPool var
-    //todo: changes to coding conventions, comments
+//Pruthviraj's edit
+    private List<Order> d_orders = new ArrayList<>();
+    private int d_reinforcementPool;
+
+    /**
+     * Retrieves the next order in the queue.
+     *
+     * @return the next Order object or null if no orders are available.
+     */
     public Order nextOrder() {
-        if (orders.isEmpty()) {
+        if (d_orders.isEmpty()) {
             return null;
         }
-        return orders.remove(0);
+        return d_orders.remove(0);
     }
 
-    public void assignReinforcements(int num) {
-        reinforcementPool += num;
-        System.out.println("Assigned " + num + " reinforcements.");
+    /**
+     * Assigns reinforcements to the player.
+     *
+     * @param p_num Number of reinforcements to assign.
+     */
+    public void assignReinforcements(int p_num) {
+        d_reinforcementPool += p_num;
+        System.out.println("Assigned " + p_num + " reinforcements.");
     }
 
+    /**
+     * Handles user input for issuing an order.
+     */
     public void issueOrder() {
-        Scanner scanner = new Scanner(System.in);
+        Scanner l_scanner = new Scanner(System.in);
         System.out.println("Enter command (deploy countryID num): ");
-        String input = scanner.nextLine();
-        String[] parts = input.split(" ");
+        String l_input = l_scanner.nextLine();
+        String[] l_parts = l_input.split(" ");
 
-        if (parts.length != 3 || !parts[0].equalsIgnoreCase("deploy")) {
+        if (l_parts.length != 3 || !l_parts[0].equalsIgnoreCase("deploy")) {
             System.out.println("Invalid command format. Use: deploy countryID num");
             return;
         }
 
         try {
-            int countryID = Integer.parseInt(parts[1]);
-            int num = Integer.parseInt(parts[2]);
+            int l_countryID = Integer.parseInt(l_parts[1]);
+            int l_num = Integer.parseInt(l_parts[2]);
 
-            if (num > reinforcementPool) {
+            if (l_num > d_reinforcementPool) {
                 System.out.println("Not enough reinforcements available.");
                 return;
             }
 
-            DeployOrder order = new DeployOrder(this, countryID, num);
-            orders.add(order);
-            reinforcementPool -= num;
-            System.out.println("Order added: Deploy " + num + " armies to country " + countryID);
+            DeployOrder l_order = new DeployOrder(this, l_countryID, l_num);
+            d_orders.add(l_order);
+            d_reinforcementPool -= l_num;
+            System.out.println("Order added: Deploy " + l_num + " armies to country " + l_countryID);
         } catch (NumberFormatException e) {
             System.out.println("Invalid number format.");
         }
     }
+
 }

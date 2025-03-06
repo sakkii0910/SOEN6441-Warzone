@@ -6,6 +6,9 @@ import model.abstractClasses.GamePhase;
 import model.gamePhases.StartUpPhase;
 import utils.MapReader;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -197,6 +200,15 @@ public class MapEditor extends GameController {
                                 }
                             }
                             break;
+                        case "loadmap": // Add this case for the loadmap command
+                            if (l_Commands.length == 2) {
+                                System.out.println("Loading map file: " + l_Commands[1]); // Debug
+                                MapReader.readMap(d_GameMap, l_Commands[1]); // Call the readMap method
+                                System.out.println("Map loaded successfully.");
+                            } else {
+                                System.out.println("Invalid command. Usage: loadmap <filename>");
+                            }
+                            break;
                         default:
                             // To be implemented
                             break;
@@ -211,6 +223,7 @@ public class MapEditor extends GameController {
                 System.out.println("Invalid command");
             }
 
+
         }
 
     }
@@ -222,4 +235,9 @@ public class MapEditor extends GameController {
         }
         return false;
     }
+
+    public GameMap getGameMap() {
+        return d_GameMap;
+    }
+
 }

@@ -83,4 +83,8 @@ public class Country implements Serializable {
     public void setPlayer(Player p_Player) {
         this.d_Player = p_Player;
     }
+
+    public void addArmies(int dNumArmies) {
+
+    }
 }

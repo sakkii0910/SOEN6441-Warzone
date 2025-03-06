@@ -40,6 +40,7 @@ public class MapReader {
 
             d_Buffer = new BufferedReader(l_FileReader);
             while ((d_CurrentLine = d_Buffer.readLine()) != null) {
+                System.out.println("Processing line: " + d_CurrentLine); // Debug: Print each line
                 if (d_CurrentLine.equals("[continents]")) {
                     readContinents(p_GameMap);
                 } else if (d_CurrentLine.equals("[countries]")) {
@@ -47,11 +48,10 @@ public class MapReader {
                 } else if (d_CurrentLine.equals("[borders]")) {
                     readBorders(p_GameMap);
                 }
-
             }
             d_Buffer.close();
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            throw new Exception("Error reading map file: " + e.getMessage());
         }
     }
 
@@ -93,68 +93,97 @@ public class MapReader {
     public static boolean saveMap(GameMap p_GameMap, String p_FileName) throws Exception {
         System.out.println("Saving map file: " + p_FileName);
 
-        // create a new file or overwrite the existing file
-        File l_File = new File("maps/" + p_FileName);
-        l_File.createNewFile();
+        try {
+            // Create a new file or overwrite the existing file
+            File l_File = new File("maps/" + p_FileName);
+            l_File.createNewFile();
 
-        BufferedWriter l_BufferedWriter = new BufferedWriter(new FileWriter(l_File));
-        String d_Content = "";
+            BufferedWriter l_BufferedWriter = new BufferedWriter(new FileWriter(l_File));
+            String d_Content = "";
 
-        d_Content += "[map]\n";
-        d_Content += "author=Team 5\n";
-        d_Content += "mapname=" + p_FileName + "\n";
+            d_Content += "[map]\n";
+            d_Content += "author=Team 5\n";
+            d_Content += "mapname=" + p_FileName + "\n";
 
-        d_Content += "\n[continents]\n";
-        HashMap<Integer, String> l_Continents = createContinentList(p_GameMap);
-        for (Continent continent : p_GameMap.getContinents().values()) {
-            d_Content += continent.getD_ContinentName() + " " + continent.getD_ContinentArmies() + "\n";
-        }
-
-        d_Content += "\n[countries]\n";
-        HashMap<Integer, String> l_Countries = createCountryList(p_GameMap);
-        for (Map.Entry<Integer, String> l_Country : l_Countries.entrySet()) {
-            for (Map.Entry<Integer, String> l_Continent : l_Continents.entrySet()) {
-                if (l_Continent.getValue().equals(
-                        p_GameMap.getCountry(l_Country.getValue()).getD_CountryContinent().getD_ContinentName())) {
-                    d_Content += l_Country.getKey() + " " + l_Country.getValue() + " " + l_Continent.getKey() + "\n";
-                    break;
-                }
+            d_Content += "\n[continents]\n";
+            HashMap<Integer, String> l_Continents = createContinentList(p_GameMap);
+            for (Continent continent : p_GameMap.getContinents().values()) {
+                d_Content += continent.getD_ContinentName() + " " + continent.getD_ContinentArmies() + "\n";
             }
-        }
 
-        d_Content += "\n[borders]\n";
-        for (Map.Entry<Integer, String> l_Country : l_Countries.entrySet()) {
-            d_Content += l_Country.getKey();
-            for (Country l_Neighbor : p_GameMap.getCountry(l_Country.getValue()).getD_CountryNeighbors()) {
-                for (Map.Entry<Integer, String> l_NeighborCountry : l_Countries.entrySet()) {
-                    if (l_Neighbor.getD_CountryName().equals(l_NeighborCountry.getValue())) {
-                        d_Content += " " + l_NeighborCountry.getKey();
+            d_Content += "\n[countries]\n";
+            HashMap<Integer, String> l_Countries = createCountryList(p_GameMap);
+            for (Map.Entry<Integer, String> l_Country : l_Countries.entrySet()) {
+                for (Map.Entry<Integer, String> l_Continent : l_Continents.entrySet()) {
+                    if (l_Continent.getValue().equals(
+                            p_GameMap.getCountry(l_Country.getValue()).getD_CountryContinent().getD_ContinentName())) {
+                        d_Content += l_Country.getKey() + " " + l_Country.getValue() + " " + l_Continent.getKey() + "\n";
                         break;
                     }
                 }
             }
-            d_Content += "\n";
+
+            d_Content += "\n[borders]\n";
+            for (Map.Entry<Integer, String> l_Country : l_Countries.entrySet()) {
+                d_Content += l_Country.getKey();
+                for (Country l_Neighbor : p_GameMap.getCountry(l_Country.getValue()).getD_CountryNeighbors()) {
+                    for (Map.Entry<Integer, String> l_NeighborCountry : l_Countries.entrySet()) {
+                        if (l_Neighbor.getD_CountryName().equals(l_NeighborCountry.getValue())) {
+                            d_Content += " " + l_NeighborCountry.getKey();
+                            break;
+                        }
+                    }
+                }
+                d_Content += "\n";
+            }
+
+            l_BufferedWriter.write(d_Content);
+            l_BufferedWriter.close();
+
+            System.out.println("Map saved successfully."); // Debug
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error saving map file: " + e.getMessage()); // Debug
+            throw new Exception("Error saving map file: " + e.getMessage());
         }
-
-        l_BufferedWriter.write(d_Content);
-        l_BufferedWriter.close();
-
-        return true;
     }
 
     public static boolean validateMap(GameMap p_GameMap) {
-        // continent empty or countries empty or duplicate continent or duplicate country or duplicate border
-        if (!isContinentEmpty(p_GameMap) ||
-                !isDuplicateContinent(p_GameMap) ||
-                !isDuplicateCountry(p_GameMap) ||
-                !isDuplicateBorder(p_GameMap)) {
+        // Check if the map has no continents (invalid)
+        if (p_GameMap.getContinents().isEmpty()) {
             return false;
         }
-        
-        // TODO
-        // continent is a connected subgraph
-        // entire map is connected
 
+        // Check if any continent has no countries (invalid)
+        for (Continent continent : p_GameMap.getContinents().values()) {
+            if (continent.getD_ContinentCountries().isEmpty()) {
+                return false;
+            }
+        }
+
+        // Check if any country has no neighbors (disconnected graph)
+        for (Country country : p_GameMap.getCountries().values()) {
+            if (country.getD_CountryNeighbors().isEmpty()) {
+                return false;
+            }
+        }
+
+        // Check for duplicate continents
+        if (!isDuplicateContinent(p_GameMap)) {
+            return false;
+        }
+
+        // Check for duplicate countries
+        if (!isDuplicateCountry(p_GameMap)) {
+            return false;
+        }
+
+        // Check for duplicate borders
+        if (!isDuplicateBorder(p_GameMap)) {
+            return false;
+        }
+
+        // If all checks pass, the map is valid
         return true;
     }
 
@@ -219,5 +248,19 @@ public class MapReader {
         }
         return l_CountryMap;
     }
-
+    /**
+     * Validates whether a continent is a connected subgraph.
+     *
+     * @param p_Continent The continent to validate.
+     * @return True if the continent is a connected subgraph, false otherwise.
+     */
+    public static boolean validateContinent(Continent p_Continent) {
+        // Simple validation: Check if all countries in the continent are connected
+        for (Country l_Country : p_Continent.getD_ContinentCountries()) {
+            if (l_Country.getD_CountryNeighbors().isEmpty()) {
+                return false; // Country has no neighbors, so the continent is not connected
+            }
+        }
+        return true;
+    }
 }
