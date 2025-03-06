@@ -7,7 +7,7 @@ import java.util.Scanner;
 import model.GameMap;
 import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
-import utils.MapReader;
+import model.gamePhases.GameLoopPhase;
 
 /**
  * This class implements the Game Controller and it executes the current phases
@@ -18,26 +18,31 @@ import utils.MapReader;
 public class GamePlay extends GameController {
     private final Scanner SCANNER = new Scanner(System.in);
 
-    private final List<String> CLI_COMMANDS = Arrays.asList("gameplayer", "assigncountries");
+    private final List<String> CLI_COMMANDS = Arrays.asList("gameplayer", "assigncountries", "help");
 
     private GameMap d_GameMap;
+
+    private GamePhase d_NextPhase = new GameLoopPhase();
 
     public GamePlay() {
         d_GameMap = GameMap.getInstance();
     }
-    
+
     @Override
     public GamePhase startPhase(GamePhase p_GamePhase) throws Exception {
+        System.out.println();
+        System.out.println("=========================================");
         System.out.println("\t****** GAME PLAY MODE ******\t");
         while (true) {
             int i;
-            System.out.println("Enter command (\"help\" for all commands): ");
+            System.out.print("Enter command (\"help\" for all commands): ");
             String l_Input = SCANNER.nextLine();
             String[] l_Commands = l_Input.split(" ");
 
-            if(l_Commands[0].equalsIgnoreCase("exit")) {
-                return null; // will return next phase here
-            } else if(inputValidator(l_Commands)) {
+            if (l_Commands[0].equalsIgnoreCase("exit")) {
+                d_GameMap.setGamePhase(d_NextPhase);
+                return d_NextPhase;
+            } else if (inputValidator(l_Commands)) {
                 try {
                     switch (l_Commands[0].toLowerCase()) {
                         case "help":
@@ -55,29 +60,31 @@ public class GamePlay extends GameController {
                             while (i < l_Commands.length) {
                                 switch (l_Commands[i].toLowerCase()) {
                                     case "-add":
-                                        if (i + 2 < l_Commands.length) {
+                                        if (i + 1 < l_Commands.length) {
                                             try {
-                                                d_GameMap.addPlayer(l_Commands[i+1]);
+                                                d_GameMap.addPlayer(l_Commands[i + 1]);
                                             } catch (IllegalArgumentException e) {
                                                 System.out.println(e.getMessage());
                                             }
+                                            i += 2;
                                         } else {
                                             throw new ArrayIndexOutOfBoundsException();
                                         }
                                         break;
                                     case "-remove":
-                                        if (i + 2 < l_Commands.length) {
+                                        if (i + 1 < l_Commands.length) {
                                             try {
-                                                d_GameMap.removePlayer(l_Commands[i+1]);
+                                                d_GameMap.removePlayer(l_Commands[i + 1]);
                                             } catch (IllegalArgumentException e) {
                                                 System.out.println(e.getMessage());
                                             }
+                                            i += 2;
                                         } else {
                                             throw new ArrayIndexOutOfBoundsException();
                                         }
                                         break;
                                     default:
-                                    i++;
+                                        i++;
                                 }
                             }
                             break;
@@ -105,5 +112,5 @@ public class GamePlay extends GameController {
         }
         return false;
     }
-    
+
 }
