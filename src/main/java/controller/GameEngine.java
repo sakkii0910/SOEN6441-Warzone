@@ -1,19 +1,30 @@
 package controller;
 
+import model.GameMap;
 import model.Order;
 import model.Player;
+import model.abstractClasses.GameController;
+import model.abstractClasses.GamePhase;
+import model.gamePhases.ExitGamePhase;
+import model.gamePhases.GameLoopPhase;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * Manages the game's main logic, handling player actions and execution flow.
  */
-public class GameEngine {
+public class GameEngine extends GameController {
     private Queue<Order> d_orderQueue = new LinkedList<>();
-    private List<Player> d_players = new ArrayList<>();
+    private HashMap<String, Player> d_players;
+
+    private GameMap d_GameMap;
+
+    private GamePhase d_NextPhase = new ExitGamePhase();
+
+    public GameEngine() {
+        d_GameMap = GameMap.getInstance();
+        d_players = d_GameMap.getPlayers();
+    }
 
     /**
      * Adds an order to the execution queue.
@@ -37,25 +48,35 @@ public class GameEngine {
     /**
      * Main game loop that handles the reinforcement, order issuing, and execution phases.
      */
-    public void mainGameLoop() {
-        while (true) {
-            // Assign reinforcements
-            for (Player l_player : d_players) {
-                l_player.assignReinforcements(5);
-            }
+    public GamePhase startPhase(GamePhase p_gamePhase) {
+        System.out.println();
+        System.out.println("=========================================");
+        System.out.println("\t****** GAME STARTED ******\t");
+        // Assign reinforcements
+        for (Player l_player : d_players.values()) {
+            l_player.assignReinforcements(5);
+        }
 
-            // Issue orders
-            for (Player l_player : d_players) {
-                l_player.issueOrder();
-            }
+        System.out.println("\n-----------------------------------------");
+        System.out.println(" ISSUE ORDER PHASE ");
 
-            // Execute orders
-            for (Player l_player : d_players) {
-                Order l_order;
-                while ((l_order = l_player.nextOrder()) != null) {
-                    l_order.execute();
-                }
+        // Issue orders
+        for (Player l_player : d_players.values()) {
+            l_player.issueOrder();
+        }
+
+        System.out.println("\n-----------------------------------------");
+        System.out.println(" EXECUTE ORDER PHASE ");
+
+        // Execute orders
+        for (Player l_player : d_players.values()) {
+            Order l_order;
+            while ((l_order = l_player.nextOrder()) != null) {
+                l_order.execute();
             }
         }
+
+        return d_NextPhase;
+
     }
 }

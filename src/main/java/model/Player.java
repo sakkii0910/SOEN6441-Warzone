@@ -44,13 +44,13 @@ public class Player implements Serializable {
         return d_CapturedCountries;
     }
 
-    // Function to create a list of list of countries assigned to the player
+    // Function to create a list of countries assigned to the player
     public String createACaptureList(List<Country> p_Capture) {
-        String l_Result = "";
+        StringBuilder l_Result = new StringBuilder();
         for (Country l_Capture : p_Capture) {
-            l_Result += l_Capture.getD_CountryName() + "-";
+            l_Result.append(l_Capture.getD_CountryName()).append("-");
         }
-        return l_Result.length() > 0 ? l_Result.substring(0, l_Result.length() - 1) : "";
+        return (!l_Result.isEmpty()) ? l_Result.substring(0, l_Result.length() - 1) : "";
     }
 
     // Function to get reinforcement countries of each player
@@ -59,9 +59,8 @@ public class Player implements Serializable {
     }
 
 
-//Pruthviraj's edit
+    //Pruthviraj's edit
     private List<Order> d_orders = new ArrayList<>();
-    private int d_reinforcementPool;
 
     /**
      * Retrieves the next order in the queue.
@@ -81,39 +80,54 @@ public class Player implements Serializable {
      * @param p_num Number of reinforcements to assign.
      */
     public void assignReinforcements(int p_num) {
-        d_reinforcementPool += p_num;
-        System.out.println("Assigned " + p_num + " reinforcements.");
+        d_ReinforcementArmies += p_num;
+        System.out.println("The player: " + getD_Name() + " is assigned " + p_num + " reinforcements.");
     }
 
     /**
      * Handles user input for issuing an order.
      */
     public void issueOrder() {
+        System.out.println("\n-----------------------------------------");
         Scanner l_scanner = new Scanner(System.in);
-        System.out.println("Enter command (deploy countryID num): ");
-        String l_input = l_scanner.nextLine();
-        String[] l_parts = l_input.split(" ");
+        System.out.println("Current Player: " + getD_Name());
+        while (d_ReinforcementArmies > 0) {
+            System.out.print("Enter command (deploy countryID(name) num): ");
+            String l_input = l_scanner.nextLine();
+            String[] l_parts = l_input.split(" ");
 
-        if (l_parts.length != 3 || !l_parts[0].equalsIgnoreCase("deploy")) {
-            System.out.println("Invalid command format. Use: deploy countryID num");
-            return;
-        }
-
-        try {
-            int l_countryID = Integer.parseInt(l_parts[1]);
-            int l_num = Integer.parseInt(l_parts[2]);
-
-            if (l_num > d_reinforcementPool) {
-                System.out.println("Not enough reinforcements available.");
-                return;
+            if (l_parts.length != 3 || !l_parts[0].equalsIgnoreCase("deploy")) {
+                System.out.println("Invalid command format. Use: deploy countryID num");
+                continue;
             }
 
-            DeployOrder l_order = new DeployOrder(this, l_countryID, l_num);
-            d_orders.add(l_order);
-            d_reinforcementPool -= l_num;
-            System.out.println("Order added: Deploy " + l_num + " armies to country " + l_countryID);
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid number format.");
+            try {
+                String l_countryID = l_parts[1];
+                int l_num = Integer.parseInt(l_parts[2]);
+
+                if (GameMap.getInstance().getCountryByName(l_countryID) == null) {
+                    System.out.println("Country " + l_countryID + " does not exist.");
+                    continue;
+                }
+
+                if (!getCapturedCountries().contains(GameMap.getInstance().getCountryByName(l_countryID))) {
+                    System.out.println("Country " + l_countryID + " does not belong to user.");
+                    continue;
+                }
+
+                if (l_num > d_ReinforcementArmies) {
+                    System.out.println("Not enough reinforcements available.");
+                    continue;
+                }
+
+                DeployOrder l_order = new DeployOrder(this, l_countryID, l_num);
+                d_orders.add(l_order);
+                d_ReinforcementArmies -= l_num;
+                System.out.println("Order added by player " + getD_Name() + ": Deploy " + l_num + " armies to country " + l_countryID);
+                System.out.println("Armies left: " + d_ReinforcementArmies);
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number format.");
+            }
         }
     }
 
