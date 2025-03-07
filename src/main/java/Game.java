@@ -1,58 +1,34 @@
 import model.abstractClasses.GamePhase;
-import model.gamePhases.MapEditorPhase;
-import model.gamePhases.StartUpPhase;
+import model.gamePhases.InitialPhase;
 
-import java.util.InputMismatchException;
-import java.util.Scanner;
-
+/**
+ * The type Game.
+ */
 public class Game {
-    private PhaseManager d_PhaseManager;
 
-    private GamePhase d_GamePhase;
-
-    private final Scanner SCANNER = new Scanner(System.in);
-
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
     public static void main(String[] args) {
-        new Game().start();
+        start();
     }
 
-    public void start() {
-        System.out.println();
-        System.out.println("=========================================");
-        System.out.println("            WARZONE: RISK GAME   ️         ");
-        System.out.println("=========================================");
-        System.out.println("               MAIN MENU                 ");
-        System.out.println("=========================================");
-        System.out.println("  [1] Start New Game");
-        System.out.println("  [2] Map Editing");
-        System.out.println("  [5] Exit");
-        System.out.println("=========================================");
-        System.out.print("\tSelect an option: ");
+    /**
+     * Starts the game with Initial Phase.
+     */
+    public static void start() {
+
+        GamePhase d_GamePhase = new InitialPhase();
+        PhaseManager d_PhaseManager = new PhaseManager();
+        d_PhaseManager.setGamePhase(d_GamePhase);
 
         try {
-            int option = SCANNER.nextInt();
-            d_PhaseManager = new PhaseManager();
-            switch (option) {
-                case 1:
-                    d_GamePhase = new StartUpPhase();
-                    break;
-                case 2:
-                    d_GamePhase = new MapEditorPhase();
-                    break;
-                case 5:
-                    System.out.println("Exiting game. Goodbye!");
-                    System.exit(0);
-                    break;
-                default:
-                    throw new InputMismatchException();
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Error: Invalid option. Please select 1 or 5.");
-            start();
+            d_PhaseManager.start();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-
-        d_PhaseManager.setGamePhase(d_GamePhase);
-        d_PhaseManager.start();
 
     }
 

@@ -6,11 +6,14 @@ import model.abstractClasses.GamePhase;
 
 import java.util.List;
 
+/**
+ * The type Map editor phase.
+ */
 public class MapEditorPhase extends GamePhase {
 
     @Override
-    public List<Class<? extends GamePhase>> possiblePhases() {
-        return List.of(StartUpPhase.class);
+    public List<Class<? extends GamePhase>> possibleNextPhases() {
+        return List.of(InitialPhase.class);
     }
 
     @Override

@@ -5,46 +5,71 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * The type Player.
+ */
 public class Player implements Serializable {
-    // Interger ID of the player
     private int d_Id;
 
-    // Name of the player
     private String d_Name;
 
-    // List of captured countries of the player
     private List<Country> d_CapturedCountries = new ArrayList<>();
 
-    // Integer to store number reinforcement armies of player
     private int d_ReinforcementArmies;
 
-    // Get ID of the player
+    private List<Order> d_Orders = new ArrayList<>();
+
+    /**
+     * Gets d id.
+     *
+     * @return the d id
+     */
     public int getD_Id() {
         return d_Id;
     }
 
-    // Set ID of the player
-    // @param p_Id Player ID
+    /**
+     * Sets d id.
+     *
+     * @param p_Id the p id
+     */
     public void setD_Id(int p_Id) {
         this.d_Id = p_Id;
     }
 
-    // Get the name of the player
+    /**
+     * Gets d name.
+     *
+     * @return the d name
+     */
     public String getD_Name() {
         return d_Name;
     }
 
-    // Set the name of the player
+    /**
+     * Sets d name.
+     *
+     * @param p_Name the p name
+     */
     public void setD_Name(String p_Name) {
         this.d_Name = p_Name;
     }
 
-    // Get the captured countries of the player
+    /**
+     * Gets captured countries.
+     *
+     * @return the captured countries
+     */
     public List<Country> getCapturedCountries() {
         return d_CapturedCountries;
     }
 
-    // Function to create a list of countries assigned to the player
+    /**
+     * Create a list of countries assigned to the player.
+     *
+     * @param p_Capture the p capture
+     * @return the string
+     */
     public String createACaptureList(List<Country> p_Capture) {
         StringBuilder l_Result = new StringBuilder();
         for (Country l_Capture : p_Capture) {
@@ -53,14 +78,14 @@ public class Player implements Serializable {
         return (!l_Result.isEmpty()) ? l_Result.substring(0, l_Result.length() - 1) : "";
     }
 
-    // Function to get reinforcement countries of each player
+    /**
+     * Gets reinforcement armies.
+     *
+     * @return the reinforcement armies
+     */
     public int getReinforcementArmies() {
         return d_ReinforcementArmies;
     }
-
-
-    //Pruthviraj's edit
-    private List<Order> d_orders = new ArrayList<>();
 
     /**
      * Retrieves the next order in the queue.
@@ -68,10 +93,10 @@ public class Player implements Serializable {
      * @return the next Order object or null if no orders are available.
      */
     public Order nextOrder() {
-        if (d_orders.isEmpty()) {
+        if (d_Orders.isEmpty()) {
             return null;
         }
-        return d_orders.remove(0);
+        return d_Orders.remove(0);
     }
 
     /**
@@ -121,7 +146,7 @@ public class Player implements Serializable {
                 }
 
                 DeployOrder l_order = new DeployOrder(this, l_countryID, l_num);
-                d_orders.add(l_order);
+                d_Orders.add(l_order);
                 d_ReinforcementArmies -= l_num;
                 System.out.println("Order added by player " + getD_Name() + ": Deploy " + l_num + " armies to country " + l_countryID);
                 System.out.println("Armies left: " + d_ReinforcementArmies);

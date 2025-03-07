@@ -29,7 +29,7 @@ public class DeployOrder extends Order {
      */
     public void execute() {
         Country l_country = GameMap.getInstance().getCountryByName(d_countryID);
-        l_country.addArmies(d_numArmies);
+        l_country.setD_Armies(d_numArmies);
         System.out.println("Deployed " + d_numArmies + " armies to country " + d_countryID);
     }
 }

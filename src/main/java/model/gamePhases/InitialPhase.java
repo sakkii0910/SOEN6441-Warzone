@@ -1,24 +1,23 @@
 package model.gamePhases;
 
-import controller.GamePlay;
 import controller.MapEditor;
+import controller.MenuController;
 import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
 
 import java.util.List;
 
 /**
- * The type Start up phase.
+ * The type Initial phase.
  */
-public class StartUpPhase extends GamePhase {
-
+public class InitialPhase extends GamePhase {
+    @Override
     public List<Class<? extends GamePhase>> possibleNextPhases() {
-        return List.of(GameLoopPhase.class);
+        return List.of(MapEditorPhase.class, StartUpPhase.class);
     }
 
     @Override
     public GameController getController() {
-      return new GamePlay();
+        return new MenuController();
     }
-
 }

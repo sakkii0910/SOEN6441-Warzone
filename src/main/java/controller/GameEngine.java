@@ -14,15 +14,16 @@ import java.util.*;
  * Manages the game's main logic, handling player actions and execution flow.
  */
 public class GameEngine extends GameController {
-    private Queue<Order> d_orderQueue = new LinkedList<>();
-    private HashMap<String, Player> d_players;
+    private final Queue<Order> d_orderQueue = new LinkedList<>();
+    private final HashMap<String, Player> d_players;
 
-    private GameMap d_GameMap;
+    private final GamePhase d_NextPhase = new ExitGamePhase();
 
-    private GamePhase d_NextPhase = new ExitGamePhase();
-
+    /**
+     * Instantiates a new Game engine.
+     */
     public GameEngine() {
-        d_GameMap = GameMap.getInstance();
+        GameMap d_GameMap = GameMap.getInstance();
         d_players = d_GameMap.getPlayers();
     }
 

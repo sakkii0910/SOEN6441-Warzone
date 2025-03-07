@@ -8,11 +8,11 @@ import java.util.*;
  * Represents the game map for the Warzone game.
  */
 public class GameMap {
-    private HashMap<String, Continent> continents;
-    private HashMap<String, Country> countries;
+    private final HashMap<String, Continent> continents;
+    private final HashMap<String, Country> countries;
     private static GameMap d_GameMap;
 
-    private HashMap<String, Player> d_players;
+    private final HashMap<String, Player> d_players;
 
     /**
      * Constructor initializes map components.
@@ -72,6 +72,16 @@ public class GameMap {
     public void resetGameMap() {
         GameMap.getInstance().continents.clear();
         GameMap.getInstance().countries.clear();
+    }
+
+    /**
+     * Checks if the game map is empty.
+     *
+     * @return true if the game map has no continents and no countries, false otherwise.
+     */
+    public boolean isGameMapEmpty() {
+        GameMap gameMap = GameMap.getInstance();
+        return gameMap.continents.isEmpty() && gameMap.countries.isEmpty();
     }
 
     /**
