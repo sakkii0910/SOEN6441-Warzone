@@ -12,25 +12,28 @@ import utils.MapReader;
 
 /**
  * This class implements the Game Controller and it executes the current phases
- *
- * @author Poorav Panchal
  */
-
 public class GamePlay extends GameController {
     private final Scanner SCANNER = new Scanner(System.in);
 
-    private final List<String> CLI_COMMANDS = Arrays.asList("gameplayer", "assigncountries", "help");
+    private final List<String> CLI_COMMANDS = Arrays.asList("gameplayer", "assigncountries", "help", "loadmap", "showmap");
 
-    private GameMap d_GameMap;
+    private final GameMap d_GameMap;
 
-    private GamePhase d_NextPhase = new GameLoopPhase();
+    private final GamePhase d_NextPhase = new GameLoopPhase();
 
+    /**
+     * Instantiates a new Game play.
+     */
     public GamePlay() {
         d_GameMap = GameMap.getInstance();
     }
 
     @Override
     public GamePhase startPhase(GamePhase p_GamePhase) throws Exception {
+
+        boolean d_IsCountriesAssigned = false;
+
         System.out.println();
         System.out.println("=========================================");
         System.out.println("\t****** GAME PLAY MODE ******\t");
@@ -41,8 +44,17 @@ public class GamePlay extends GameController {
             String[] l_Commands = l_Input.split(" ");
 
             if (l_Commands[0].equalsIgnoreCase("exit")) {
-                d_GameMap.setGamePhase(d_NextPhase);
-                return d_NextPhase;
+                if (d_GameMap.getPlayers().isEmpty()) {
+                    System.out.println("There are no players in this game.");
+                } else if (d_GameMap.isGameMapEmpty()) {
+                    System.out.println("There is no map loaded.");
+                } else {
+                    if (!d_IsCountriesAssigned) {
+                        d_GameMap.assignCountries();
+                    }
+                    d_GameMap.setGamePhase(d_NextPhase);
+                    return d_NextPhase;
+                }
             } else if (inputValidator(l_Commands)) {
                 try {
                     switch (l_Commands[0].toLowerCase()) {
@@ -55,9 +67,9 @@ public class GamePlay extends GameController {
                             System.out.println("\nTo assign countries to all players: ");
                             System.out.println("  assigncountries");
                             System.out.println("\nTo load a domination map from the provided file: ");
-                            System.out.println("loadmap <filename>");
+                            System.out.println(" loadmap <filename>");
                             System.out.println("\nTo show all countries, continents, armies and ownership: ");
-                            System.out.println("showmap");
+                            System.out.println(" showmap");
                             System.out.println("=========================================");
                             break;
                         case "gameplayer":
@@ -94,7 +106,14 @@ public class GamePlay extends GameController {
                             }
                             break;
                         case "assigncountries":
-                            d_GameMap.assignCountries();
+                            if (d_GameMap.isGameMapEmpty()) {
+                                System.out.println("Please load a valid map file before assigning countries.");
+                            } else if (d_GameMap.getPlayers().isEmpty()) {
+                                System.out.println("Please add players before assigning countries.");
+                            } else {
+                                d_GameMap.assignCountries();
+                                d_IsCountriesAssigned = true;
+                            }
                             break;
                         case "loadmap": // Add this case for the loadmap command
                             if (l_Commands.length == 2) {
@@ -122,6 +141,12 @@ public class GamePlay extends GameController {
         }
     }
 
+    /**
+     * Input validator boolean.
+     *
+     * @param p_InputCommands the p input commands
+     * @return the boolean
+     */
     public boolean inputValidator(String[] p_InputCommands) {
         if (p_InputCommands.length > 0) {
             String l_MainCommand = p_InputCommands[0];

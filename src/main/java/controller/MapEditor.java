@@ -3,7 +3,7 @@ package controller;
 import model.abstractClasses.GameController;
 import model.GameMap;
 import model.abstractClasses.GamePhase;
-import model.gamePhases.StartUpPhase;
+import model.gamePhases.InitialPhase;
 import utils.MapReader;
 
 
@@ -19,9 +19,9 @@ public class MapEditor extends GameController {
     private final Scanner SCANNER = new Scanner(System.in);
     private final List<String> CLI_COMMANDS = Arrays.asList("editcontinent", "editcountry", "editneighbor", "showmap",
             "savemap", "editmap", "validatemap", "help", "exit");
-    private GameMap d_GameMap;
+    private final GameMap d_GameMap;
 
-    private GamePhase d_NextPhase = new StartUpPhase();
+    private final GamePhase d_NextPhase = new InitialPhase();
 
     /**
      * Instantiates a new Map editor using singleton design pattern.
