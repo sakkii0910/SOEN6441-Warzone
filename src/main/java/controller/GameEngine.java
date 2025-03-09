@@ -89,7 +89,7 @@ public class GameEngine extends GameController {
  * @param p_player The player whose reinforcements are to be calculated.
  * @return The number of reinforcement armies.
  */
-private int calculateReinforcements(Player p_player) {
+public int calculateReinforcements(Player p_player) {
     int l_territoryCount = p_player.getCapturedCountries().size();
     int l_reinforcements = Math.max(l_territoryCount / 3, 3); // Minimum of 3 reinforcements
 
