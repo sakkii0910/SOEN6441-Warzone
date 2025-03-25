@@ -1,7 +1,7 @@
 package utils;
 
 /**
- * Interface to implement Observer with update function
+ * Interface to implement Observer
  * @author Poorav Panchal
  */
 
