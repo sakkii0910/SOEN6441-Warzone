@@ -2,7 +2,6 @@ package utils;
 
 /**
  * Interface to implement Observer
- * @author Poorav Panchal
  */
 
 public interface Observer {
