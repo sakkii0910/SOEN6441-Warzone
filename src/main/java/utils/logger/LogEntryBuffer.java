@@ -41,7 +41,25 @@ public class LogEntryBuffer implements Observable, Serializable {
         d_Observers.forEach(p_Observer -> p_Observer.update(p_s));
     }
 
-    public void addObserver(Observer p_Observer) {}
+    /**
+     * Function to add observable to the list
+     * @param p_Observer Observer to be added
+     */
+    public void addObserver(Observer p_Observer) {
+        d_Observers.add(p_Observer);
+    }
 
-    public void clearObservers() {}
+    /**
+     * Clear logs
+     */
+    public void clear() {
+        clearObservers();
+    }
+
+    /**
+     * Function to clear logs of each observer
+     */
+    public void clearObservers() {
+        d_Observers.forEach(Observer::clearLogs);
+    }
 }
