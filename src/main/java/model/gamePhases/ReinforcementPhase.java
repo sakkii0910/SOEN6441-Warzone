@@ -1,21 +1,20 @@
 package model.gamePhases;
 
-import controller.MenuController;
+import controller.GamePlay;
+import controller.Reinforcement;
 import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
 import utils.GameEngine;
 
-/**
- * The type Initial phase.
- */
-public class InitialPhase extends GamePhase {
+public class ReinforcementPhase extends GamePhase {
 
-    public InitialPhase(GameEngine p_GameEngine) {
+    public ReinforcementPhase(GameEngine p_GameEngine) {
         super(p_GameEngine);
     }
 
     @Override
     public GameController getController() {
-        return new MenuController(this.d_GameEngine);
+        return new Reinforcement(this.d_GameEngine);
     }
+
 }

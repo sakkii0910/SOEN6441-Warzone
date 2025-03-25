@@ -16,6 +16,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
+import utils.GameEngine;
 import utils.MapReader;
 
 class GameMapTest {
@@ -168,9 +169,9 @@ class GameMapTest {
         InputStream inputStream = new ByteArrayInputStream(input.getBytes());
         System.setIn(inputStream);
 
-        MapEditor mapEditor = new MapEditor();
-        GamePhase gamePhase = new StartUpPhase();
-        mapEditor.startPhase(gamePhase);
+        GameEngine gameEngine = new GameEngine();
+        MapEditor mapEditor = new MapEditor(gameEngine);
+        mapEditor.startPhase();
 
 
     }

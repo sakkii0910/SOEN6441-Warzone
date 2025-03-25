@@ -4,6 +4,7 @@ import model.abstractClasses.GameController;
 import model.GameMap;
 import model.abstractClasses.GamePhase;
 import model.gamePhases.InitialPhase;
+import utils.GameEngine;
 import utils.MapReader;
 
 
@@ -19,25 +20,22 @@ public class MapEditor extends GameController {
     private final Scanner SCANNER = new Scanner(System.in);
     private final List<String> CLI_COMMANDS = Arrays.asList("editcontinent", "editcountry", "editneighbor", "showmap",
             "savemap", "editmap", "validatemap", "help", "exit");
-    private final GameMap d_GameMap;
-
-    private final GamePhase d_NextPhase = new InitialPhase();
 
     /**
      * Instantiates a new Map editor using singleton design pattern.
      */
-    public MapEditor() {
-        this.d_GameMap = GameMap.getInstance();
+    public MapEditor(GameEngine p_GameEngine) {
+        super(p_GameEngine);
+        d_GameMap = GameMap.getInstance();
+        d_NextPhase = new InitialPhase(this.d_GameEngine);
     }
 
     /**
      * Starts the phase for Map Editing, allowing user to execute commands.
      *
-     * @param p_GamePhase
-     * @return d_NextPhase
      * @throws Exception
      */
-    public GamePhase startPhase(GamePhase p_GamePhase) throws Exception {
+    public void startPhase() throws Exception {
         System.out.println();
         System.out.println("=========================================");
         System.out.println("\t****** MAP EDITING MODE ******\t");
@@ -52,8 +50,9 @@ public class MapEditor extends GameController {
             if (l_Commands[0].equalsIgnoreCase("exit")) {
 
                 // Returns the next phase when user exits map phase.
-                d_GameMap.setGamePhase(d_NextPhase);
-                return d_NextPhase;
+                this.d_GameEngine.setGamePhase(this.d_NextPhase);
+                this.d_GameMap.setGamePhase(this.d_NextPhase);
+                break;
 
             } else if (inputValidator(l_Commands)) {
                 try {

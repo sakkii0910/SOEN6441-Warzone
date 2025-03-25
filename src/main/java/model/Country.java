@@ -166,7 +166,7 @@ public class Country implements Serializable {
      * @param dNumArmies the num armies
      */
     public void setD_Armies(int dNumArmies) {
-        d_Armies = dNumArmies;
+        d_Armies += dNumArmies;
     }
 
     /**

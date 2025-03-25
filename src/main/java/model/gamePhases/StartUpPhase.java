@@ -1,9 +1,9 @@
 package model.gamePhases;
 
 import controller.GamePlay;
-import controller.MapEditor;
 import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
+import utils.GameEngine;
 
 import java.util.List;
 
@@ -12,13 +12,13 @@ import java.util.List;
  */
 public class StartUpPhase extends GamePhase {
 
-    public List<Class<? extends GamePhase>> possibleNextPhases() {
-        return List.of(GameLoopPhase.class);
+    public StartUpPhase(GameEngine p_GameEngine) {
+        super(p_GameEngine);
     }
 
     @Override
     public GameController getController() {
-      return new GamePlay();
+      return new GamePlay(this.d_GameEngine);
     }
 
 }

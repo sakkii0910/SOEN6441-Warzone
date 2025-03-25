@@ -7,7 +7,8 @@ import java.util.Scanner;
 import model.GameMap;
 import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
-import model.gamePhases.GameLoopPhase;
+import model.gamePhases.ReinforcementPhase;
+import utils.GameEngine;
 import utils.MapReader;
 
 /**
@@ -18,25 +19,25 @@ public class GamePlay extends GameController {
 
     private final List<String> CLI_COMMANDS = Arrays.asList("gameplayer", "assigncountries", "help", "loadmap", "showmap");
 
-    private final GameMap d_GameMap;
-
-    private final GamePhase d_NextPhase = new GameLoopPhase();
-
     /**
      * Instantiates a new Game play.
      */
-    public GamePlay() {
+    public GamePlay(GameEngine p_GameEngine) {
+        super(p_GameEngine);
         d_GameMap = GameMap.getInstance();
+        d_NextPhase = new ReinforcementPhase(this.d_GameEngine);
     }
 
     @Override
-    public GamePhase startPhase(GamePhase p_GamePhase) throws Exception {
+    public void startPhase() throws Exception {
 
         boolean d_IsCountriesAssigned = false;
 
         System.out.println();
-        System.out.println("=========================================");
-        System.out.println("\t****** GAME PLAY MODE ******\t");
+        System.out.println("===========================================");
+        System.out.println("************ GAMEPLAY SETTINGS ************");
+        System.out.println("===========================================");
+        System.out.println();
         while (true) {
             int i;
             System.out.print("Enter command (\"help\" for all commands): ");
@@ -52,8 +53,14 @@ public class GamePlay extends GameController {
                     if (!d_IsCountriesAssigned) {
                         d_GameMap.assignCountries();
                     }
-                    d_GameMap.setGamePhase(d_NextPhase);
-                    return d_NextPhase;
+                    this.d_GameEngine.setGamePhase(this.d_NextPhase);
+                    this.d_GameMap.setGamePhase(this.d_NextPhase);
+                    System.out.println();
+                    System.out.println("==========================================");
+                    System.out.println("************** GAME STARTED **************");
+                    System.out.println("==========================================");
+                    System.out.println();
+                    break;
                 }
             } else if (inputValidator(l_Commands)) {
                 try {

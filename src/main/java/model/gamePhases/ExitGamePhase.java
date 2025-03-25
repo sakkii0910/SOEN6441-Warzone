@@ -2,6 +2,7 @@ package model.gamePhases;
 
 import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
+import utils.GameEngine;
 
 import java.util.List;
 
@@ -10,9 +11,8 @@ import java.util.List;
  */
 public class ExitGamePhase extends GamePhase {
 
-    @Override
-    public List<Class<? extends GamePhase>> possibleNextPhases() {
-        return null;
+    public ExitGamePhase(GameEngine p_GameEngine) {
+        super(p_GameEngine);
     }
 
     @Override

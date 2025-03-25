@@ -3,6 +3,7 @@ package model.gamePhases;
 import controller.MapEditor;
 import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
+import utils.GameEngine;
 
 import java.util.List;
 
@@ -11,13 +12,12 @@ import java.util.List;
  */
 public class MapEditorPhase extends GamePhase {
 
-    @Override
-    public List<Class<? extends GamePhase>> possibleNextPhases() {
-        return List.of(InitialPhase.class);
+    public MapEditorPhase(GameEngine p_GameEngine) {
+        super(p_GameEngine);
     }
 
     @Override
     public GameController getController() {
-        return new MapEditor();
+        return new MapEditor(this.d_GameEngine);
     }
 }
