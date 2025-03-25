@@ -26,6 +26,17 @@ public class LogEntryBuffer implements Observable, Serializable {
     private LogEntryBuffer() {}
 
     /**
+     * Function to get instance of LogEntryBuffer
+     * @return Logger
+     */
+    public static LogEntryBuffer getInstance() {
+        if(Objects.isNull(Logger)) {
+            Logger = new LogEntryBuffer();
+        }
+        return Logger;
+    }
+
+    /**
      * Function gets information from game and notifies the Observer
      * @param p_s message/information
      */
