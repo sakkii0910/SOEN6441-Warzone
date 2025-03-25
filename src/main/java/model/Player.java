@@ -1,9 +1,9 @@
 package model;
 
+import controller.IssueOrder;
+
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * The type Player.
@@ -17,7 +17,29 @@ public class Player implements Serializable {
 
     private int d_ReinforcementArmies;
 
-    private List<Order> d_Orders = new ArrayList<>();
+    private Deque<Order> d_Orders = new ArrayDeque<>();
+
+    /**
+     * number of armies to issue
+     */
+    private int d_ArmiesToIssue = 0;
+
+    /**
+     * method to get armies issued
+     *
+     * @return issues armies
+     */
+    public int getIssuedArmies() {
+        return d_ArmiesToIssue;
+    }
+
+    /**
+     * method to set the armies issued
+     * @param p_ArmiesToIssue armies to issue to player
+     */
+    public void setIssuedArmies(int p_ArmiesToIssue) {
+        d_ArmiesToIssue = p_ArmiesToIssue;
+    }
 
     /**
      * Gets d id.
@@ -79,24 +101,23 @@ public class Player implements Serializable {
     }
 
     /**
+     * A function to check if the country exists in the list of player captured countries
+     *
+     * @param p_Country The country to be checked if present
+     * @return true if country exists in the assigned country list else false
+     */
+    public boolean isCaptured(Country p_Country) {
+        return d_CapturedCountries.contains(p_Country);
+    }
+
+
+    /**
      * Gets reinforcement armies.
      *
      * @return the reinforcement armies
      */
     public int getReinforcementArmies() {
         return d_ReinforcementArmies;
-    }
-
-    /**
-     * Retrieves the next order in the queue.
-     *
-     * @return the next Order object or null if no orders are available.
-     */
-    public Order nextOrder() {
-        if (d_Orders.isEmpty()) {
-            return null;
-        }
-        return d_Orders.remove(0);
     }
 
     /**
@@ -110,50 +131,51 @@ public class Player implements Serializable {
     }
 
     /**
+     * A function to get the list of orders
+     *
+     * @return list of orders
+     */
+    public Deque<Order> getOrders() {
+        return d_Orders;
+    }
+
+    /**
+     * method to set orders
+     * @param p_Orders the orders
+     */
+    public void setOrders(Deque<Order> p_Orders){
+        this.d_Orders = p_Orders;
+    }
+    /**
+     * A function to add the orders to the issue order list
+     *
+     * @param p_Order The order to be added
+     */
+    public void addOrder(Order p_Order) {
+        this.d_Orders.add(p_Order);
+    }
+
+    /**
+     * Retrieves the next order in the queue.
+     *
+     * @return the next Order object
+     */
+    public Order nextOrder() {
+        return d_Orders.poll();
+    }
+
+    /**
      * Handles user input for issuing an order.
      */
     public void issueOrder() {
         System.out.println("-----------------------------------------");
         Scanner l_scanner = new Scanner(System.in);
-        System.out.println("Current Player: " + getD_Name());
-        while (d_ReinforcementArmies > 0) {
-            System.out.print("Enter command (deploy countryID(name) num): ");
-            String l_input = l_scanner.nextLine();
-            String[] l_parts = l_input.split(" ");
 
-            if (l_parts.length != 3 || !l_parts[0].equalsIgnoreCase("deploy")) {
-                System.out.println("Invalid command format. Use: deploy countryID num");
-                continue;
-            }
+        System.out.print("Enter command (deploy countryID(name) num): ");
+        String l_input = l_scanner.nextLine();
 
-            try {
-                String l_countryID = l_parts[1];
-                int l_num = Integer.parseInt(l_parts[2]);
-
-                if (GameMap.getInstance().getCountryByName(l_countryID) == null) {
-                    System.out.println("Country " + l_countryID + " does not exist.");
-                    continue;
-                }
-
-                if (!getCapturedCountries().contains(GameMap.getInstance().getCountryByName(l_countryID))) {
-                    System.out.println("Country " + l_countryID + " does not belong to user.");
-                    continue;
-                }
-
-                if (l_num > d_ReinforcementArmies) {
-                    System.out.println("Not enough reinforcements available.");
-                    continue;
-                }
-
-                DeployOrder l_order = new DeployOrder(this, l_countryID, l_num);
-                d_Orders.add(l_order);
-                d_ReinforcementArmies -= l_num;
-                System.out.println("Order added by player " + getD_Name() + ": Deploy " + l_num + " armies to country " + l_countryID);
-                System.out.println("Armies left: " + d_ReinforcementArmies);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid number format.");
-            }
-        }
+        Order l_Order = OrderCreator.CreateOrder(l_input.split(" "), this);
+        addOrder(l_Order);
     }
 
 }
