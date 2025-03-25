@@ -1,5 +1,4 @@
-import model.abstractClasses.GamePhase;
-import model.gamePhases.InitialPhase;
+import utils.GameEngine;
 
 /**
  * The type Game.
@@ -20,12 +19,10 @@ public class Game {
      */
     public static void start() {
 
-        GamePhase d_GamePhase = new InitialPhase();
-        PhaseManager d_PhaseManager = new PhaseManager();
-        d_PhaseManager.setGamePhase(d_GamePhase);
+        GameEngine d_GameEngine = new GameEngine();
 
         try {
-            d_PhaseManager.start();
+            d_GameEngine.start();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

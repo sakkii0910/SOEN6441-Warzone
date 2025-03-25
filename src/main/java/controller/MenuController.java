@@ -5,6 +5,7 @@ import model.abstractClasses.GamePhase;
 import model.gamePhases.ExitGamePhase;
 import model.gamePhases.MapEditorPhase;
 import model.gamePhases.StartUpPhase;
+import utils.GameEngine;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -14,8 +15,12 @@ import java.util.Scanner;
  */
 public class MenuController extends GameController {
 
+    public MenuController(GameEngine p_GameEngine) {
+        super(p_GameEngine);
+    }
+
     @Override
-    public GamePhase startPhase(GamePhase p_GamePhase) throws Exception {
+    public void startPhase() throws Exception {
         Scanner sc = new Scanner(System.in);
 
         System.out.println();
@@ -34,11 +39,21 @@ public class MenuController extends GameController {
         int option = sc.nextInt();
         // Returns the phase selected by user.
         // User can either start playing game or go to map editing phase.
-        return switch (option) {
-            case 1 -> new StartUpPhase();
-            case 2 -> new MapEditorPhase();
-            case 5 -> new ExitGamePhase();
-            default -> throw new InputMismatchException();
-        };
+        switch (option) {
+            case 1:
+                this.d_NextPhase = new StartUpPhase(this.d_GameEngine);
+                break;
+            case 2:
+                this.d_NextPhase = new MapEditorPhase(this.d_GameEngine);
+                break;
+            case 5:
+                this.d_NextPhase = new ExitGamePhase(this.d_GameEngine);
+                break;
+            default:
+                throw new InputMismatchException();
+        }
+
+        this.d_GameEngine.setGamePhase(this.d_NextPhase);
+        this.d_GameMap.setGamePhase(this.d_NextPhase);
     }
 }

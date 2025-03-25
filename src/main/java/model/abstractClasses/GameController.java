@@ -1,17 +1,26 @@
 package model.abstractClasses;
 
+import model.GameMap;
+import utils.GameEngine;
+
 /**
  * The type Game controller.
  */
 public abstract class GameController {
 
+    protected GamePhase d_NextPhase;
+    protected GameMap d_GameMap;
+    protected GameEngine d_GameEngine;
+
+    public GameController(GameEngine p_GameEngine) {
+        d_GameMap = GameMap.getInstance();
+        d_GameEngine = p_GameEngine;
+    }
     /**
      * Starts the game phase.
      *
-     * @param p_GamePhase the p game phase
-     * @return the game phase
      * @throws Exception the exception
      */
-    public abstract GamePhase startPhase(GamePhase p_GamePhase) throws Exception;
+    public abstract void startPhase() throws Exception;
 
 }

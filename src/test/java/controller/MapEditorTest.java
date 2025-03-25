@@ -6,6 +6,7 @@ import model.GameMap;
 import model.abstractClasses.GamePhase;
 import model.gamePhases.StartUpPhase;
 import org.junit.jupiter.api.Test;
+import utils.GameEngine;
 import utils.MapReader;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -24,9 +25,9 @@ class MapEditorTest {
         InputStream inputStream = new ByteArrayInputStream(input.getBytes());
         System.setIn(inputStream); // Redirect System.in to our simulated input
 
-        MapEditor mapEditor = new MapEditor();
-        GamePhase gamePhase = new StartUpPhase();
-        mapEditor.startPhase(gamePhase); // This will now read from our simulated input
+        GameEngine gameEngine = new GameEngine();
+        MapEditor mapEditor = new MapEditor(gameEngine);
+        mapEditor.startPhase(); // This will now read from our simulated input
 
         // Verify that the continent was added
         assertTrue(mapEditor.getGameMap().getContinents().containsKey("Asia"));
@@ -41,9 +42,9 @@ class MapEditorTest {
         InputStream inputStream = new ByteArrayInputStream(input.getBytes());
         System.setIn(inputStream); // Redirect System.in to our simulated input
 
-        MapEditor mapEditor = new MapEditor();
-        GamePhase gamePhase = new StartUpPhase();
-        mapEditor.startPhase(gamePhase); // This will now read from our simulated input
+        GameEngine gameEngine = new GameEngine();
+        MapEditor mapEditor = new MapEditor(gameEngine);
+        mapEditor.startPhase(); // This will now read from our simulated input
 
         // Verify that the country was added
         assertTrue(mapEditor.getGameMap().getCountries().containsKey("India"));
@@ -62,9 +63,9 @@ class MapEditorTest {
         InputStream inputStream = new ByteArrayInputStream(input.getBytes());
         System.setIn(inputStream); // Redirect System.in to our simulated input
 
-        MapEditor mapEditor = new MapEditor();
-        GamePhase gamePhase = new StartUpPhase();
-        mapEditor.startPhase(gamePhase); // This will now read from our simulated input
+        GameEngine gameEngine = new GameEngine();
+        MapEditor mapEditor = new MapEditor(gameEngine);
+        mapEditor.startPhase(); // This will now read from our simulated input
 
         // Verify that the neighbor was added
         assertTrue(mapEditor.getGameMap().getCountries().get("India").getD_CountryNeighbors()
@@ -80,9 +81,9 @@ class MapEditorTest {
         InputStream inputStream = new ByteArrayInputStream(input.getBytes());
         System.setIn(inputStream);
 
-        MapEditor mapEditor = new MapEditor();
-        GamePhase gamePhase = new StartUpPhase();
-        mapEditor.startPhase(gamePhase);
+        GameEngine gameEngine = new GameEngine();
+        MapEditor mapEditor = new MapEditor(gameEngine);
+        mapEditor.startPhase();
 
         // Verify that the system handles invalid commands gracefully
         // (e.g., prints an error message or ignores the command)

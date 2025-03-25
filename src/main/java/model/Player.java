@@ -113,7 +113,7 @@ public class Player implements Serializable {
      * Handles user input for issuing an order.
      */
     public void issueOrder() {
-        System.out.println("\n-----------------------------------------");
+        System.out.println("-----------------------------------------");
         Scanner l_scanner = new Scanner(System.in);
         System.out.println("Current Player: " + getD_Name());
         while (d_ReinforcementArmies > 0) {
