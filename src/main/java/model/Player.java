@@ -37,6 +37,7 @@ public class Player implements Serializable {
 
     /**
      * method to set the armies issued
+     *
      * @param p_ArmiesToIssue armies to issue to player
      */
     public void setIssuedArmies(int p_ArmiesToIssue) {
@@ -180,6 +181,59 @@ public class Player implements Serializable {
 
         Order l_Order = OrderCreator.CreateOrder(l_input.split(" "), this);
         addOrder(l_Order);
+    }
+
+    /**
+     * Gets player cards.
+     *
+     * @return the player cards
+     */
+    public List<Card> getPlayerCards() {
+        return d_PlayerCards;
+    }
+
+    /**
+     * Sets player cards.
+     *
+     * @param p_Cards the p cards
+     */
+    public void setPlayerCards(List<Card> p_Cards) {
+        this.d_PlayerCards = p_Cards;
+    }
+
+    /**
+     * Checks if a certain card is available.
+     *
+     * @param p_CardType the p card type
+     * @return the boolean
+     */
+    public boolean cardAvailable(CardType p_CardType) {
+        return this.d_PlayerCards.stream().anyMatch(l_Card -> l_Card.getCardType().equals(p_CardType));
+    }
+
+    /**
+     * Add card.
+     *
+     * @param p_Card the p card
+     */
+    public void addCard(Card p_Card) {
+        this.d_PlayerCards.add(p_Card);
+    }
+
+    /**
+     * Remove card.
+     *
+     * @param p_Card the p card
+     */
+    public void removeCard(Card p_Card) {
+        this.d_PlayerCards.remove(p_Card);
+    }
+
+    /**
+     * Clear cards.
+     */
+    public void clearCards() {
+        this.d_PlayerCards.clear();
     }
 
 }
