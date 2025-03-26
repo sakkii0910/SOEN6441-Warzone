@@ -24,6 +24,8 @@ public class Player implements Serializable {
      */
     private int d_ArmiesToIssue = 0;
 
+    private List<Card> d_PlayerCards = new ArrayList<>();
+
     /**
      * method to get armies issued
      *
@@ -141,11 +143,13 @@ public class Player implements Serializable {
 
     /**
      * method to set orders
+     *
      * @param p_Orders the orders
      */
     public void setOrders(Deque<Order> p_Orders){
         this.d_Orders = p_Orders;
     }
+
     /**
      * A function to add the orders to the issue order list
      *
