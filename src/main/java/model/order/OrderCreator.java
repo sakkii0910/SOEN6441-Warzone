@@ -37,6 +37,10 @@ public class OrderCreator implements Serializable {
                 l_Order = new DeployOrder();
                 l_Order.setOrderInfo(GenerateDeployOrderInfo(p_Commands, p_Player));
                 break;
+            case "advance":
+                l_Order = new AdvanceOrder();
+                l_Order.setOrderInfo(GenerateAdvanceOrderInfo(p_Commands, p_Player));
+                break;
 
             default:
                 d_Logger.log("\nFailed to create an order due to invalid arguments");
@@ -64,6 +68,28 @@ public class OrderCreator implements Serializable {
         if(p_Player.getReinforcementArmies() > 0 && l_NumberOfArmies <= p_Player.getD_ArmiesToIssue() && l_NumberOfArmies > 0){
             p_Player.setD_ArmiesToIssue(p_Player.getD_ArmiesToIssue() - l_NumberOfArmies);
         }
+        return l_OrderInfo;
+    }
+
+    /**
+     * A function to generate the information for advance order
+     *
+     * @param p_Command the command entered
+     * @param p_Player  the player who issued the order
+     * @return the order information of advance/attack
+     */
+    public static OrderInfo GenerateAdvanceOrderInfo(String[] p_Command, Player p_Player) {
+        String l_FromCountryID = p_Command[1];
+        Country l_FromCountry = d_GameMap.getCountry(l_FromCountryID);
+        String l_ToCountryID = p_Command[2];
+        Country l_ToCountry = d_GameMap.getCountry(l_ToCountryID);
+        int l_NumberOfArmies = Integer.parseInt(p_Command[3]);
+        OrderInfo l_OrderInfo = new OrderInfo();
+        l_OrderInfo.setCommand(ConvertToString(p_Command));
+        l_OrderInfo.setPlayer(p_Player);
+        l_OrderInfo.setDeparture(l_FromCountry);
+        l_OrderInfo.setDestination(l_ToCountry);
+        l_OrderInfo.setNumberOfArmy(l_NumberOfArmies);
         return l_OrderInfo;
     }
 

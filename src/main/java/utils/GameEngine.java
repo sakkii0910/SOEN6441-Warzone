@@ -1,5 +1,6 @@
 package utils;
 
+import model.GameSettings;
 import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
 import model.gamePhases.ExitGamePhase;
@@ -14,6 +15,7 @@ import java.util.Objects;
 public class GameEngine {
 
     private GamePhase d_GamePhase;
+    private static GameSettings d_GameSettings;
 
     /**
      * Logger instance
@@ -25,6 +27,8 @@ public class GameEngine {
      */
     public GameEngine() {
         this.d_GamePhase = new InitialPhase(this);
+        d_GameSettings = GameSettings.getInstance();
+        d_GameSettings.setStrategy("default");
     }
 
     /**
