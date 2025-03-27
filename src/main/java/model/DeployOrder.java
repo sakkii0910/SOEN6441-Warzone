@@ -55,10 +55,11 @@ public class DeployOrder extends Order implements Serializable {
             d_Logger.log("The country does not belong to you");
             return false;
         }
-//        if (!l_Player.deployReinforcementArmiesFromPlayer(l_Reinforcements)) {
-//            d_Logger.log("You do not have enough Reinforcement Armies to deploy.");
-//            return false;
-//        }
+
+        if (!l_Player.deployReinforcementArmiesFromPlayer(l_Reinforcements)) {
+            System.out.println("You do not have enough Reinforcement Armies to deploy.");
+            return false;
+        }
         return true;
     }
 

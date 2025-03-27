@@ -4,9 +4,8 @@ import model.GameMap;
 import model.Order;
 import model.Player;
 import model.abstractClasses.GameController;
-import model.abstractClasses.GamePhase;
 import model.gamePhases.ExitGamePhase;
-import model.gamePhases.IssueOrderPhase;
+import model.gamePhases.ReinforcementPhase;
 import utils.GameEngine;
 import utils.logger.LogEntryBuffer;
 
@@ -25,23 +24,38 @@ public class ExecuteOrder extends GameController {
         super(p_GameEngine);
         d_GameMap = GameMap.getInstance();
         d_players = d_GameMap.getPlayers();
-        d_NextPhase = new ExitGamePhase(this.d_GameEngine);
+        d_NextPhase = new ReinforcementPhase(this.d_GameEngine);
     }
 
     @Override
     public void startPhase() throws Exception {
+        d_Logger.log("\n--------------- EXECUTE ORDER PHASE ---------------");
         d_Logger.log("\n--------------- EXECUTE ORDER PHASE ---------------\n");
 
         // Execute orders
         for (Player l_player : d_players.values()) {
+            System.out.println("\n\nCurrent Player Execution: " + l_player.getD_Name());
             Order l_order;
             while ((l_order = l_player.nextOrder()) != null) {
                 l_order.execute();
             }
         }
 
+        isGameWon();
+
         this.d_GameEngine.setGamePhase(this.d_NextPhase);
         this.d_GameMap.setGamePhase(this.d_NextPhase);
+    }
+
+    public void isGameWon(){
+        for (Player l_player : d_players.values()) {
+            if (l_player.getCapturedCountries().size() == d_GameMap.getCountries().size()) {
+                System.out.println("\n--------------- WINNER WINNER ---------------\n");
+                System.out.println("The Player " + l_player.getD_Name() + " has won the game");
+                d_NextPhase = new ExitGamePhase(this.d_GameEngine);
+            }
+        }
+
     }
 
 }
