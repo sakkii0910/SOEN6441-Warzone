@@ -73,9 +73,7 @@ public class AdvanceOrder extends Order implements Serializable {
                 l_To.setPlayer(l_Player);
                 d_Logger.log("Advanced/Moved " + l_Armies + " from " + l_From.getD_CountryName() + " to " + l_To.getD_CountryName());
                 return true;
-            } else if (d_GameStrategy.attack(l_Player, l_From, l_To, l_Armies)) {
-                return true;
-            }
+            } else return d_GameStrategy.attack(l_Player, l_From, l_To, l_Armies);
         }
         return false;
     }
