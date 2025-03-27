@@ -39,9 +39,7 @@ public class IssueOrder extends GameController {
 
         while (!(numberOfSkippedPlayers() == d_Players.size())) {
             for (Player l_Player : d_Players.values()) {
-                if (!(l_Player.getD_Name().equalsIgnoreCase(d_GameMap.getD_CurrentPlayer().getD_Name()))) {
-                    continue;
-                }
+                d_Logger.log("\n\nCurrent Player Turn: " + l_Player.getD_Name());
 
                 if (l_Player.isD_TurnCompleted()) {
                     continue;
@@ -72,6 +70,10 @@ public class IssueOrder extends GameController {
             }
         }
 
+        for(Player l_Player : d_Players.values()) {
+            l_Player.setD_TurnCompleted(false);
+        }
+
         this.d_GameEngine.setGamePhase(this.d_NextPhase);
         this.d_GameMap.setGamePhase(this.d_NextPhase);
     }
@@ -87,14 +89,14 @@ public class IssueOrder extends GameController {
     }
 
     /**
-     * A static function to validate the deploy command
+     * A function to validate the commands
      *
      * @param p_CommandArr The string entered by the user
      * @param p_Player     the player object
      * @return true if the command is correct else false
      */
     public boolean validateCommand(String p_CommandArr, Player p_Player) {
-        List<String> l_Commands = Arrays.asList("deploy", "advance", "bomb", "blockade", "airlift", "negotiate", "savegame");
+        List<String> l_Commands = Arrays.asList("deploy", "advance", "bomb", "blockade", "airlift", "negotiate");
         String[] l_CommandArr = p_CommandArr.split(" ");
         if (p_CommandArr.toLowerCase().contains("pass")) {
             p_Player.setD_TurnCompleted(true);
@@ -173,7 +175,7 @@ public class IssueOrder extends GameController {
         System.out.format("+--------------+-----------------------+------------------+%n");
         System.out.format("| Current Player   | Initial Assigned  | Left Armies      | %n");
         System.out.format("+---------------+------------------  +---------------------+%n");
-        System.out.format(l_Table, p_Player.getD_Name(), p_Player.getReinforcementArmies(), p_Player.getIssuedArmies());
+        System.out.format(l_Table, p_Player.getD_Name(), p_Player.getReinforcementArmies(), p_Player.getD_ArmiesToIssue());
         System.out.format("+--------------+-----------------------+------------------+%n");
 
         d_Logger.log("The countries assigned to the player are: ");
@@ -185,9 +187,9 @@ public class IssueOrder extends GameController {
                 "+--------------+-----------------------+------------------+---------+%n");
         for (Country l_Country : p_Player.getCapturedCountries()) {
             String l_TableCountry = "|%-15s|%-15s|%-35s|%n";
-            String l_NeighborList = "";
+            StringBuilder l_NeighborList = new StringBuilder();
             for (Country l_Neighbor : l_Country.getD_CountryNeighbors()) {
-                l_NeighborList += l_Neighbor.getD_CountryName() + "-";
+                l_NeighborList.append(l_Neighbor.getD_CountryName()).append("-");
             }
             System.out.format(l_TableCountry, l_Country.getD_CountryName(), l_Country.getD_Armies(), l_Country.createANeighborList(l_Country.getD_CountryNeighbors()));
         }

@@ -7,6 +7,7 @@ import java.util.Scanner;
 import model.GameMap;
 import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
+import model.gamePhases.IssueOrderPhase;
 import model.gamePhases.ReinforcementPhase;
 import utils.GameEngine;
 import utils.MapReader;
@@ -18,20 +19,20 @@ import utils.logger.LogEntryBuffer;
 public class GamePlay extends GameController {
     private final Scanner SCANNER = new Scanner(System.in);
 
-    private final List<String> CLI_COMMANDS = Arrays.asList("gameplayer", "assigncountries", "help", "loadmap", "showmap");
+    private final List<String> CLI_COMMANDS = Arrays.asList("gameplayer", "assigncountries", "loadmap", "showmap");
 
     /**
      * Logger instance
      */
     private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
-    
+
     /**
      * Instantiates a new Game play.
      */
     public GamePlay(GameEngine p_GameEngine) {
         super(p_GameEngine);
         d_GameMap = GameMap.getInstance();
-        d_NextPhase = new ReinforcementPhase(this.d_GameEngine);
+        d_NextPhase = new IssueOrderPhase(this.d_GameEngine);
     }
 
     @Override
@@ -39,14 +40,20 @@ public class GamePlay extends GameController {
 
         boolean d_IsCountriesAssigned = false;
 
-        d_Logger.log("\n");
-        d_Logger.log("===========================================");
+        d_Logger.log("\n===========================================");
         d_Logger.log("************ GAMEPLAY SETTINGS ************");
         d_Logger.log("===========================================");
-        d_Logger.log("\n");
         while (true) {
             int i;
-            System.out.print("Enter command (\"help\" for all commands): ");
+            d_Logger.log("\n-----------------------------------------------------------------------------------------");
+            d_Logger.log("List of Game Play Commands ");
+            d_Logger.log("To add or remove a player: gameplayer -add playername -remove playername");
+            d_Logger.log("To assign countries to all players: assigncountries");
+            d_Logger.log("To load a domination map from the provided file: loadmap <filename>");
+            d_Logger.log("To show all countries, continents, armies and ownership: showmap");
+            d_Logger.log("To start the game: exit");
+            d_Logger.log("-----------------------------------------------------------------------------------------");
+            System.out.print("Enter command: ");
             String l_Input = SCANNER.nextLine();
             String[] l_Commands = l_Input.split(" ");
 
@@ -70,22 +77,6 @@ public class GamePlay extends GameController {
             } else if (inputValidator(l_Commands)) {
                 try {
                     switch (l_Commands[0].toLowerCase()) {
-                        case "help":
-                            d_Logger.log("=========================================");
-                            d_Logger.log(" List of Game Play Commands ");
-                            d_Logger.log("=========================================");
-                            d_Logger.log("\nTo add or remove a player:");
-                            d_Logger.log("  gameplayer -add playername -remove playername");
-                            d_Logger.log("\nTo assign countries to all players: ");
-                            d_Logger.log("  assigncountries");
-                            d_Logger.log("\nTo load a domination map from the provided file: ");
-                            d_Logger.log(" loadmap <filename>");
-                            d_Logger.log("\nTo show all countries, continents, armies and ownership: ");
-                            d_Logger.log(" showmap");
-                            d_Logger.log("\nTo start the game: ");
-                            d_Logger.log(" exit");
-                            d_Logger.log("=========================================");
-                            break;
                         case "gameplayer":
                             i = 1;
                             while (i < l_Commands.length) {

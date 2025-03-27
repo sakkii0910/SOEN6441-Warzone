@@ -23,28 +23,16 @@ public class Player implements Serializable {
 
     private Deque<Order> d_Orders = new ArrayDeque<>();
 
-    /**
-     * Logger instance
-     */
     private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
-    /**
-     * number of armies to issue
-     */
     private int d_ArmiesToIssue = 0;
 
     private List<Card> d_PlayerCards = new ArrayList<>();
 
     private boolean d_TurnCompleted = false;
 
-    /**
-     * Player Strategy to create the commands
-     */
     private final PlayerStrategy d_PlayerStrategy;
 
-    /**
-     * A list of neutral players i.e. truced players
-     */
     private final List<Player> d_NeutralPlayers = new ArrayList<>();
 
     /**
@@ -54,24 +42,7 @@ public class Player implements Serializable {
      */
     public Player(PlayerStrategy p_PlayerStrategy) {
         this.d_PlayerStrategy = p_PlayerStrategy;
-    }
-
-    /**
-     * method to get armies issued
-     *
-     * @return issues armies
-     */
-    public int getIssuedArmies() {
-        return d_ArmiesToIssue;
-    }
-
-    /**
-     * method to set the armies issued
-     *
-     * @param p_ArmiesToIssue armies to issue to player
-     */
-    public void setIssuedArmies(int p_ArmiesToIssue) {
-        d_ArmiesToIssue = p_ArmiesToIssue;
+        this.d_ReinforcementArmies = 5;
     }
 
     /**
@@ -328,5 +299,13 @@ public class Player implements Serializable {
         if (!d_NeutralPlayers.isEmpty()) {
             d_NeutralPlayers.clear();
         }
+    }
+
+    public int getD_ArmiesToIssue() {
+        return d_ArmiesToIssue;
+    }
+
+    public void setD_ArmiesToIssue(int d_ArmiesToIssue) {
+        this.d_ArmiesToIssue = d_ArmiesToIssue;
     }
 }
