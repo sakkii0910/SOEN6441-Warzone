@@ -27,10 +27,6 @@ public class GameMap {
     private Player d_CurrentPlayer;
 
 
-    /**
-     * If the game has loaded
-     */
-    private Boolean d_GameLoaded = false;
 
     /**
      * Constructor initializes map components.
@@ -387,13 +383,5 @@ public class GameMap {
 
     public void setD_CurrentPlayer(Player d_CurrentPlayer) {
         this.d_CurrentPlayer = d_CurrentPlayer;
-    }
-
-    public Boolean getD_GameLoaded() {
-        return d_GameLoaded;
-    }
-
-    public void setD_GameLoaded(Boolean d_GameLoaded) {
-        this.d_GameLoaded = d_GameLoaded;
     }
 }
