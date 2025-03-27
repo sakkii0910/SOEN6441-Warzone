@@ -177,4 +177,23 @@ public class Country implements Serializable {
     public int getD_Armies() {
         return d_Armies;
     }
+
+    /**
+     * deploy the armies for the player
+     *
+     * @param p_Armies number of armies to be deployed
+     */
+    public void deployArmies(int p_Armies) {
+        p_Armies = Math.max(p_Armies, 0);
+        d_Armies += p_Armies;
+    }
+
+    /**
+     * This method reduces the number of armies
+     *
+     * @param p_armies the number of armies
+     */
+    public void depleteArmies(int p_armies) {
+        d_Armies = Math.max(d_Armies - p_armies, 0);
+    }
 }
