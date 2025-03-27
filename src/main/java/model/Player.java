@@ -26,6 +26,8 @@ public class Player implements Serializable {
 
     private List<Card> d_PlayerCards = new ArrayList<>();
 
+    private boolean d_TurnCompleted = false;
+
     /**
      * method to get armies issued
      *
@@ -147,7 +149,7 @@ public class Player implements Serializable {
      *
      * @param p_Orders the orders
      */
-    public void setOrders(Deque<Order> p_Orders){
+    public void setOrders(Deque<Order> p_Orders) {
         this.d_Orders = p_Orders;
     }
 
@@ -174,13 +176,19 @@ public class Player implements Serializable {
      */
     public void issueOrder() {
         System.out.println("-----------------------------------------");
+
         Scanner l_scanner = new Scanner(System.in);
 
+        System.out.println("Enter pass to complete your turn.");
         System.out.print("Enter command (deploy countryID(name) num): ");
         String l_input = l_scanner.nextLine();
 
-        Order l_Order = OrderCreator.CreateOrder(l_input.split(" "), this);
-        addOrder(l_Order);
+        if (l_input.equals("pass")) {
+            d_TurnCompleted = true;
+        } else {
+            Order l_Order = OrderCreator.CreateOrder(l_input.split(" "), this);
+            addOrder(l_Order);
+        }
     }
 
     /**
@@ -236,4 +244,35 @@ public class Player implements Serializable {
         this.d_PlayerCards.clear();
     }
 
+    /**
+     * Is turn completed boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isD_TurnCompleted() {
+        return d_TurnCompleted;
+    }
+
+    /**
+     * Sets turn completed.
+     *
+     * @param d_TurnCompleted the d turn completed
+     */
+    public void setD_TurnCompleted(boolean d_TurnCompleted) {
+        this.d_TurnCompleted = d_TurnCompleted;
+    }
+
+    /**
+     * Check if enough reinforcement armies are available.
+     *
+     * @param p_ArmyCount the p army count
+     * @return the boolean
+     */
+    public boolean deployReinforcementArmiesFromPlayer(int p_ArmyCount) {
+        if (p_ArmyCount > d_ReinforcementArmies || p_ArmyCount <= 0) {
+            return false;
+        }
+        d_ReinforcementArmies -= p_ArmyCount;
+        return true;
+    }
 }
