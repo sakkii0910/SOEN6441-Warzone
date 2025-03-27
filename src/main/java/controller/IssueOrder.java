@@ -14,10 +14,6 @@ public class IssueOrder extends GameController {
     private final HashMap<String, Player> d_Players;
 
     /**
-     * variable to keep track of players who skipped
-     */
-    private static Set<Player> SkippedPlayers = new HashSet<>();
-    /**
      * Static variable to hold commands
      */
     public static String Commands = null;
@@ -41,16 +37,16 @@ public class IssueOrder extends GameController {
             d_GameMap.setD_CurrentPlayer(d_Players.entrySet().iterator().next().getValue());
         }
 
-        while (!(SkippedPlayers.size() == d_Players.size())) {
+        while (!(numberOfSkippedPlayers() == d_Players.size())) {
             for (Player l_Player : d_Players.values()) {
-                if ((d_GameMap.getD_GameLoaded() && !(l_Player.getD_Name().equalsIgnoreCase(d_GameMap.getD_CurrentPlayer().getD_Name())))) {
-                    continue;
-                }
-                if (!SkippedPlayers.isEmpty() && SkippedPlayers.contains(l_Player)) {
+                if (!(l_Player.getD_Name().equalsIgnoreCase(d_GameMap.getD_CurrentPlayer().getD_Name()))) {
                     continue;
                 }
 
-                d_GameMap.setD_GameLoaded(false);
+                if (l_Player.isD_TurnCompleted()) {
+                    continue;
+                }
+
                 d_GameMap.setD_CurrentPlayer(l_Player);
 
                 boolean l_IssueCommand = false;
@@ -66,11 +62,6 @@ public class IssueOrder extends GameController {
                     if (Commands.equals("pass")) {
                         break;
                     }
-                    if (Commands.split(" ")[0].equals("savegame") && l_IssueCommand) {
-                        // TODO: set map editor phase
-//                        d_GameMap.setGamePhase(GamePhase);
-//                        return d_MapEditorPhase;
-                    }
                 }
                 if (!Commands.equals("pass")) {
                     d_Logger.log(l_Player.getD_Name() + " has issued this order :- " + Commands);
@@ -79,14 +70,21 @@ public class IssueOrder extends GameController {
                     d_Logger.log("=============================================================================");
                 }
             }
-            d_GameMap.setD_GameLoaded(false);
         }
-        SkippedPlayers.clear();
 
         this.d_GameEngine.setGamePhase(this.d_NextPhase);
         this.d_GameMap.setGamePhase(this.d_NextPhase);
     }
 
+    int numberOfSkippedPlayers() {
+        int count = 0;
+        for (Player l_Player : d_Players.values()) {
+            if (l_Player.isD_TurnCompleted()) {
+                count++;
+            }
+        }
+        return count;
+    }
 
     /**
      * A static function to validate the deploy command
@@ -99,7 +97,7 @@ public class IssueOrder extends GameController {
         List<String> l_Commands = Arrays.asList("deploy", "advance", "bomb", "blockade", "airlift", "negotiate", "savegame");
         String[] l_CommandArr = p_CommandArr.split(" ");
         if (p_CommandArr.toLowerCase().contains("pass")) {
-            SkippedPlayers.add(p_Player);
+            p_Player.setD_TurnCompleted(true);
             return false;
         }
         if (!l_Commands.contains(l_CommandArr[0].toLowerCase())) {
@@ -131,16 +129,6 @@ public class IssueOrder extends GameController {
                     return false;
                 }
                 break;
-            case "savegame":
-//                System.out.println("Are you sure you want to save the file? Enter Yes/No.");
-//                String l_Input = new Scanner(System.in).nextLine();
-//                if (l_Input.equalsIgnoreCase("Yes")) {
-//                    GameProgress.SaveGameProgress(d_GameMap, l_CommandArr[1]);
-//                    return true;
-//                } else {
-//                    d_Logger.log("The game has not been saved, continue to play.");
-//                    return false;
-//                }
             default:
                 break;
 
