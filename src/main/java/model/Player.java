@@ -1,6 +1,7 @@
 package model;
 
 import controller.IssueOrder;
+import model.strategy.PlayerStrategy;
 
 import java.io.Serializable;
 import java.util.*;
@@ -23,6 +24,20 @@ public class Player implements Serializable {
      * number of armies to issue
      */
     private int d_ArmiesToIssue = 0;
+
+    /**
+     * Player Strategy to create the commands
+     */
+    private final PlayerStrategy d_PlayerStrategy;
+
+    /**
+     * the constructor for player class
+     *
+     * @param p_PlayerStrategy player strategy
+     */
+    public Player(PlayerStrategy p_PlayerStrategy) {
+        this.d_PlayerStrategy = p_PlayerStrategy;
+    }
 
     /**
      * method to get armies issued
@@ -169,13 +184,20 @@ public class Player implements Serializable {
      */
     public void issueOrder() {
         System.out.println("-----------------------------------------");
+        
         Scanner l_scanner = new Scanner(System.in);
+
+        System.out.println("Current Player: " + getD_Name());
 
         System.out.print("Enter command (deploy countryID(name) num): ");
         String l_input = l_scanner.nextLine();
 
         Order l_Order = OrderCreator.CreateOrder(l_input.split(" "), this);
         addOrder(l_Order);
+    }
+
+    public String readCommand() {
+        return this.d_PlayerStrategy.createCommand();
     }
 
 }
