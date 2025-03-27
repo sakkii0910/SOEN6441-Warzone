@@ -4,6 +4,7 @@ import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
 import model.gamePhases.ExitGamePhase;
 import model.gamePhases.InitialPhase;
+import utils.logger.LogEntryBuffer;
 
 import java.util.Objects;
 
@@ -13,6 +14,11 @@ import java.util.Objects;
 public class GameEngine {
 
     private GamePhase d_GamePhase;
+
+    /**
+     * Logger instance
+     */
+    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
     /**
      * Instantiates an initial state for Phase manager.
@@ -43,10 +49,10 @@ public class GameEngine {
         }
 
         // Exit message when game ends
-        System.out.println("\n==============================");
-        System.out.println("    Thank you for playing!    ");
-        System.out.println("      Exiting the game...     ");
-        System.out.println("==============================\n");
+        d_Logger.log("\n==============================");
+        d_Logger.log("    Thank you for playing!    ");
+        d_Logger.log("      Exiting the game...     ");
+        d_Logger.log("==============================\n");
     }
 
 

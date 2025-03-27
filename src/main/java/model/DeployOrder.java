@@ -2,6 +2,7 @@ package model;
 
 import model.Country;
 import model.Order;
+import utils.logger.LogEntryBuffer;
 
 import java.io.Serializable;
 
@@ -9,6 +10,11 @@ import java.io.Serializable;
  * Represents a deployment order issued by a player.
  */
 public class DeployOrder extends Order implements Serializable {
+
+    /**
+     * Logger instance
+     */
+    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
     public DeployOrder() {
         super();
@@ -22,7 +28,7 @@ public class DeployOrder extends Order implements Serializable {
     public boolean execute() {
         Country l_Destination = getOrderInfo().getDestination();
         int l_ArmiesToDeploy = getOrderInfo().getNumberOfArmy();
-        System.out.println("---------------------------------------------------------------------------------------------");
+        d_Logger.log("---------------------------------------------------------------------------------------------");
         if (validateCommand()) {
             l_Destination.setD_Armies(l_ArmiesToDeploy);
             return true;
@@ -42,15 +48,15 @@ public class DeployOrder extends Order implements Serializable {
         int l_Reinforcements = getOrderInfo().getNumberOfArmy();
 
         if (l_Player == null || l_Destination == null) {
-            System.out.println("Invalid order information.The entered values are invalid.");
+            d_Logger.log("Invalid order information.The entered values are invalid.");
             return false;
         }
         if (!l_Player.isCaptured(l_Destination)) {
-            System.out.println("The country does not belong to you");
+            d_Logger.log("The country does not belong to you");
             return false;
         }
 //        if (!l_Player.deployReinforcementArmiesFromPlayer(l_Reinforcements)) {
-//            System.out.println("You do not have enough Reinforcement Armies to deploy.");
+//            d_Logger.log("You do not have enough Reinforcement Armies to deploy.");
 //            return false;
 //        }
         return true;
@@ -60,7 +66,7 @@ public class DeployOrder extends Order implements Serializable {
      * A function to print the order on completion
      */
     public void printOrderCommand() {
-        System.out.println("Deployed " + getOrderInfo().getNumberOfArmy() + " armies to " + getOrderInfo().getDestination().getD_CountryName() + ".");
-        System.out.println("---------------------------------------------------------------------------------------------");
+        d_Logger.log("Deployed " + getOrderInfo().getNumberOfArmy() + " armies to " + getOrderInfo().getDestination().getD_CountryName() + ".");
+        d_Logger.log("---------------------------------------------------------------------------------------------");
     }
 }

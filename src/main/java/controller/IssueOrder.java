@@ -7,12 +7,18 @@ import model.abstractClasses.GamePhase;
 import model.gamePhases.ExecuteOrderPhase;
 import model.gamePhases.IssueOrderPhase;
 import utils.GameEngine;
+import utils.logger.LogEntryBuffer;
 
 import java.util.HashMap;
 
 public class IssueOrder extends GameController {
 
     private final HashMap<String, Player> d_players;
+
+    /**
+     * Logger instance
+     */
+    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
     public IssueOrder(GameEngine p_GameEngine) {
         super(p_GameEngine);
@@ -22,7 +28,7 @@ public class IssueOrder extends GameController {
     }
 
     public void startPhase() throws Exception {
-        System.out.println("\n--------------- ISSUE ORDER PHASE ---------------\n");
+        d_Logger.log("\n--------------- ISSUE ORDER PHASE ---------------\n");
 
         // Issue orders
         for (Player l_player : d_players.values()) {

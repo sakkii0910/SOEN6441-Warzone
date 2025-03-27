@@ -13,6 +13,11 @@ public class LogEntryWriter implements Observer, Serializable {
     private String l_Filename = "warzone";
 
     /**
+     * Logger instance
+     */
+    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
+
+    /**
      * Function receives update from Subject and sends it to be written to Log file
      * @param p_s message to be written
      */
@@ -42,7 +47,7 @@ public class LogEntryWriter implements Observer, Serializable {
             l_writer = new PrintWriter(new BufferedWriter(new FileWriter("logFiles/" + l_Filename + ".log", true)));
             l_writer.println(p_s);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            d_Logger.log(e.getMessage());
         } finally {
             l_writer.close();
         }
@@ -59,7 +64,7 @@ public class LogEntryWriter implements Observer, Serializable {
                 l_File.delete();
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            d_Logger.log(e.getMessage());
         }
     }
 }
