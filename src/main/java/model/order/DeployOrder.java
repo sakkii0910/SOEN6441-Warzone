@@ -30,7 +30,6 @@ public class DeployOrder extends Order implements Serializable {
         int l_ArmiesToDeploy = getOrderInfo().getNumberOfArmy();
         d_Logger.log("---------------------------------------------------------------------------------------------");
         if (validateCommand()) {
-            d_Logger.log(l_ArmiesToDeploy + " has been deployed to " + l_Destination + ".");
             l_Destination.setD_Armies(l_ArmiesToDeploy);
             return true;
         }
@@ -49,11 +48,11 @@ public class DeployOrder extends Order implements Serializable {
         int l_Reinforcements = getOrderInfo().getNumberOfArmy();
 
         if (l_Player == null || l_Destination == null) {
-            d_Logger.log("Invalid order information.The entered values are invalid.");
+            d_Logger.log("Invalid order information. The entered values are invalid.");
             return false;
         }
         if (!l_Player.isCaptured(l_Destination)) {
-            d_Logger.log("The country does not belong to you");
+            d_Logger.log("The country does not belong to you.");
             return false;
         }
 
