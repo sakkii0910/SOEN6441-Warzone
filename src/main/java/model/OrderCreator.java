@@ -3,6 +3,7 @@ package model;
 import model.Country;
 import model.GameMap;
 import model.Player;
+import utils.logger.LogEntryBuffer;
 
 import java.io.Serializable;
 import java.util.StringJoiner;
@@ -15,6 +16,11 @@ public class OrderCreator implements Serializable {
      * Static object of Game Map to hold instance of game map
      */
     public static GameMap d_GameMap = GameMap.getInstance();
+
+    /**
+     * Logger instance
+     */
+    private static LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
     /**
      * A function to create an order
@@ -33,7 +39,7 @@ public class OrderCreator implements Serializable {
                 break;
 
             default:
-                System.out.println("\nFailed to create an order due to invalid arguments");
+                d_Logger.log("\nFailed to create an order due to invalid arguments");
                 l_Order = null;
 
         }

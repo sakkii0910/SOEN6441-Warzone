@@ -1,0 +1,141 @@
+
+
+=========================================
+            WARZONE: RISK GAME   ️         
+=========================================
+               MAIN MENU                 
+=========================================
+  [1] Start New Game
+  [2] Map Editing
+  [5] Exit
+=========================================
+
+
+===========================================
+************ GAMEPLAY SETTINGS ************
+===========================================
+
+
+=========================================
+ List of Game Play Commands 
+=========================================
+
+To add or remove a player:
+  gameplayer -add playername -remove playername
+
+To assign countries to all players: 
+  assigncountries
+
+To load a domination map from the provided file: 
+ loadmap <filename>
+
+To show all countries, continents, armies and ownership: 
+ showmap
+=========================================
+Loading map file: 01.map
+Reading map file: 01.map
+Added continent: Asia
+Added continent: Europe
+Added country: China
+Added country: Korea
+Added country: Finland
+Added country: Russia
+Added neighbour for: China
+Added neighbour for: China
+Added neighbour for: Korea
+Added neighbour for: Korea
+Added neighbour for: Finland
+Added neighbour for: Russia
+Added neighbour for: Russia
+Added neighbour for: Russia
+Map loaded successfully.
+Successfully added Player: taha.
+Russia has been assigned to taha
+Korea has been assigned to taha
+China has been assigned to taha
+Finland has been assigned to taha
+
+
+==========================================
+************** GAME STARTED **************
+==========================================
+
+
+
+--------------- REINFORCEMENT PHASE ---------------
+
+The player: taha is assigned 10 reinforcements.
+
+--------------- ISSUE ORDER PHASE ---------------
+-----------------------------------------
+
+==============================
+    Thank you for playing!    
+      Exiting the game...     
+==============================
+
+
+
+=========================================
+            WARZONE: RISK GAME   ️         
+=========================================
+               MAIN MENU                 
+=========================================
+  [1] Start New Game
+  [2] Map Editing
+  [5] Exit
+=========================================
+
+
+===========================================
+************ GAMEPLAY SETTINGS ************
+===========================================
+
+
+Loading map file: 01.map
+Reading map file: 01.map
+Added continent: Asia
+Added continent: Europe
+Added country: China
+Added country: Korea
+Added country: Finland
+Added country: Russia
+Added neighbour for: China
+Added neighbour for: China
+Added neighbour for: Korea
+Added neighbour for: Korea
+Added neighbour for: Finland
+Added neighbour for: Russia
+Added neighbour for: Russia
+Added neighbour for: Russia
+Map loaded successfully.
+Successfully added Player: taha.
+Invalid command.
+China has been assigned to taha
+Russia has been assigned to taha
+Finland has been assigned to taha
+Korea has been assigned to taha
+
+
+==========================================
+************** GAME STARTED **************
+==========================================
+
+
+
+--------------- REINFORCEMENT PHASE ---------------
+
+The player: taha is assigned 10 reinforcements.
+
+--------------- ISSUE ORDER PHASE ---------------
+-----------------------------------------
+-----------------------------------------
+
+--------------- EXECUTE ORDER PHASE ---------------
+---------------------------------------------------------------------------------------------
+
+==============================
+    Thank you for playing!    
+      Exiting the game...     
+==============================
+

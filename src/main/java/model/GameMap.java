@@ -1,6 +1,7 @@
 package model;
 
 import model.abstractClasses.GamePhase;
+import utils.logger.LogEntryBuffer;
 
 import java.util.*;
 
@@ -13,6 +14,11 @@ public class GameMap {
     private static GameMap d_GameMap;
 
     private final HashMap<String, Player> d_players;
+
+    /**
+     * Logger instance
+     */
+    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
     /**
      * Constructor initializes map components.
@@ -101,7 +107,7 @@ public class GameMap {
         l_CountryOne.getD_CountryNeighbors().add(l_NeighbourCountry);
         l_NeighbourCountry.getD_CountryNeighbors().add(l_CountryOne);
 
-        System.out.println("Added neighbour for: " + l_CountryOne.getD_CountryName());
+        d_Logger.log("Added neighbour for: " + l_CountryOne.getD_CountryName());
     }
 
     /**
@@ -121,7 +127,7 @@ public class GameMap {
         } else {
             l_CountryOne.getD_CountryNeighbors().remove(l_NeighbourCountry);
             l_NeighbourCountry.getD_CountryNeighbors().remove(l_CountryOne);
-            System.out.println("Removed neighbour for: " + l_CountryOne.getD_CountryName());
+            d_Logger.log("Removed neighbour for: " + l_CountryOne.getD_CountryName());
         }
     }
 
@@ -145,7 +151,7 @@ public class GameMap {
         l_Country.setD_CountryContinent(continents.get(p_ContinentName));
         countries.put(p_CountryName, l_Country);
         continents.get(p_ContinentName).getD_ContinentCountries().add(l_Country);
-        System.out.println("Added country: " + l_Country.getD_CountryName());
+        d_Logger.log("Added country: " + l_Country.getD_CountryName());
     }
 
     /**
@@ -161,7 +167,7 @@ public class GameMap {
         }
         continents.get(l_Country.getD_CountryContinent().getD_ContinentName()).getD_ContinentCountries().remove(l_Country);
         countries.remove(l_Country.getD_CountryName());
-        System.out.println("Country " + p_CountryName + " removed.");
+        d_Logger.log("Country " + p_CountryName + " removed.");
     }
 
     /**
@@ -180,7 +186,7 @@ public class GameMap {
         l_Continent.setD_ContinentName(p_continentName);
         l_Continent.setD_ContinentArmies(p_continentValue);
         continents.put(l_Continent.getD_ContinentName(), l_Continent);
-        System.out.println("Added continent: " + l_Continent.getD_ContinentName());
+        d_Logger.log("Added continent: " + l_Continent.getD_ContinentName());
     }
 
     /**
@@ -199,18 +205,18 @@ public class GameMap {
         } else {
             throw new IllegalArgumentException("Continent " + p_continentName + " does not exist.");
         }
-        System.out.println("Continent " + p_continentName + " removed.");
+        d_Logger.log("Continent " + p_continentName + " removed.");
     }
 
     /**
      * Displays the map in a readable format.
      */
     public void displayMap() {
-        System.out.println("=======================================================================");
-        System.out.println("                              GAME MAP                                  ");
-        System.out.println("=======================================================================");
+        d_Logger.log("=======================================================================");
+        d_Logger.log("                              GAME MAP                                  ");
+        d_Logger.log("=======================================================================");
         System.out.printf("%-15s | %-10s | %-20s | %-30s%n", "Continent", "Armies", "Country", "Neighbors");
-        System.out.println("-----------------------------------------------------------------------");
+        d_Logger.log("-----------------------------------------------------------------------");
 
         for (Map.Entry<String, Continent> l_ContinentEntry : continents.entrySet()) {
             String l_ContinentName = l_ContinentEntry.getKey();
@@ -235,9 +241,9 @@ public class GameMap {
                 // Print country row
                 System.out.printf("%-15s | %-10s | %-20s | %-30s%n", "", "", l_CountryName, l_Neighbors);
             }
-            System.out.println("-----------------------------------------------------------------------");
+            d_Logger.log("-----------------------------------------------------------------------");
         }
-        System.out.println("=======================================================================");
+        d_Logger.log("=======================================================================");
     }
 
     /**
@@ -273,7 +279,7 @@ public class GameMap {
      */
     public void showMap() {
         // Showing Countries in the Continent and their details
-        System.out.println("\nThe countries in this Map and their details are : \n");
+        d_Logger.log("\nThe countries in this Map and their details are : \n");
 
         // Define table format
         String l_Table = "|%-20s|%-20s|%-100s|%n";
@@ -307,13 +313,13 @@ public class GameMap {
      */
     public void addPlayer(String p_playerName) {
         if (this.getPlayers().containsKey(p_playerName)) {
-            System.out.println("Player with this name already exists!!");
+            d_Logger.log("Player with this name already exists!!");
             return;
         }
         Player l_Player = new Player();
         l_Player.setD_Name(p_playerName);
         this.getPlayers().put(p_playerName, l_Player);
-        System.out.println("Successfully added Player: " + p_playerName + ".");
+        d_Logger.log("Successfully added Player: " + p_playerName + ".");
     }
 
     /**
@@ -324,11 +330,11 @@ public class GameMap {
     public void removePlayer(String p_PlayerName) {
         Player l_Player = this.getPlayer(p_PlayerName);
         if (Objects.isNull(l_Player)) {
-            System.out.println("\nPlayer with this name does not exist\n" + p_PlayerName);
+            d_Logger.log("\nPlayer with this name does not exist\n" + p_PlayerName);
             return;
         }
         this.getPlayers().remove(l_Player.getD_Name());
-        System.out.println("Successfully deleted the player: " + p_PlayerName);
+        d_Logger.log("Successfully deleted the player: " + p_PlayerName);
     }
 
     /**
@@ -350,7 +356,7 @@ public class GameMap {
             l_Player.getCapturedCountries().add(l_Country);
             // assign player to country
             l_Country.setPlayer(l_Player);
-            System.out.println(l_Country.getD_CountryName() + " has been assigned to " + l_Player.getD_Name());
+            d_Logger.log(l_Country.getD_CountryName() + " has been assigned to " + l_Player.getD_Name());
         }
     }
 

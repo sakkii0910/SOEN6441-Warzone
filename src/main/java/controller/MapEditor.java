@@ -6,7 +6,7 @@ import model.abstractClasses.GamePhase;
 import model.gamePhases.InitialPhase;
 import utils.GameEngine;
 import utils.MapReader;
-
+import utils.logger.LogEntryBuffer;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +20,11 @@ public class MapEditor extends GameController {
     private final Scanner SCANNER = new Scanner(System.in);
     private final List<String> CLI_COMMANDS = Arrays.asList("editcontinent", "editcountry", "editneighbor", "showmap",
             "savemap", "editmap", "validatemap", "help", "exit");
+    
+    /**
+     * Logger instance
+     */
+    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
     /**
      * Instantiates a new Map editor using singleton design pattern.
@@ -36,9 +41,9 @@ public class MapEditor extends GameController {
      * @throws Exception
      */
     public void startPhase() throws Exception {
-        System.out.println();
-        System.out.println("=========================================");
-        System.out.println("\t****** MAP EDITING MODE ******\t");
+        d_Logger.log("\n");
+        d_Logger.log("=========================================");
+        d_Logger.log("\t****** MAP EDITING MODE ******\t");
         while (true) {
             int i;
             System.out.print("Enter command (\"help\" for all commands): ");
@@ -58,35 +63,35 @@ public class MapEditor extends GameController {
                 try {
                     switch (l_Commands[0].toLowerCase()) {
                         case "help":
-                            System.out.println("=========================================");
-                            System.out.println(" List of User Map Creation Commands ");
-                            System.out.println("=========================================");
-                            System.out.println("\nTo add or remove a continent:");
-                            System.out.println(
+                            d_Logger.log("=========================================");
+                            d_Logger.log(" List of User Map Creation Commands ");
+                            d_Logger.log("=========================================");
+                            d_Logger.log("\nTo add or remove a continent:");
+                            d_Logger.log(
                                     "  editcontinent -add <continentID> <continentValue> -remove <continentID>");
 
-                            System.out.println("\nTo add or remove a country:");
-                            System.out.println("  editcountry -add <countryID> <continentID> -remove <countryID>");
+                            d_Logger.log("\nTo add or remove a country:");
+                            d_Logger.log("  editcountry -add <countryID> <continentID> -remove <countryID>");
 
-                            System.out.println("\nTo add or remove a neighbor to a country:");
-                            System.out.println(
+                            d_Logger.log("\nTo add or remove a neighbor to a country:");
+                            d_Logger.log(
                                     "  editneighbor -add <countryID> <neighborCountryID> -remove <countryID> <neighborCountryID>");
 
-                            System.out.println("\n-----------------------------------------");
-                            System.out.println(" Map Commands (Edit/Save) ");
-                            System.out.println("-----------------------------------------");
+                            d_Logger.log("\n-----------------------------------------");
+                            d_Logger.log(" Map Commands (Edit/Save) ");
+                            d_Logger.log("-----------------------------------------");
 
-                            System.out.println("To edit a map:  editmap <filename>");
-                            System.out.println("To save a map:  savemap <filename>");
+                            d_Logger.log("To edit a map:  editmap <filename>");
+                            d_Logger.log("To save a map:  savemap <filename>");
 
-                            System.out.println("\n-----------------------------------------");
-                            System.out.println(" Additional Map Commands ");
-                            System.out.println("-----------------------------------------");
+                            d_Logger.log("\n-----------------------------------------");
+                            d_Logger.log(" Additional Map Commands ");
+                            d_Logger.log("-----------------------------------------");
 
-                            System.out.println("To show the map:      showmap");
-                            System.out.println("To validate the map:  validatemap");
+                            d_Logger.log("To show the map:      showmap");
+                            d_Logger.log("To validate the map:  validatemap");
 
-                            System.out.println("=========================================");
+                            d_Logger.log("=========================================");
                             break;
                         case "editcontinent":
                             i = 1;
@@ -98,7 +103,7 @@ public class MapEditor extends GameController {
                                                 d_GameMap.addContinent(l_Commands[i + 1],
                                                         Integer.parseInt(l_Commands[i + 2]));
                                             } catch (IllegalArgumentException e) {
-                                                System.out.println(e.getMessage());
+                                                d_Logger.log(e.getMessage());
                                             }
                                             i += 3;
                                         } else {
@@ -110,7 +115,7 @@ public class MapEditor extends GameController {
                                             try {
                                                 d_GameMap.removeContinent(l_Commands[i + 1]);
                                             } catch (IllegalArgumentException e) {
-                                                System.out.println(e.getMessage());
+                                                d_Logger.log(e.getMessage());
                                             }
                                             i += 2;
                                         } else {
@@ -130,7 +135,7 @@ public class MapEditor extends GameController {
                                             try {
                                                 d_GameMap.addCountry(l_Commands[i + 1], l_Commands[i + 2]);
                                             } catch (IllegalArgumentException e) {
-                                                System.out.println(e.getMessage());
+                                                d_Logger.log(e.getMessage());
                                             }
                                             i += 3;
                                         } else {
@@ -142,7 +147,7 @@ public class MapEditor extends GameController {
                                             try {
                                                 d_GameMap.removeCountry(l_Commands[i + 1]);
                                             } catch (IllegalArgumentException e) {
-                                                System.out.println(e.getMessage());
+                                                d_Logger.log(e.getMessage());
                                             }
                                             i += 2;
                                         } else {
@@ -162,7 +167,7 @@ public class MapEditor extends GameController {
                                             try {
                                                 d_GameMap.addNeighbor(l_Commands[i + 1], l_Commands[i + 2]);
                                             } catch (IllegalArgumentException e) {
-                                                System.out.println(e.getMessage());
+                                                d_Logger.log(e.getMessage());
                                             }
                                             i += 3;
                                         } else {
@@ -174,7 +179,7 @@ public class MapEditor extends GameController {
                                             try {
                                                 d_GameMap.removeNeighbor(l_Commands[i + 1], l_Commands[i + 2]);
                                             } catch (IllegalArgumentException e) {
-                                                System.out.println(e.getMessage());
+                                                d_Logger.log(e.getMessage());
                                             }
                                             i += 3;
                                         } else {
@@ -195,9 +200,9 @@ public class MapEditor extends GameController {
                             break;
                         case "validatemap":
                             if (MapReader.validateMap(d_GameMap)) {
-                                System.out.println("Map is valid.");
+                                d_Logger.log("Map is valid.");
                             } else {
-                                System.out.println("Map is invalid.");
+                                d_Logger.log("Map is invalid.");
                             }
                             break;
                         case "savemap":
@@ -205,12 +210,12 @@ public class MapEditor extends GameController {
                                 if (MapReader.validateMap(d_GameMap)) {
                                     boolean l_HasSaved = MapReader.saveMap(d_GameMap, l_Commands[1]);
                                     if (l_HasSaved) {
-                                        System.out.println("Map validated & saved successfully.");
+                                        d_Logger.log("Map validated & saved successfully.");
                                     } else {
-                                        System.out.println("Map validated but could not be saved.");
+                                        d_Logger.log("Map validated but could not be saved.");
                                     }
                                 } else {
-                                    System.out.println("Map is invalid. Please validate the map before saving.");
+                                    d_Logger.log("Map is invalid. Please validate the map before saving.");
                                 }
                             }
                             break;
@@ -219,13 +224,13 @@ public class MapEditor extends GameController {
                             break;
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Incomplete command.");
+                    d_Logger.log("Incomplete command.");
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid number format.");
+                    d_Logger.log("Invalid number format.");
                 }
 
             } else {
-                System.out.println("Invalid command");
+                d_Logger.log("Invalid command");
             }
 
 

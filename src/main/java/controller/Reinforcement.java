@@ -7,13 +7,27 @@ import model.Player;
 import model.abstractClasses.GameController;
 import model.gamePhases.IssueOrderPhase;
 import utils.GameEngine;
+import utils.logger.LogEntryBuffer;
 
 import java.util.HashMap;
 
+/**
+ * The type Reinforcement.
+ */
 public class Reinforcement extends GameController {
 
     private final HashMap<String, Player> d_players;
 
+    /**
+     * Logger instance
+     */
+    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
+
+    /**
+     * Instantiates a new Reinforcement.
+     *
+     * @param p_GameEngine the p game engine
+     */
     public Reinforcement(GameEngine p_GameEngine) {
         super(p_GameEngine);
         d_GameMap = GameMap.getInstance();
@@ -24,7 +38,7 @@ public class Reinforcement extends GameController {
     @Override
     public void startPhase() throws Exception {
 
-        System.out.println("\n--------------- REINFORCEMENT PHASE ---------------\n");
+        d_Logger.log("\n--------------- REINFORCEMENT PHASE ---------------\n");
 
 
         // Assign reinforcements

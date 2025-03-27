@@ -10,6 +10,7 @@ import model.abstractClasses.GamePhase;
 import model.gamePhases.ReinforcementPhase;
 import utils.GameEngine;
 import utils.MapReader;
+import utils.logger.LogEntryBuffer;
 
 /**
  * This class implements the Game Controller and it executes the current phases
@@ -19,6 +20,11 @@ public class GamePlay extends GameController {
 
     private final List<String> CLI_COMMANDS = Arrays.asList("gameplayer", "assigncountries", "help", "loadmap", "showmap");
 
+    /**
+     * Logger instance
+     */
+    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
+    
     /**
      * Instantiates a new Game play.
      */
@@ -33,11 +39,11 @@ public class GamePlay extends GameController {
 
         boolean d_IsCountriesAssigned = false;
 
-        System.out.println();
-        System.out.println("===========================================");
-        System.out.println("************ GAMEPLAY SETTINGS ************");
-        System.out.println("===========================================");
-        System.out.println();
+        d_Logger.log("\n");
+        d_Logger.log("===========================================");
+        d_Logger.log("************ GAMEPLAY SETTINGS ************");
+        d_Logger.log("===========================================");
+        d_Logger.log("\n");
         while (true) {
             int i;
             System.out.print("Enter command (\"help\" for all commands): ");
@@ -46,38 +52,39 @@ public class GamePlay extends GameController {
 
             if (l_Commands[0].equalsIgnoreCase("exit")) {
                 if (d_GameMap.getPlayers().isEmpty()) {
-                    System.out.println("There are no players in this game.");
+                    d_Logger.log("There are no players in this game.");
                 } else if (d_GameMap.isGameMapEmpty()) {
-                    System.out.println("There is no map loaded.");
+                    d_Logger.log("There is no map loaded.");
                 } else {
                     if (!d_IsCountriesAssigned) {
                         d_GameMap.assignCountries();
                     }
                     this.d_GameEngine.setGamePhase(this.d_NextPhase);
                     this.d_GameMap.setGamePhase(this.d_NextPhase);
-                    System.out.println();
-                    System.out.println("==========================================");
-                    System.out.println("************** GAME STARTED **************");
-                    System.out.println("==========================================");
-                    System.out.println();
+                    d_Logger.log("\n");
+                    d_Logger.log("==========================================");
+                    d_Logger.log("************** GAME STARTED **************");
+                    d_Logger.log("==========================================");
                     break;
                 }
             } else if (inputValidator(l_Commands)) {
                 try {
                     switch (l_Commands[0].toLowerCase()) {
                         case "help":
-                            System.out.println("=========================================");
-                            System.out.println(" List of Game Play Commands ");
-                            System.out.println("=========================================");
-                            System.out.println("\nTo add or remove a player:");
-                            System.out.println("  gameplayer -add playername -remove playername");
-                            System.out.println("\nTo assign countries to all players: ");
-                            System.out.println("  assigncountries");
-                            System.out.println("\nTo load a domination map from the provided file: ");
-                            System.out.println(" loadmap <filename>");
-                            System.out.println("\nTo show all countries, continents, armies and ownership: ");
-                            System.out.println(" showmap");
-                            System.out.println("=========================================");
+                            d_Logger.log("=========================================");
+                            d_Logger.log(" List of Game Play Commands ");
+                            d_Logger.log("=========================================");
+                            d_Logger.log("\nTo add or remove a player:");
+                            d_Logger.log("  gameplayer -add playername -remove playername");
+                            d_Logger.log("\nTo assign countries to all players: ");
+                            d_Logger.log("  assigncountries");
+                            d_Logger.log("\nTo load a domination map from the provided file: ");
+                            d_Logger.log(" loadmap <filename>");
+                            d_Logger.log("\nTo show all countries, continents, armies and ownership: ");
+                            d_Logger.log(" showmap");
+                            d_Logger.log("\nTo start the game: ");
+                            d_Logger.log(" exit");
+                            d_Logger.log("=========================================");
                             break;
                         case "gameplayer":
                             i = 1;
@@ -88,7 +95,7 @@ public class GamePlay extends GameController {
                                             try {
                                                 d_GameMap.addPlayer(l_Commands[i + 1]);
                                             } catch (IllegalArgumentException e) {
-                                                System.out.println(e.getMessage());
+                                                d_Logger.log(e.getMessage());
                                             }
                                             i += 2;
                                         } else {
@@ -100,7 +107,7 @@ public class GamePlay extends GameController {
                                             try {
                                                 d_GameMap.removePlayer(l_Commands[i + 1]);
                                             } catch (IllegalArgumentException e) {
-                                                System.out.println(e.getMessage());
+                                                d_Logger.log(e.getMessage());
                                             }
                                             i += 2;
                                         } else {
@@ -114,9 +121,9 @@ public class GamePlay extends GameController {
                             break;
                         case "assigncountries":
                             if (d_GameMap.isGameMapEmpty()) {
-                                System.out.println("Please load a valid map file before assigning countries.");
+                                d_Logger.log("Please load a valid map file before assigning countries.");
                             } else if (d_GameMap.getPlayers().isEmpty()) {
-                                System.out.println("Please add players before assigning countries.");
+                                d_Logger.log("Please add players before assigning countries.");
                             } else {
                                 d_GameMap.assignCountries();
                                 d_IsCountriesAssigned = true;
@@ -124,11 +131,11 @@ public class GamePlay extends GameController {
                             break;
                         case "loadmap": // Add this case for the loadmap command
                             if (l_Commands.length == 2) {
-                                System.out.println("Loading map file: " + l_Commands[1]); // Debug
+                                d_Logger.log("Loading map file: " + l_Commands[1]); // Debug
                                 MapReader.readMap(d_GameMap, l_Commands[1]); // Call the readMap method
-                                System.out.println("Map loaded successfully.");
+                                d_Logger.log("Map loaded successfully.");
                             } else {
-                                System.out.println("Invalid command. Usage: loadmap <filename>");
+                                d_Logger.log("Invalid command. Usage: loadmap <filename>");
                             }
                             break;
                         case "showmap":
@@ -138,12 +145,12 @@ public class GamePlay extends GameController {
                             break;
                     }
                 } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Incomplete command.");
+                    d_Logger.log("Incomplete command.");
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid number format.");
+                    d_Logger.log("Invalid number format.");
                 }
             } else {
-                System.out.println("Invalid command.");
+                d_Logger.log("Invalid command.");
             }
         }
     }
