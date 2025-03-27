@@ -1,4 +1,4 @@
-package model.strategy;
+package model.strategy.player;
 
 import java.io.Serializable;
 import java.util.Scanner;

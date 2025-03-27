@@ -1,6 +1,10 @@
 package model;
 
 import controller.IssueOrder;
+import model.order.Order;
+import model.order.OrderCreator;
+import model.strategy.player.PlayerStrategy;
+import utils.logger.LogEntryBuffer;
 
 import java.io.Serializable;
 import java.util.*;
@@ -20,9 +24,37 @@ public class Player implements Serializable {
     private Deque<Order> d_Orders = new ArrayDeque<>();
 
     /**
+     * Logger instance
+     */
+    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
+
+    /**
      * number of armies to issue
      */
     private int d_ArmiesToIssue = 0;
+
+    private List<Card> d_PlayerCards = new ArrayList<>();
+
+    private boolean d_TurnCompleted = false;
+
+    /**
+     * Player Strategy to create the commands
+     */
+    private final PlayerStrategy d_PlayerStrategy;
+
+    /**
+     * A list of neutral players i.e. truced players
+     */
+    private final List<Player> d_NeutralPlayers = new ArrayList<>();
+
+    /**
+     * the constructor for player class
+     *
+     * @param p_PlayerStrategy player strategy
+     */
+    public Player(PlayerStrategy p_PlayerStrategy) {
+        this.d_PlayerStrategy = p_PlayerStrategy;
+    }
 
     /**
      * method to get armies issued
@@ -35,6 +67,7 @@ public class Player implements Serializable {
 
     /**
      * method to set the armies issued
+     *
      * @param p_ArmiesToIssue armies to issue to player
      */
     public void setIssuedArmies(int p_ArmiesToIssue) {
@@ -127,7 +160,7 @@ public class Player implements Serializable {
      */
     public void assignReinforcements(int p_num) {
         d_ReinforcementArmies += p_num;
-        System.out.println("The player: " + getD_Name() + " is assigned " + p_num + " reinforcements.");
+        d_Logger.log("The player: " + getD_Name() + " is assigned " + p_num + " reinforcements.");
     }
 
     /**
@@ -141,11 +174,13 @@ public class Player implements Serializable {
 
     /**
      * method to set orders
+     *
      * @param p_Orders the orders
      */
-    public void setOrders(Deque<Order> p_Orders){
+    public void setOrders(Deque<Order> p_Orders) {
         this.d_Orders = p_Orders;
     }
+
     /**
      * A function to add the orders to the issue order list
      *
@@ -168,14 +203,130 @@ public class Player implements Serializable {
      * Handles user input for issuing an order.
      */
     public void issueOrder() {
-        System.out.println("-----------------------------------------");
-        Scanner l_scanner = new Scanner(System.in);
-
-        System.out.print("Enter command (deploy countryID(name) num): ");
-        String l_input = l_scanner.nextLine();
-
-        Order l_Order = OrderCreator.CreateOrder(l_input.split(" "), this);
+        Order l_Order = OrderCreator.CreateOrder(IssueOrder.Commands.split(" "), this);
         addOrder(l_Order);
     }
 
+    /**
+     * A function to read all the commands from player
+     *
+     * @return command entered by the player
+     */
+    public String readFromPlayer() {
+        return this.d_PlayerStrategy.createCommand();
+    }
+
+    /**
+     * Gets player cards.
+     *
+     * @return the player cards
+     */
+    public List<Card> getPlayerCards() {
+        return d_PlayerCards;
+    }
+
+    /**
+     * Sets player cards.
+     *
+     * @param p_Cards the p cards
+     */
+    public void setPlayerCards(List<Card> p_Cards) {
+        this.d_PlayerCards = p_Cards;
+    }
+
+    /**
+     * Checks if a certain card is available.
+     *
+     * @param p_CardType the p card type
+     * @return the boolean
+     */
+    public boolean cardAvailable(CardType p_CardType) {
+        return this.d_PlayerCards.stream().anyMatch(l_Card -> l_Card.getCardType().equals(p_CardType));
+    }
+
+    /**
+     * Add card.
+     *
+     * @param p_Card the p card
+     */
+    public void addCard(Card p_Card) {
+        this.d_PlayerCards.add(p_Card);
+    }
+
+    /**
+     * Remove card.
+     *
+     * @param p_Card the p card
+     */
+    public void removeCard(Card p_Card) {
+        this.d_PlayerCards.remove(p_Card);
+    }
+
+    /**
+     * Clear cards.
+     */
+    public void clearCards() {
+        this.d_PlayerCards.clear();
+    }
+
+    /**
+     * Is turn completed boolean.
+     *
+     * @return the boolean
+     */
+    public boolean isD_TurnCompleted() {
+        return d_TurnCompleted;
+    }
+
+    /**
+     * Sets turn completed.
+     *
+     * @param d_TurnCompleted the d turn completed
+     */
+    public void setD_TurnCompleted(boolean d_TurnCompleted) {
+        this.d_TurnCompleted = d_TurnCompleted;
+    }
+
+    /**
+     * Check if enough reinforcement armies are available.
+     *
+     * @param p_ArmyCount the p army count
+     * @return the boolean
+     */
+    public boolean deployReinforcementArmiesFromPlayer(int p_ArmyCount) {
+        if (p_ArmyCount > d_ReinforcementArmies || p_ArmyCount <= 0) {
+            return false;
+        }
+        d_ReinforcementArmies -= p_ArmyCount;
+        return true;
+    }
+
+    /**
+     * Get the list of all players you cannot attack
+     *
+     * @return list of players
+     */
+    public List<Player> getNeutralPlayers() {
+        return d_NeutralPlayers;
+    }
+
+    /**
+     * Add the neutral player to the list
+     *
+     * @param p_NeutralPlayer The player you cannot attack
+     */
+    public void addNeutralPlayers(Player p_NeutralPlayer) {
+        if (!d_NeutralPlayers.contains(p_NeutralPlayer)) {
+            d_NeutralPlayers.add(p_NeutralPlayer);
+        }
+    }
+
+    /**
+     * Remove all the neutral players from list
+     */
+    public void removeNeutralPlayer() {
+        if (!d_NeutralPlayers.isEmpty()) {
+            d_NeutralPlayers.clear();
+        }
+    }
 }
