@@ -11,6 +11,9 @@ import utils.logger.LogEntryBuffer;
 
 import java.util.HashMap;
 
+/**
+ * The type Execute order.
+ */
 public class ExecuteOrder extends GameController {
 
     private final HashMap<String, Player> d_players;
@@ -20,6 +23,11 @@ public class ExecuteOrder extends GameController {
      */
     private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
+    /**
+     * Instantiates a new Execute order.
+     *
+     * @param p_GameEngine the p game engine
+     */
     public ExecuteOrder(GameEngine p_GameEngine) {
         super(p_GameEngine);
         d_GameMap = GameMap.getInstance();
@@ -32,12 +40,30 @@ public class ExecuteOrder extends GameController {
         d_Logger.log("\n\n--------------- EXECUTE ORDER PHASE ---------------");
 
         // Execute orders
-        for (Player l_player : d_players.values()) {
-            d_Logger.log("\n\nCurrent Player Execution: " + l_player.getD_Name());
-            Order l_order;
-            while ((l_order = l_player.nextOrder()) != null) {
-                l_order.execute();
+
+        int l_Counter = 0;
+        while (l_Counter < d_players.size()) {
+            for (Player l_Player : d_GameMap.getPlayers().values()) {
+                if(l_Player.isD_TurnCompleted()){
+                    continue;
+                }
+                d_Logger.log("\n\nCurrent Player Execution: " + l_Player.getD_Name());
+                Order l_Order = l_Player.nextOrder();
+                if (l_Order == null) {
+                    d_Logger.log("-----------------------------------------------------------------------------------------");
+                    d_Logger.log("Player " + l_Player.getD_Name() + " orders completed.");
+                    l_Player.setD_TurnCompleted(true);
+                    l_Counter++;
+                } else {
+                    if (l_Order.execute()) {
+                        l_Order.printOrderCommand();
+                    }
+                }
             }
+        }
+
+        for (Player l_Player : d_players.values()) {
+            l_Player.setD_TurnCompleted(false);
         }
 
         isGameWon();
@@ -46,6 +72,9 @@ public class ExecuteOrder extends GameController {
         this.d_GameMap.setGamePhase(this.d_NextPhase);
     }
 
+    /**
+     * Is game won.
+     */
     public void isGameWon(){
         for (Player l_player : d_players.values()) {
             if (l_player.getCapturedCountries().size() == d_GameMap.getCountries().size()) {

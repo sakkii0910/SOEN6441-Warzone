@@ -38,7 +38,7 @@ public class Reinforcement extends GameController {
     @Override
     public void startPhase() throws Exception {
 
-        d_Logger.log("\n--------------- REINFORCEMENT PHASE ---------------\n");
+        d_Logger.log("\n\n--------------- REINFORCEMENT PHASE ---------------\n\n");
 
 
         // Assign reinforcements

@@ -9,6 +9,9 @@ import utils.logger.LogEntryBuffer;
 
 import java.util.*;
 
+/**
+ * The type Issue order.
+ */
 public class IssueOrder extends GameController {
 
     private final HashMap<String, Player> d_Players;
@@ -23,6 +26,11 @@ public class IssueOrder extends GameController {
      */
     private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
+    /**
+     * Instantiates a new Issue order.
+     *
+     * @param p_GameEngine the p game engine
+     */
     public IssueOrder(GameEngine p_GameEngine) {
         super(p_GameEngine);
         d_GameMap = GameMap.getInstance();
@@ -40,8 +48,10 @@ public class IssueOrder extends GameController {
         while (!(numberOfSkippedPlayers() == d_Players.size())) {
             for (Player l_Player : d_Players.values()) {
                 d_Logger.log("\n\nCurrent Player Turn: " + l_Player.getD_Name());
+                d_Logger.log("-----------------------------------------------------------------------------------------");
 
                 if (l_Player.isD_TurnCompleted()) {
+                    d_Logger.log("Player " + l_Player.getD_Name() + " has completed his turns.");
                     continue;
                 }
 
@@ -78,6 +88,11 @@ public class IssueOrder extends GameController {
         this.d_GameMap.setGamePhase(this.d_NextPhase);
     }
 
+    /**
+     * Number of skipped players int.
+     *
+     * @return the int
+     */
     int numberOfSkippedPlayers() {
         int count = 0;
         for (Player l_Player : d_Players.values()) {
@@ -161,7 +176,6 @@ public class IssueOrder extends GameController {
      * @param p_Player The current player object
      */
     public void showStatus(Player p_Player) {
-        d_Logger.log("-----------------------------------------------------------------------------------------");
         d_Logger.log("List of game loop commands");
         d_Logger.log("To deploy the armies : deploy countryID numarmies");
         d_Logger.log("To advance/attack the armies : advance countrynamefrom countynameto numarmies");
