@@ -1,6 +1,9 @@
 package model;
 
 import controller.IssueOrder;
+import model.order.Order;
+import model.order.OrderCreator;
+import model.strategy.player.PlayerStrategy;
 import utils.logger.LogEntryBuffer;
 
 import java.io.Serializable;
@@ -33,6 +36,25 @@ public class Player implements Serializable {
     private List<Card> d_PlayerCards = new ArrayList<>();
 
     private boolean d_TurnCompleted = false;
+
+    /**
+     * Player Strategy to create the commands
+     */
+    private final PlayerStrategy d_PlayerStrategy;
+
+    /**
+     * A list of neutral players i.e. truced players
+     */
+    private final List<Player> d_NeutralPlayers = new ArrayList<>();
+
+    /**
+     * the constructor for player class
+     *
+     * @param p_PlayerStrategy player strategy
+     */
+    public Player(PlayerStrategy p_PlayerStrategy) {
+        this.d_PlayerStrategy = p_PlayerStrategy;
+    }
 
     /**
      * method to get armies issued
@@ -181,19 +203,17 @@ public class Player implements Serializable {
      * Handles user input for issuing an order.
      */
     public void issueOrder() {
-        d_Logger.log("-----------------------------------------");
-        Scanner l_scanner = new Scanner(System.in);
+        Order l_Order = OrderCreator.CreateOrder(IssueOrder.Commands.split(" "), this);
+        addOrder(l_Order);
+    }
 
-        System.out.println("Enter pass to complete your turn.");
-        System.out.print("Enter command (deploy countryID(name) num): ");
-        String l_input = l_scanner.nextLine();
-
-        if (l_input.equals("pass")) {
-            d_TurnCompleted = true;
-        } else {
-            Order l_Order = OrderCreator.CreateOrder(l_input.split(" "), this);
-            addOrder(l_Order);
-        }
+    /**
+     * A function to read all the commands from player
+     *
+     * @return command entered by the player
+     */
+    public String readFromPlayer() {
+        return this.d_PlayerStrategy.createCommand();
     }
 
     /**
@@ -279,5 +299,34 @@ public class Player implements Serializable {
         }
         d_ReinforcementArmies -= p_ArmyCount;
         return true;
+    }
+
+    /**
+     * Get the list of all players you cannot attack
+     *
+     * @return list of players
+     */
+    public List<Player> getNeutralPlayers() {
+        return d_NeutralPlayers;
+    }
+
+    /**
+     * Add the neutral player to the list
+     *
+     * @param p_NeutralPlayer The player you cannot attack
+     */
+    public void addNeutralPlayers(Player p_NeutralPlayer) {
+        if (!d_NeutralPlayers.contains(p_NeutralPlayer)) {
+            d_NeutralPlayers.add(p_NeutralPlayer);
+        }
+    }
+
+    /**
+     * Remove all the neutral players from list
+     */
+    public void removeNeutralPlayer() {
+        if (!d_NeutralPlayers.isEmpty()) {
+            d_NeutralPlayers.clear();
+        }
     }
 }

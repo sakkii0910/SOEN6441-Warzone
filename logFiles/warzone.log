@@ -139,3 +139,266 @@ The player: taha is assigned 10 reinforcements.
       Exiting the game...     
 ==============================
 
+
+
+=========================================
+            WARZONE: RISK GAME   ️         
+=========================================
+               MAIN MENU                 
+=========================================
+  [1] Start New Game
+  [2] Map Editing
+  [5] Exit
+=========================================
+
+
+===========================================
+************ GAMEPLAY SETTINGS ************
+===========================================
+
+
+=========================================
+ List of Game Play Commands 
+=========================================
+
+To add or remove a player:
+  gameplayer -add playername -remove playername
+
+To assign countries to all players: 
+  assigncountries
+
+To load a domination map from the provided file: 
+ loadmap <filename>
+
+To show all countries, continents, armies and ownership: 
+ showmap
+
+To start the game: 
+ exit
+=========================================
+Loading map file: 01.map
+Reading map file: 01.map
+Added continent: Asia
+Added continent: Europe
+Added country: China
+Added country: Korea
+Added country: Finland
+Added country: Russia
+Added neighbour for: China
+Added neighbour for: China
+Added neighbour for: Korea
+Added neighbour for: Korea
+Added neighbour for: Finland
+Added neighbour for: Russia
+Added neighbour for: Russia
+Added neighbour for: Russia
+Map loaded successfully.
+=========================================
+ List of Game Play Commands 
+=========================================
+
+To add or remove a player:
+  gameplayer -add playername -remove playername
+
+To assign countries to all players: 
+  assigncountries
+
+To load a domination map from the provided file: 
+ loadmap <filename>
+
+To show all countries, continents, armies and ownership: 
+ showmap
+
+To start the game: 
+ exit
+=========================================
+Successfully added Player: shariq.
+Successfully added Player: taha.
+China has been assigned to taha
+Russia has been assigned to shariq
+Korea has been assigned to taha
+Finland has been assigned to shariq
+
+
+==========================================
+************** GAME STARTED **************
+==========================================
+
+--------------- REINFORCEMENT PHASE ---------------
+
+The player: taha is assigned 6 reinforcements.
+The player: shariq is assigned 7 reinforcements.
+
+
+--------------- ISSUE ORDER PHASE ---------------
+-----------------------------------------------------------------------------------------
+List of game loop commands
+To deploy the armies : deploy countryID numarmies
+To advance/attack the armies : advance countrynamefrom countynameto numarmies
+To airlift the armies : airlift sourcecountryID targetcountryID numarmies
+To blockade the armies : blockade countryID
+To negotiate with player : negotiate playerID
+To bomb the country : bomb countryID
+To skip: pass
+-----------------------------------------------------------------------------------------
+The countries assigned to the player are: 
+taha has issued this order :- deploy China 2
+The order has been added to the list of orders.
+=============================================================================
+-----------------------------------------------------------------------------------------
+List of game loop commands
+To deploy the armies : deploy countryID numarmies
+To advance/attack the armies : advance countrynamefrom countynameto numarmies
+To airlift the armies : airlift sourcecountryID targetcountryID numarmies
+To blockade the armies : blockade countryID
+To negotiate with player : negotiate playerID
+To bomb the country : bomb countryID
+To skip: pass
+-----------------------------------------------------------------------------------------
+The countries assigned to the player are: 
+The command syntax is invalid.deploye Russia 3
+-----------------------------------------------------------------------------------------
+List of game loop commands
+To deploy the armies : deploy countryID numarmies
+To advance/attack the armies : advance countrynamefrom countynameto numarmies
+To airlift the armies : airlift sourcecountryID targetcountryID numarmies
+To blockade the armies : blockade countryID
+To negotiate with player : negotiate playerID
+To bomb the country : bomb countryID
+To skip: pass
+-----------------------------------------------------------------------------------------
+The countries assigned to the player are: 
+shariq has issued this order :- deploy Russia 3
+The order has been added to the list of orders.
+=============================================================================
+-----------------------------------------------------------------------------------------
+List of game loop commands
+To deploy the armies : deploy countryID numarmies
+To advance/attack the armies : advance countrynamefrom countynameto numarmies
+To airlift the armies : airlift sourcecountryID targetcountryID numarmies
+To blockade the armies : blockade countryID
+To negotiate with player : negotiate playerID
+To bomb the country : bomb countryID
+To skip: pass
+-----------------------------------------------------------------------------------------
+The countries assigned to the player are: 
+The Orders issued by Player taha are:
+deploy China 2
+taha has issued this order :- deploy Korea 4
+The order has been added to the list of orders.
+=============================================================================
+-----------------------------------------------------------------------------------------
+List of game loop commands
+To deploy the armies : deploy countryID numarmies
+To advance/attack the armies : advance countrynamefrom countynameto numarmies
+To airlift the armies : airlift sourcecountryID targetcountryID numarmies
+To blockade the armies : blockade countryID
+To negotiate with player : negotiate playerID
+To bomb the country : bomb countryID
+To skip: pass
+-----------------------------------------------------------------------------------------
+The countries assigned to the player are: 
+The Orders issued by Player shariq are:
+deploy Russia 3
+shariq has issued this order :- deploy Finland 4
+The order has been added to the list of orders.
+=============================================================================
+-----------------------------------------------------------------------------------------
+List of game loop commands
+To deploy the armies : deploy countryID numarmies
+To advance/attack the armies : advance countrynamefrom countynameto numarmies
+To airlift the armies : airlift sourcecountryID targetcountryID numarmies
+To blockade the armies : blockade countryID
+To negotiate with player : negotiate playerID
+To bomb the country : bomb countryID
+To skip: pass
+-----------------------------------------------------------------------------------------
+The countries assigned to the player are: 
+The Orders issued by Player taha are:
+deploy China 2
+deploy Korea 4
+-----------------------------------------------------------------------------------------
+List of game loop commands
+To deploy the armies : deploy countryID numarmies
+To advance/attack the armies : advance countrynamefrom countynameto numarmies
+To airlift the armies : airlift sourcecountryID targetcountryID numarmies
+To blockade the armies : blockade countryID
+To negotiate with player : negotiate playerID
+To bomb the country : bomb countryID
+To skip: pass
+-----------------------------------------------------------------------------------------
+The countries assigned to the player are: 
+The Orders issued by Player shariq are:
+deploy Russia 3
+deploy Finland 4
+
+
+--------------- EXECUTE ORDER PHASE ---------------
+
+
+Current Player Execution: taha
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+
+Current Player Execution: shariq
+---------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------
+
+--------------- REINFORCEMENT PHASE ---------------
+
+The player: taha is assigned 6 reinforcements.
+The player: shariq is assigned 7 reinforcements.
+
+
+--------------- ISSUE ORDER PHASE ---------------
+-----------------------------------------------------------------------------------------
+List of game loop commands
+To deploy the armies : deploy countryID numarmies
+To advance/attack the armies : advance countrynamefrom countynameto numarmies
+To airlift the armies : airlift sourcecountryID targetcountryID numarmies
+To blockade the armies : blockade countryID
+To negotiate with player : negotiate playerID
+To bomb the country : bomb countryID
+To skip: pass
+-----------------------------------------------------------------------------------------
+The countries assigned to the player are: 
+-----------------------------------------------------------------------------------------
+List of game loop commands
+To deploy the armies : deploy countryID numarmies
+To advance/attack the armies : advance countrynamefrom countynameto numarmies
+To airlift the armies : airlift sourcecountryID targetcountryID numarmies
+To blockade the armies : blockade countryID
+To negotiate with player : negotiate playerID
+To bomb the country : bomb countryID
+To skip: pass
+-----------------------------------------------------------------------------------------
+The countries assigned to the player are: 
+
+
+--------------- EXECUTE ORDER PHASE ---------------
+
+
+Current Player Execution: taha
+
+
+Current Player Execution: shariq
+
+--------------- REINFORCEMENT PHASE ---------------
+
+The player: taha is assigned 6 reinforcements.
+The player: shariq is assigned 7 reinforcements.
+
+
+--------------- ISSUE ORDER PHASE ---------------
+-----------------------------------------------------------------------------------------
+List of game loop commands
+To deploy the armies : deploy countryID numarmies
+To advance/attack the armies : advance countrynamefrom countynameto numarmies
+To airlift the armies : airlift sourcecountryID targetcountryID numarmies
+To blockade the armies : blockade countryID
+To negotiate with player : negotiate playerID
+To bomb the country : bomb countryID
+To skip: pass
+-----------------------------------------------------------------------------------------
+The countries assigned to the player are: 

@@ -1,7 +1,7 @@
 package controller;
 
 import model.GameMap;
-import model.Order;
+import model.order.Order;
 import model.Player;
 import model.abstractClasses.GameController;
 import model.gamePhases.ExitGamePhase;

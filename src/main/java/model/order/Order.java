@@ -1,4 +1,4 @@
-package model;
+package model.order;
 
 /**
  * Represents an abstract order in the game.
