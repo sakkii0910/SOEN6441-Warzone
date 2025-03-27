@@ -1,6 +1,7 @@
 package model;
 
 import controller.IssueOrder;
+import utils.logger.LogEntryBuffer;
 
 import java.io.Serializable;
 import java.util.*;
@@ -18,6 +19,11 @@ public class Player implements Serializable {
     private int d_ReinforcementArmies;
 
     private Deque<Order> d_Orders = new ArrayDeque<>();
+
+    /**
+     * Logger instance
+     */
+    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
     /**
      * number of armies to issue
@@ -132,7 +138,7 @@ public class Player implements Serializable {
      */
     public void assignReinforcements(int p_num) {
         d_ReinforcementArmies += p_num;
-        System.out.println("The player: " + getD_Name() + " is assigned " + p_num + " reinforcements.");
+        d_Logger.log("The player: " + getD_Name() + " is assigned " + p_num + " reinforcements.");
     }
 
     /**
@@ -175,8 +181,7 @@ public class Player implements Serializable {
      * Handles user input for issuing an order.
      */
     public void issueOrder() {
-        System.out.println("-----------------------------------------");
-
+        d_Logger.log("-----------------------------------------");
         Scanner l_scanner = new Scanner(System.in);
 
         System.out.println("Enter pass to complete your turn.");

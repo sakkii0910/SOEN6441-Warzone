@@ -6,6 +6,7 @@ import model.gamePhases.ExitGamePhase;
 import model.gamePhases.MapEditorPhase;
 import model.gamePhases.StartUpPhase;
 import utils.GameEngine;
+import utils.logger.LogEntryBuffer;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -15,6 +16,11 @@ import java.util.Scanner;
  */
 public class MenuController extends GameController {
 
+    /**
+     * Logger instance
+     */
+    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
+
     public MenuController(GameEngine p_GameEngine) {
         super(p_GameEngine);
     }
@@ -23,16 +29,16 @@ public class MenuController extends GameController {
     public void startPhase() throws Exception {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println();
-        System.out.println("=========================================");
-        System.out.println("            WARZONE: RISK GAME   ️         ");
-        System.out.println("=========================================");
-        System.out.println("               MAIN MENU                 ");
-        System.out.println("=========================================");
-        System.out.println("  [1] Start New Game");
-        System.out.println("  [2] Map Editing");
-        System.out.println("  [5] Exit");
-        System.out.println("=========================================");
+        d_Logger.log("\n");
+        d_Logger.log("=========================================");
+        d_Logger.log("            WARZONE: RISK GAME   ️         ");
+        d_Logger.log("=========================================");
+        d_Logger.log("               MAIN MENU                 ");
+        d_Logger.log("=========================================");
+        d_Logger.log("  [1] Start New Game");
+        d_Logger.log("  [2] Map Editing");
+        d_Logger.log("  [5] Exit");
+        d_Logger.log("=========================================");
         System.out.print("\tSelect an option: ");
 
 

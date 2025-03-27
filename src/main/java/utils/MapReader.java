@@ -15,6 +15,7 @@ import java.util.Set;
 import model.Continent;
 import model.Country;
 import model.GameMap;
+import utils.logger.LogEntryBuffer;
 
 /**
  * A class to read, validate and save the map file
@@ -42,6 +43,11 @@ public class MapReader {
     private static BufferedReader d_Buffer;
 
     /**
+     * Logger instance
+     */
+    private static LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
+
+    /**
      * Reads a map file and creates a game map object.
      *
      * @param p_GameMap  The game map object to populate.
@@ -49,7 +55,7 @@ public class MapReader {
      * @throws Exception If an error occurs while reading the map file.
      */
     public static void readMap(GameMap p_GameMap, String p_FileName) throws Exception {
-        System.out.println("Reading map file: " + p_FileName);
+        d_Logger.log("Reading map file: " + p_FileName);
 
         try {
             p_GameMap.resetGameMap();
@@ -136,7 +142,7 @@ public class MapReader {
      * @throws Exception If an error occurs while saving the map file.
      */
     public static boolean saveMap(GameMap p_GameMap, String p_FileName) throws Exception {
-        System.out.println("Saving map file: " + p_FileName);
+        d_Logger.log("Saving map file: " + p_FileName);
 
         try {
             // Create a new file or overwrite the existing file
@@ -185,7 +191,7 @@ public class MapReader {
             l_BufferedWriter.write(d_Content);
             l_BufferedWriter.close();
 
-            System.out.println("Map saved successfully."); // Debug
+            d_Logger.log("Map saved successfully."); // Debug
             return true;
         } catch (Exception e) {
             System.err.println("Error saving map file: " + e.getMessage()); // Debug
@@ -210,17 +216,17 @@ public class MapReader {
 
         if (checkIfNeighbourExists(p_GameMap)) {
             if (!checkContinentsConnected(p_GameMap)) {
-                System.out.println("Continents are not connected");
+                d_Logger.log("Continents are not connected");
                 return false;
             }
 
             if (!checkIfMapIsConnected(p_GameMap.getCountries())) {
-                System.out.println("Map is not connected");
+                d_Logger.log("Map is not connected");
                 return false;
             }
         }
         else {
-            System.out.println("Neighbour does not exist");
+            d_Logger.log("Neighbour does not exist");
             return false;
         }
         
