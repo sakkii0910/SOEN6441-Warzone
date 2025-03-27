@@ -1,5 +1,6 @@
 package model;
 import model.*;
+import model.strategy.player.PlayerStrategy;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,7 +16,7 @@ public void setUp() {
     gameMap.resetGameMap(); // Ensure a clean state before each test
 
     // Create player
-    player = new Player();
+    player = new Player(PlayerStrategy.getStrategy("human"));
     player.setD_Name("Alice");
 
     // Create and add country to the game map
