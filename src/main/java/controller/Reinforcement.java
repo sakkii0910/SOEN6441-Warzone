@@ -11,6 +11,9 @@ import utils.logger.LogEntryBuffer;
 
 import java.util.HashMap;
 
+/**
+ * The type Reinforcement.
+ */
 public class Reinforcement extends GameController {
 
     private final HashMap<String, Player> d_players;
@@ -20,6 +23,11 @@ public class Reinforcement extends GameController {
      */
     private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
+    /**
+     * Instantiates a new Reinforcement.
+     *
+     * @param p_GameEngine the p game engine
+     */
     public Reinforcement(GameEngine p_GameEngine) {
         super(p_GameEngine);
         d_GameMap = GameMap.getInstance();
