@@ -65,7 +65,6 @@ public class GamePlay extends GameController {
                     d_Logger.log("==========================================");
                     d_Logger.log("************** GAME STARTED **************");
                     d_Logger.log("==========================================");
-                    d_Logger.log("\n");
                     break;
                 }
             } else if (inputValidator(l_Commands)) {
@@ -83,6 +82,8 @@ public class GamePlay extends GameController {
                             d_Logger.log(" loadmap <filename>");
                             d_Logger.log("\nTo show all countries, continents, armies and ownership: ");
                             d_Logger.log(" showmap");
+                            d_Logger.log("\nTo start the game: ");
+                            d_Logger.log(" exit");
                             d_Logger.log("=========================================");
                             break;
                         case "gameplayer":

@@ -26,17 +26,17 @@ public class IssueOrder extends GameController {
     }
 
     public void startPhase() throws Exception {
-        d_Logger.log("\n--------------- ISSUE ORDER PHASE ---------------");
+        d_Logger.log("\n\n--------------- ISSUE ORDER PHASE ---------------");
 
         int count = 0;
         // Issue orders
-        while (count <= d_Players.size()) {
+        while (count < d_Players.size()) {
             for (Player l_player : d_Players.values()) {
-                System.out.println("\n\nCurrent Player Turn: " + l_player.getD_Name());
+                d_Logger.log("\n\nCurrent Player Turn: " + l_player.getD_Name());
                 if (l_player.isD_TurnCompleted()) {
                     count++;
-                    System.out.println("-----------------------------------------");
-                    System.out.println("User has completed his turns.");
+                    d_Logger.log("-----------------------------------------");
+                    d_Logger.log("User has completed his turns.");
                 } else
                     l_player.issueOrder();
             }
