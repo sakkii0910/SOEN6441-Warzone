@@ -11,6 +11,9 @@ import java.util.*;
 
 /**
  * The type Issue order.
+ * @author Taha Mirza
+ * @author Poorav Panchal
+ * @author  Shariq Anwar
  */
 public class IssueOrder extends GameController {
 
@@ -159,7 +162,7 @@ public class IssueOrder extends GameController {
      * @param p_Command the command to be validated
      * @return true if length is correct else false
      */
-    private static boolean checkCommandLength(String p_Command, int p_Length) {
+    static boolean checkCommandLength(String p_Command, int p_Length) {
         if (p_Command.contains("deploy")) {
             return p_Length == 3;
         } else if (p_Command.contains("bomb") || p_Command.contains("blockade") || p_Command.contains("negotiate") || p_Command.contains("savegame")) {

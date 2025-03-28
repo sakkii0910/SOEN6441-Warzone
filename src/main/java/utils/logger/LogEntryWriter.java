@@ -5,6 +5,7 @@ import java.io.*;
 
 /**
  * Class implementing Observer to write to log file
+ * @author Poorav Panchal
  */
 public class LogEntryWriter implements Observer, Serializable {
     /**

@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * The type Map editor phase.
+ *  @author Taha Mirza
+ *  @author  Shariq Anwar
  */
 public class MapEditorPhase extends GamePhase {
 

@@ -14,6 +14,7 @@ public class BlockadeOrder extends Order implements Serializable {
 
     /**
      * Logger Observable
+     *  @author Pruthvirajsinh Dodiya
      */
     private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 

@@ -24,7 +24,7 @@ public void setUp() {
     country.setD_CountryName("Canada");
     country.setPlayer(player);
 
-    gameMap.getCountries().put("Canada", country); // Ensure country is registered in the game map
+    gameMap.getCountries().put("Canada", country); // ✅ Ensure country is registered in the game map
 
     // Assign player some reinforcements
     player.assignReinforcements(5);

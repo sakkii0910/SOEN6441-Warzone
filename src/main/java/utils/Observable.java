@@ -2,6 +2,7 @@ package utils;
 
 /**
  * Interface for implementation of Observable
+ * @author Poorav Panchal
  */
 public interface Observable {
 

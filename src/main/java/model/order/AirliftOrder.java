@@ -11,6 +11,7 @@ import java.io.Serializable;
 
 /**
  * Represents an Airlift Order - transfers armies between two owned countries.
+ * @author Pruthvirajsinh Dodiya
  */
 public class AirliftOrder extends Order implements Serializable {
 

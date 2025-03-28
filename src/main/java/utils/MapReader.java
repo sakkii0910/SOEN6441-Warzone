@@ -19,6 +19,7 @@ import utils.logger.LogEntryBuffer;
 
 /**
  * A class to read, validate and save the map file
+ * @author Shariq Anwar
  */
 public class MapReader {
 

@@ -8,6 +8,7 @@ import java.util.List;
 
 /**
  * The type Exit game phase.
+ *  @author Taha Mirza
  */
 public class ExitGamePhase extends GamePhase {
 

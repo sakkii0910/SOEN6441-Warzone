@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 /**
  * A class to check if the graph is strongly connected or not
+ * @author Shariq Anwar
  */
 public class ConnectedGraph {
     private int d_Vertices;

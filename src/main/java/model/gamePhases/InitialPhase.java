@@ -7,6 +7,7 @@ import utils.GameEngine;
 
 /**
  * The type Initial phase.
+ *  @author Taha Mirza
  */
 public class InitialPhase extends GamePhase {
 

@@ -4,6 +4,8 @@ import java.util.Random;
 
 /**
  * The enum Card type.
+ *  @author Taha Mirza
+ *  @author Pruthvirajsinh Dodiya
  */
 public enum CardType {
     /**

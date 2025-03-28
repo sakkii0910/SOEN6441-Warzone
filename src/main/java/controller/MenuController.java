@@ -13,6 +13,8 @@ import java.util.Scanner;
 
 /**
  * The type Menu controller.
+ *  @author Taha Mirza
+ *  @author Poorav Panchal
  */
 public class MenuController extends GameController {
 

@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 /**
  * A class with the information of Order details
+ * @author Shariq Anwar
  */
 public class OrderInfo implements Serializable {
     /**

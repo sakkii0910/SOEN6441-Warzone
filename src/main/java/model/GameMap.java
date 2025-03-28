@@ -8,6 +8,9 @@ import java.util.*;
 
 /**
  * Represents the game map for the Warzone game.
+ * @author  Sakshi Sudhir Mulik
+ * @author Taha Mirza
+ * @author Shariq Anwar
  */
 public class GameMap {
     private final HashMap<String, Continent> continents;

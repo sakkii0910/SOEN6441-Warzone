@@ -13,6 +13,9 @@ import java.util.HashMap;
 
 /**
  * The type Reinforcement.
+ *  @author Taha Mirza
+ *  @author Poorav Panchal
+ *
  */
 public class Reinforcement extends GameController {
 

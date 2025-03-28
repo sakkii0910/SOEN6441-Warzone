@@ -5,10 +5,11 @@ import utils.GameEngine;
 
 /**
  * The type Game controller.
+ *  @author Taha Mirza
  */
 public abstract class GameController {
 
-    protected GamePhase d_NextPhase;
+    public GamePhase d_NextPhase;
     protected GameMap d_GameMap;
     protected GameEngine d_GameEngine;
 

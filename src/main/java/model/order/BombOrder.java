@@ -12,6 +12,8 @@ import java.util.Objects;
 
 /**
  * Represents a Bomb Order - destroys half of enemy armies in a target country.
+
+ *   @author Pruthvirajsinh Dodiya
  */
 public class BombOrder extends Order implements Serializable {
 

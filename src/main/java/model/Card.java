@@ -2,6 +2,7 @@ package model;
 
 /**
  * The type Card.
+ * @author Taha Mirza
  */
 public class Card {
     private CardType d_CardType;

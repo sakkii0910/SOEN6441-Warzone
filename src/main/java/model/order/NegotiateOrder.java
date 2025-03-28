@@ -10,6 +10,7 @@ import java.io.Serializable;
 
 /**
  * Represents a Diplomacy Order - negotiates peace with another player.
+ *  @author Pruthvirajsinh Dodiya
  */
 public class NegotiateOrder extends Order implements Serializable {
 

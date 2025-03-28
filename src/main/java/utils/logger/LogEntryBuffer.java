@@ -12,6 +12,7 @@ public class LogEntryBuffer implements Observable, Serializable {
 
     /**
      * Static object of LogEntryBuffer
+     * @author Poorav Panchal
      */
     private static LogEntryBuffer Logger;
 

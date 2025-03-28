@@ -6,6 +6,9 @@ import java.util.Set;
 
 /**
  * Continent class contains the information about the continent
+ *  @author Taha Mirza
+ *  @author  Shariq Anwar
+ * @author  Sakshi Sudhir Mulik
  */
 public class Continent implements Serializable {
     private int d_ContinentId;

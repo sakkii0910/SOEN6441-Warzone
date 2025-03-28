@@ -14,6 +14,10 @@ import java.util.Scanner;
 
 /**
  * Map Editor Class to handle all maps related command.
+ *   @author Taha Mirza
+ *   @author Poorav Panchal
+ *   @author  Shariq Anwar
+ * @author Sakshi Sudhir Mulik
  */
 public class MapEditor extends GameController {
 

@@ -11,6 +11,9 @@ import java.util.*;
 
 /**
  * The type Player.
+ * @author Taha Mirza
+ * @author Shariq Anwar
+ * @author Poorav Panchal
  */
 public class Player implements Serializable {
     private int d_Id;

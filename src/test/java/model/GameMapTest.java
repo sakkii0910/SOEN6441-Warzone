@@ -22,6 +22,7 @@ import utils.MapReader;
 class GameMapTest {
     /**
      * Tests adding a continent to the game map.
+     * @author Sakshi Sudhir Mulik
      */
     @Test
     void testAddContinent() {

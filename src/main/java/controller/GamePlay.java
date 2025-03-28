@@ -15,6 +15,8 @@ import utils.logger.LogEntryBuffer;
 
 /**
  * This class implements the Game Controller and it executes the current phases
+ * @author Poorav Panchal
+ * @author Taha Mirza
  */
 public class GamePlay extends GameController {
     private final Scanner SCANNER = new Scanner(System.in);
