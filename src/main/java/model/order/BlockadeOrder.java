@@ -54,7 +54,7 @@ public class BlockadeOrder extends Order implements Serializable {
         // Remove ownership
         l_Player.getCapturedCountries().remove(l_Country);
         l_Country.setPlayer(null);
-        d_GameMap.addNeutralCountry(l_Country);
+        
 
         l_Player.removeCard(new Card(CardType.BLOCKADE));
 
@@ -80,7 +80,7 @@ public class BlockadeOrder extends Order implements Serializable {
             return false;
         }
 
-        if (!l_Player.checkIfCardAvailable(CardType.BLOCKADE)) {
+        if (!l_Player.cardAvailable(CardType.BLOCKADE)) {
             d_Logger.log("Invalid blockade order: Player does not have a Blockade card.");
             return false;
         }
