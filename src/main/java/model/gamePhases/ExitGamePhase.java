@@ -11,6 +11,11 @@ import java.util.List;
  */
 public class ExitGamePhase extends GamePhase {
 
+    /**
+     * Instantiates a new Exit game phase.
+     *
+     * @param p_GameEngine the p game engine
+     */
     public ExitGamePhase(GameEngine p_GameEngine) {
         super(p_GameEngine);
     }

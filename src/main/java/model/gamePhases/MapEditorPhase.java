@@ -12,6 +12,11 @@ import java.util.List;
  */
 public class MapEditorPhase extends GamePhase {
 
+    /**
+     * Instantiates a new Map editor phase.
+     *
+     * @param p_GameEngine the p game engine
+     */
     public MapEditorPhase(GameEngine p_GameEngine) {
         super(p_GameEngine);
     }

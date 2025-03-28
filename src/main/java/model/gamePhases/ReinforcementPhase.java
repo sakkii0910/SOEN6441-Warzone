@@ -6,8 +6,16 @@ import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
 import utils.GameEngine;
 
+/**
+ * The type Reinforcement phase.
+ */
 public class ReinforcementPhase extends GamePhase {
 
+    /**
+     * Instantiates a new Reinforcement phase.
+     *
+     * @param p_GameEngine the p game engine
+     */
     public ReinforcementPhase(GameEngine p_GameEngine) {
         super(p_GameEngine);
     }

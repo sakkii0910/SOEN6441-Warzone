@@ -5,8 +5,16 @@ import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
 import utils.GameEngine;
 
+/**
+ * The type Issue order phase.
+ */
 public class IssueOrderPhase extends GamePhase {
 
+    /**
+     * Instantiates a new Issue order phase.
+     *
+     * @param p_GameEngine the p game engine
+     */
     public IssueOrderPhase(GameEngine p_GameEngine) {
         super(p_GameEngine);
     }
