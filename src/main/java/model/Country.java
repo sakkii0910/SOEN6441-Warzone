@@ -163,10 +163,11 @@ public class Country implements Serializable {
     /**
      * Add/Deploy armies.
      *
-     * @param dNumArmies the num armies
+     * @param p_dNumArmies the p d num armies
      */
-    public void setD_Armies(int dNumArmies) {
-        d_Armies += dNumArmies;
+    public void setD_Armies(int p_dNumArmies) {
+        p_dNumArmies = Math.max(p_dNumArmies, 0);
+        this.d_Armies = p_dNumArmies;
     }
 
     /**
