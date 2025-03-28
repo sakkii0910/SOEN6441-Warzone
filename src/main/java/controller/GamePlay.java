@@ -32,7 +32,7 @@ public class GamePlay extends GameController {
     public GamePlay(GameEngine p_GameEngine) {
         super(p_GameEngine);
         d_GameMap = GameMap.getInstance();
-        d_NextPhase = new IssueOrderPhase(this.d_GameEngine);
+        d_NextPhase = new ReinforcementPhase(this.d_GameEngine);
     }
 
     @Override

@@ -10,6 +10,11 @@ import utils.GameEngine;
  */
 public class InitialPhase extends GamePhase {
 
+    /**
+     * Instantiates a new Initial phase.
+     *
+     * @param p_GameEngine the p game engine
+     */
     public InitialPhase(GameEngine p_GameEngine) {
         super(p_GameEngine);
     }

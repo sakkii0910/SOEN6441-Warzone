@@ -12,6 +12,11 @@ import java.util.List;
  */
 public class StartUpPhase extends GamePhase {
 
+    /**
+     * Instantiates a new Start up phase.
+     *
+     * @param p_GameEngine the p game engine
+     */
     public StartUpPhase(GameEngine p_GameEngine) {
         super(p_GameEngine);
     }
