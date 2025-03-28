@@ -1,15 +1,15 @@
 package model.order;
 
+import model.Card;
+import model.CardType;
+import model.Country;
+import model.GameMap;
+import model.Player;
 import model.*;
 import utils.logger.LogEntryBuffer;
 
 import java.io.Serializable;
 
-
-/**
- * This class helps in executing the Blockade Card
- *
- */
 public class BlockadeOrder extends Order implements Serializable {
 
     /**
@@ -34,16 +34,29 @@ public class BlockadeOrder extends Order implements Serializable {
     public boolean execute() {
         Player l_Player = getOrderInfo().getPlayer();
         Country l_Country = getOrderInfo().getTargetCountry();
+
         d_Logger.log("---------------------------------------------------------------------------------------------");
         d_Logger.log(getOrderInfo().getCommand());
-        if (validateCommand()) {
-            l_Country.setD_Armies(l_Country.getD_Armies() * 3);
-            l_Country.addNeutralCountry(l_Country);
-            l_Player.getCapturedCountries().remove(l_Country);
-            l_Player.removeCard(new Card(CardType.BLOCKADE));
-            return true;
+
+        if (!validateCommand()) {
+            return false;
         }
-        return false;
+
+        int l_OriginalArmies = l_Country.getD_Armies();
+        int l_TripledArmies = l_OriginalArmies * 3;
+        l_Country.setD_Armies(l_TripledArmies);
+
+        // Remove ownership
+        l_Player.getCapturedCountries().remove(l_Country);
+        l_Country.addNeutralCountry(l_Country);
+        
+
+        l_Player.removeCard(new Card(CardType.BLOCKADE));
+
+        d_Logger.log(String.format("Blockade executed on %s: Armies tripled from %d to %d, now neutral territory.",
+                l_Country.getD_CountryName(), l_OriginalArmies, l_TripledArmies));
+
+        return true;
     }
 
     /**
@@ -56,31 +69,31 @@ public class BlockadeOrder extends Order implements Serializable {
         Player l_Player = getOrderInfo().getPlayer();
         Country l_Country = getOrderInfo().getTargetCountry();
 
-        if (l_Player == null) {
-            System.err.println("The Player is not valid.");
-            d_Logger.log("The Player is not valid.");
+        if (l_Player == null || l_Country == null) {
+            d_Logger.log("Invalid blockade order: Player or target country is null.");
             return false;
         }
 
-        if (l_Country.getPlayer() != l_Player) {
-            System.err.println("The target country does not belong to the player");
-            d_Logger.log("The target country does not belong to the player");
-            return false;
-        }
         if (!l_Player.cardAvailable(CardType.BLOCKADE)) {
-            System.err.println("Player doesn't have Blockade Card.");
-            d_Logger.log("Player doesn't have Blockade Card.");
+            d_Logger.log("Invalid blockade order: Player does not have a Blockade card.");
             return false;
         }
+
+        if (!l_Player.isCaptured(l_Country)) {
+            d_Logger.log("Invalid blockade order: Country does not belong to player.");
+            return false;
+        }
+
         return true;
     }
 
     /**
-     * Print the command
+     * Logs the blockade order command
      */
     @Override
     public void printOrderCommand() {
-        d_Logger.log("Blockade on " + getOrderInfo().getTargetCountry().getD_CountryName() + " by " + getOrderInfo().getPlayer().getD_Name());
+        d_Logger.log(String.format("Blockade Order: Player %s triples armies in country %s and turns it neutral.",
+                getOrderInfo().getPlayer().getD_Name(), getOrderInfo().getTargetCountry().getD_CountryName()));
         d_Logger.log("---------------------------------------------------------------------------------------------");
     }
 }
