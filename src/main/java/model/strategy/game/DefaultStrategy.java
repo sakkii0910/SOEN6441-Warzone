@@ -43,8 +43,7 @@ public class DefaultStrategy implements GameStrategy {
                 d_Logger.log(String.format("Attacker : %s (%s) won", p_Player.getD_Name(), p_From.getD_CountryName()));
 
                 //Assign power card to king
-                // TODO: later change to random card
-                Card l_AssignedCard = new Card(CardType.BOMB);
+                Card l_AssignedCard = new Card();
                 p_Player.addCard(l_AssignedCard);
                 d_Logger.log("Attacker: " + p_Player.getD_Name() + " received a card: " + l_AssignedCard.getCardType().toString());
                 d_Logger.log(String.format("Since won, left out %s (Attacker) armies %s moved to %s.", p_From.getD_CountryName(), p_Armies, p_To.getD_CountryName()));
@@ -62,8 +61,7 @@ public class DefaultStrategy implements GameStrategy {
                 d_Logger.log(String.format("Attacker : %s (%s) won", p_Player.getD_Name(), p_From.getD_CountryName()));
 
                 //Assign power card to king
-                // TODO: later change to random card
-                Card l_AssignedCard = new Card(CardType.BOMB);;
+                Card l_AssignedCard = new Card();;
                 p_Player.addCard(l_AssignedCard);
                 d_Logger.log("Attacker: " + p_Player.getD_Name() + " received a card: " + l_AssignedCard.getCardType().toString());
                 d_Logger.log(String.format("Since won, left out %s (Attacker) armies %s moved to %s.", p_From.getD_CountryName(), l_armiesLeftAttacker, p_To.getD_CountryName()));

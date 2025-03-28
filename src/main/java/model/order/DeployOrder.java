@@ -30,7 +30,7 @@ public class DeployOrder extends Order implements Serializable {
         int l_ArmiesToDeploy = getOrderInfo().getNumberOfArmy();
         d_Logger.log("---------------------------------------------------------------------------------------------");
         if (validateCommand()) {
-            l_Destination.setD_Armies(l_ArmiesToDeploy);
+            l_Destination.deployArmies(l_ArmiesToDeploy);
             return true;
         }
         return false;

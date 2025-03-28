@@ -8,6 +8,13 @@ public class Card {
 
     /**
      * Instantiates a new Card.
+     */
+    public Card() {
+        d_CardType = CardType.getRandomCard();
+    }
+
+    /**
+     * Instantiates a new Card.
      *
      * @param p_CardType the p card type
      */
