@@ -39,7 +39,7 @@ public class OrderCreator implements Serializable {
                 break;
             case "advance":
                 l_Order = new AdvanceOrder();
-                l_Order.setOrderInfo(GenerateAdvanceOrderOrAirliftInfo(p_Commands, p_Player));
+                l_Order.setOrderInfo(GenerateAdvanceOrderInfo(p_Commands, p_Player));
                 break;
             case "negotiate":
                 l_Order = new NegotiateOrder();
@@ -47,15 +47,15 @@ public class OrderCreator implements Serializable {
                 break;
             case "blockade":
                 l_Order = new BlockadeOrder();
-                l_Order.setOrderInfo(GenerateBlockadeOrderOrBombOrderInfo(p_Commands, p_Player));
+                l_Order.setOrderInfo(GenerateBlockadeOrderInfo(p_Commands, p_Player));
                 break;
             case "airlift":
                 l_Order = new AirliftOrder();
-                l_Order.setOrderInfo(GenerateAdvanceOrderOrAirliftInfo(p_Commands, p_Player));
+                l_Order.setOrderInfo(GenerateAirliftOrderInfo(p_Commands, p_Player));
                 break;
             case "bomb":
                 l_Order = new BombOrder();
-                l_Order.setOrderInfo(GenerateBlockadeOrderOrBombOrderInfo(p_Commands, p_Player));
+                l_Order.setOrderInfo(GenerateBombOrderInfo(p_Commands, p_Player));
                 break;
 
             default:
@@ -88,13 +88,13 @@ public class OrderCreator implements Serializable {
     }
 
     /**
-     * Generate advance order or airlift info order info.
+     * A function to generate the information for advance order
      *
-     * @param p_Command the p command
-     * @param p_Player  the p player
-     * @return the order info
+     * @param p_Command the command entered
+     * @param p_Player  the player who issued the order
+     * @return the order information of advance/attack
      */
-    public static OrderInfo GenerateAdvanceOrderOrAirliftInfo(String[] p_Command, Player p_Player) {
+    public static OrderInfo GenerateAdvanceOrderInfo(String[] p_Command, Player p_Player) {
         String l_FromCountryID = p_Command[1];
         Country l_FromCountry = d_GameMap.getCountry(l_FromCountryID);
         String l_ToCountryID = p_Command[2];
@@ -125,13 +125,52 @@ public class OrderCreator implements Serializable {
     }
 
     /**
-     * Generate blockade order or bomb order info order info.
+     * A function to generate information about Blockade Order
      *
-     * @param p_Command the p command
-     * @param p_Player  the p player
-     * @return the order info
+     * @param p_Command the command entered
+     * @param p_Player  object parameter of type Player
+     * @return the order information of deploy
      */
-    public static OrderInfo GenerateBlockadeOrderOrBombOrderInfo(String[] p_Command, Player p_Player) {
+    public static OrderInfo GenerateBlockadeOrderInfo(String[] p_Command, Player p_Player) {
+        OrderInfo l_OrderInfo = new OrderInfo();
+        l_OrderInfo.setCommand(ConvertToString(p_Command));
+        l_OrderInfo.setPlayer(p_Player);
+        String l_CountryID = p_Command[1];
+        Country l_TargetCountry = d_GameMap.getCountry(l_CountryID);
+        l_OrderInfo.setTargetCountry(l_TargetCountry);
+        return l_OrderInfo;
+    }
+
+    /**
+     * function to generate information about Airlift Order
+     *
+     * @param p_Command the command entered
+     * @param p_Player  object parameter of type Player
+     * @return the order information of deploy
+     */
+    public static OrderInfo GenerateAirliftOrderInfo(String[] p_Command, Player p_Player) {
+        String l_FromCountryID = p_Command[1];
+        Country l_FromCountry = d_GameMap.getCountry(l_FromCountryID);
+        String l_ToCountryID = p_Command[2];
+        Country l_ToCountry = d_GameMap.getCountry(l_ToCountryID);
+        int l_NumberOfArmies = Integer.parseInt(p_Command[3]);
+        OrderInfo l_OrderInfo = new OrderInfo();
+        l_OrderInfo.setCommand(ConvertToString(p_Command));
+        l_OrderInfo.setPlayer(p_Player);
+        l_OrderInfo.setDeparture(l_FromCountry);
+        l_OrderInfo.setDestination(l_ToCountry);
+        l_OrderInfo.setNumberOfArmy(l_NumberOfArmies);
+        return l_OrderInfo;
+    }
+
+    /**
+     * function to generate information about Bomb Order
+     *
+     * @param p_Command the command entered
+     * @param p_Player  object parameter of type Player
+     * @return the order information
+     */
+    public static OrderInfo GenerateBombOrderInfo(String[] p_Command, Player p_Player) {
         OrderInfo l_OrderInfo = new OrderInfo();
         l_OrderInfo.setCommand(ConvertToString(p_Command));
         l_OrderInfo.setPlayer(p_Player);
