@@ -5,35 +5,30 @@ import model.CardType;
 import model.Country;
 import model.GameMap;
 import model.Player;
+import model.*;
 import utils.logger.LogEntryBuffer;
 
 import java.io.Serializable;
 
-/**
- * Represents a Blockade Order - triples armies and turns country neutral.
- */
 public class BlockadeOrder extends Order implements Serializable {
 
-    /** Game Map singleton instance */
-    public GameMap d_GameMap;
-
-    /** Logger instance */
-    public LogEntryBuffer d_Logger;
+    /**
+     * Logger Observable
+     */
+    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
     /**
-     * Constructor for BlockadeOrder
+     * Constructor for class Blockade Order
      */
     public BlockadeOrder() {
         super();
         setType("blockade");
-        d_GameMap = GameMap.getInstance();
-        d_Logger = LogEntryBuffer.getInstance();
     }
 
     /**
-     * Executes the blockade order: triples the armies and converts country to neutral.
+     * Execute the Blockade Order
      *
-     * @return true if successful, false otherwise
+     * @return true if the execute was successful else false
      */
     @Override
     public boolean execute() {
@@ -53,22 +48,21 @@ public class BlockadeOrder extends Order implements Serializable {
 
         // Remove ownership
         l_Player.getCapturedCountries().remove(l_Country);
-        l_Country.setPlayer(null);
+        l_Country.addNeutralCountry(l_Country);
         
 
         l_Player.removeCard(new Card(CardType.BLOCKADE));
 
         d_Logger.log(String.format("Blockade executed on %s: Armies tripled from %d to %d, now neutral territory.",
                 l_Country.getD_CountryName(), l_OriginalArmies, l_TripledArmies));
-        d_Logger.log("---------------------------------------------------------------------------------------------");
 
         return true;
     }
 
     /**
-     * Validates whether the blockade order is legal.
+     * Validate the command
      *
-     * @return true if valid, false otherwise
+     * @return true if successful or else false
      */
     @Override
     public boolean validateCommand() {

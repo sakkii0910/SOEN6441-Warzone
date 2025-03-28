@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,6 +18,7 @@ public class Country implements Serializable {
     private int d_CountryYCoordinate;
     private Player d_Player;
     private int d_Armies;
+    private final List<Country> d_NeutralCountries = new ArrayList<>();
 
     /**
      * Gets country id.
@@ -196,5 +199,25 @@ public class Country implements Serializable {
      */
     public void depleteArmies(int p_armies) {
         d_Armies = Math.max(d_Armies - p_armies, 0);
+    }
+
+    /**
+     * Gets neutral countries.
+     *
+     * @return the neutral countries
+     */
+    public List<Country> getNeutralCountries() {
+        return d_NeutralCountries;
+    }
+
+    /**
+     * Add neutral country.
+     *
+     * @param p_NeutralCountry the p neutral country
+     */
+    public void addNeutralCountry(Country p_NeutralCountry) {
+        if (!d_NeutralCountries.contains(p_NeutralCountry)) {
+            d_NeutralCountries.add(p_NeutralCountry);
+        }
     }
 }
