@@ -108,7 +108,7 @@ public class AdvanceOrder extends Order implements Serializable {
         }
         if (l_Armies > l_From.getD_Armies()) {
             System.out.println("Failed due to this error-\n");
-            System.out.format("\t-> Attacking troop count %d is greater than available troops %d", l_Armies, l_From.getD_CountryName());
+            System.out.format("\t-> Attacking troop count %d is greater than available troops %s", l_Armies, l_From.getD_CountryName());
 
             success = false;
         }

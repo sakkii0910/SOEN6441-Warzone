@@ -41,7 +41,6 @@ public class BombOrder extends Order implements Serializable {
         Player l_Player = getOrderInfo().getPlayer();
         Country l_Target = getOrderInfo().getTargetCountry();
 
-        d_Logger.log("---------------------------------------------------------------------------------------------");
         d_Logger.log(getOrderInfo().getCommand());
 
         if (!validateCommand()) {
