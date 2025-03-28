@@ -41,7 +41,18 @@ public class OrderCreator implements Serializable {
                 l_Order = new AdvanceOrder();
                 l_Order.setOrderInfo(GenerateAdvanceOrderInfo(p_Commands, p_Player));
                 break;
-
+             case "blockade":
+                l_Order = new BlockadeOrder();
+                l_Order.setOrderInfo(GenerateBlockadeOrderInfo(p_Commands, p_Player));
+                break;
+            case "airlift":
+                l_Order = new AirliftOrder();
+                l_Order.setOrderInfo(GenerateAirliftOrderInfo(p_Commands, p_Player));
+                break;
+            case "bomb":
+                l_Order = new BombOrder();
+                l_Order.setOrderInfo(GenerateBombOrderInfo(p_Commands, p_Player));
+                break;
             default:
                 d_Logger.log("\nFailed to create an order due to invalid arguments");
                 l_Order = null;
@@ -90,6 +101,76 @@ public class OrderCreator implements Serializable {
         l_OrderInfo.setDeparture(l_FromCountry);
         l_OrderInfo.setDestination(l_ToCountry);
         l_OrderInfo.setNumberOfArmy(l_NumberOfArmies);
+        return l_OrderInfo;
+    }
+ /**
+     * A function to generate the information of Negotiate order
+     *
+     * @param p_Command the command entered
+     * @param p_Player  object parameter of type Player
+     * @return the order information of deploy
+     */
+    public static OrderInfo GenerateNegotiateOrderInfo(String[] p_Command, Player p_Player) {
+        OrderInfo l_OrderInfo = new OrderInfo();
+        l_OrderInfo.setPlayer(p_Player);
+        l_OrderInfo.setCommand(ConvertToString(p_Command));
+        l_OrderInfo.setNeutralPlayer(d_GameMap.getPlayer(p_Command[1]));
+        return l_OrderInfo;
+    }
+
+    /**
+     * A function to generate information about Blockade Order
+     *
+     * @param p_Command the command entered
+     * @param p_Player  object parameter of type Player
+     * @return the order information of deploy
+     */
+    public static OrderInfo GenerateBlockadeOrderInfo(String[] p_Command, Player p_Player) {
+        OrderInfo l_OrderInfo = new OrderInfo();
+        l_OrderInfo.setCommand(ConvertToString(p_Command));
+        l_OrderInfo.setPlayer(p_Player);
+        String l_CountryID = p_Command[1];
+        Country l_TargetCountry = d_GameMap.getCountry(l_CountryID);
+        l_OrderInfo.setTargetCountry(l_TargetCountry);
+        return l_OrderInfo;
+    }
+
+    /**
+     * function to generate information about Airlift Order
+     *
+     * @param p_Command the command entered
+     * @param p_Player  object parameter of type Player
+     * @return the order information of deploy
+     */
+    public static OrderInfo GenerateAirliftOrderInfo(String[] p_Command, Player p_Player) {
+        String l_FromCountryID = p_Command[1];
+        Country l_FromCountry = d_GameMap.getCountry(l_FromCountryID);
+        String l_ToCountryID = p_Command[2];
+        Country l_ToCountry = d_GameMap.getCountry(l_ToCountryID);
+        int l_NumberOfArmies = Integer.parseInt(p_Command[3]);
+        OrderInfo l_OrderInfo = new OrderInfo();
+        l_OrderInfo.setCommand(ConvertToString(p_Command));
+        l_OrderInfo.setPlayer(p_Player);
+        l_OrderInfo.setDeparture(l_FromCountry);
+        l_OrderInfo.setDestination(l_ToCountry);
+        l_OrderInfo.setNumberOfArmy(l_NumberOfArmies);
+        return l_OrderInfo;
+    }
+
+    /**
+     * function to generate information about Bomb Order
+     *
+     * @param p_Command the command entered
+     * @param p_Player  object parameter of type Player
+     * @return the order information
+     */
+    public static OrderInfo GenerateBombOrderInfo(String[] p_Command, Player p_Player) {
+        OrderInfo l_OrderInfo = new OrderInfo();
+        l_OrderInfo.setCommand(ConvertToString(p_Command));
+        l_OrderInfo.setPlayer(p_Player);
+        String l_CountryID = p_Command[1];
+        Country l_TargetCountry = d_GameMap.getCountry(l_CountryID);
+        l_OrderInfo.setTargetCountry(l_TargetCountry);
         return l_OrderInfo;
     }
 
