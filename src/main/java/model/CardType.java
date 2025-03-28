@@ -10,6 +10,11 @@ public enum CardType {
      * Bomb card type.
      */
     BOMB,
+     /**
+     * Blockade card type.
+     */
+    BLOCKADE,
+    /**
     /**
      * Airlift card type.
      */
