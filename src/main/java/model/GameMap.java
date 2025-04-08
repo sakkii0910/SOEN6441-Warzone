@@ -387,4 +387,10 @@ public class GameMap {
     public void setD_CurrentPlayer(Player d_CurrentPlayer) {
         this.d_CurrentPlayer = d_CurrentPlayer;
     }
+
+    public void flushGameMap() {
+        GameMap.getInstance().continents.clear();
+        GameMap.getInstance().countries.clear();
+        GameMap.getInstance().d_players.clear();
+    }
 }
