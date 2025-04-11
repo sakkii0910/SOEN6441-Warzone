@@ -3,6 +3,7 @@ package controller;
 import model.*;
 import model.abstractClasses.GameController;
 import model.gamePhases.ExecuteOrderPhase;
+import model.gamePhases.InitialPhase;
 import model.order.Order;
 import utils.GameEngine;
 import utils.GameProgress;
@@ -12,9 +13,10 @@ import java.util.*;
 
 /**
  * The type Issue order.
+ *
  * @author Taha Mirza
  * @author Poorav Panchal
- * @author  Shariq Anwar
+ * @author Shariq Anwar
  */
 public class IssueOrder extends GameController {
 
@@ -75,8 +77,10 @@ public class IssueOrder extends GameController {
                         break;
                     }
                     if (Commands.split(" ")[0].equals("savegame") && l_IssueCommand) {
-                        // d_GameMap.setGamePhase(d_MapEditorPhase);
-                        // return d_MapEditorPhase;
+                        d_NextPhase = new InitialPhase(this.d_GameEngine);
+                        this.d_GameEngine.setGamePhase(this.d_NextPhase);
+                        this.d_GameMap.setGamePhase(this.d_NextPhase);
+                        return;
                     }
                 }
                 if (!Commands.equals("pass")) {
@@ -88,7 +92,7 @@ public class IssueOrder extends GameController {
             }
         }
 
-        for(Player l_Player : d_Players.values()) {
+        for (Player l_Player : d_Players.values()) {
             l_Player.setD_TurnCompleted(false);
         }
 
@@ -141,7 +145,7 @@ public class IssueOrder extends GameController {
                     d_Logger.log("The number format is invalid");
                     return false;
                 }
-                if(Integer.parseInt(l_CommandArr[2]) < 0){
+                if (Integer.parseInt(l_CommandArr[2]) < 0) {
                     d_Logger.log("The number format is invalid");
                     return false;
                 }
@@ -158,10 +162,9 @@ public class IssueOrder extends GameController {
                 System.out.println("Are you sure you want to save the file? Enter Yes/No.");
                 String l_Input = new Scanner(System.in).nextLine();
                 if (l_Input.equalsIgnoreCase("Yes")) {
-                    GameProgress.saveGameProgress(d_GameMap, l_CommandArr[1]);
-                    return true;
+                    return GameProgress.saveGameProgress(d_GameMap, l_CommandArr[1]);
                 } else {
-                    d_Logger.log("The game has not been saved, continue to play.");
+                    d_Logger.log("User cancelled the game save.");
                     return false;
                 }
             default:
