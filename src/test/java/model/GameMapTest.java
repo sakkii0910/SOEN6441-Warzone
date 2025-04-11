@@ -211,8 +211,8 @@ class GameMapTest {
         GameMap.getInstance().addCountry("India", "Asia");
 
         // Save the map directly using MapReader
-        String fileName = "testmap.txt";
-        boolean isSaved = MapReader.saveMap(GameMap.getInstance(), fileName);
+        String fileName = "testmap";
+        boolean isSaved = GameMap.getInstance().saveMap(fileName, false);
 
         // Verify that the map was saved successfully
         assertTrue(isSaved, "Map should be saved successfully.");
@@ -267,8 +267,10 @@ class GameMapTest {
         // Debug: Verify the file was created
         assertTrue(Files.exists(filePath), "Map file should be created.");
 
+
         // Load the map directly using MapReader
-        MapReader.readMap(GameMap.getInstance(), "testmap.txt");
+        MapReader l_MapReader = new MapReader();
+        l_MapReader.readMap(GameMap.getInstance(), "testmap.txt");
 
         // Debug: Print the state of the GameMap
         System.out.println("Continents in GameMap: " + GameMap.getInstance().getContinents());
