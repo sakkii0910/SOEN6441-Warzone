@@ -16,6 +16,7 @@ import model.gamePhases.ReinforcementPhase;
 import utils.Adaptee;
 import utils.Adapter;
 import utils.GameEngine;
+import utils.GameProgress;
 import utils.MapReader;
 import utils.logger.LogEntryBuffer;
 
