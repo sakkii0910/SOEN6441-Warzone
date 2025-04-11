@@ -218,7 +218,7 @@ class GameMapTest {
         assertTrue(isSaved, "Map should be saved successfully.");
 
         // Verify that the file was created in the "maps" directory
-        File file = new File("maps/" + fileName);
+        File file = new File("maps/" + fileName + ".domination");
         assertTrue(file.exists(), "Map file should be saved.");
 
         // Debug: Print the file content
