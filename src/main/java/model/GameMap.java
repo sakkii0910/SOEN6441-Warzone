@@ -2,6 +2,9 @@ package model;
 
 import model.abstractClasses.GamePhase;
 import model.strategy.player.PlayerStrategy;
+import utils.Adaptee;
+import utils.Adapter;
+import utils.MapReader;
 import utils.logger.LogEntryBuffer;
 
 import java.util.*;
@@ -405,7 +408,32 @@ public class GameMap {
     }
 
     /**
-     * Get game load status
+     * Saves map as a file, if valid with the specified name.
+     *
+     * @param p_saveAsConquest to get user input
+     * @throws Exception files exception of correctness
+     */
+    public boolean saveMap(String p_gameMapName, boolean p_saveAsConquest) throws Exception {
+        MapReader l_SaveMap = p_saveAsConquest ? new Adapter(new Adaptee()) : new MapReader();
+
+        boolean l_Bool = true;
+        while (l_Bool) {
+            if (p_gameMapName.isEmpty()) {
+                throw new Exception("Please enter the file name:");
+            } else {
+                if (l_SaveMap.saveMap(d_GameMap, p_gameMapName)) {
+                    d_Logger.log("Map validated & saved successfully.");
+                    return true;
+                } else {
+                    d_Logger.log("Map validated but could not be saved.");
+                }
+                l_Bool = false;
+            }
+        }
+        return false;
+    }
+    
+     /** Get game load status
      * @return
      */
     public Boolean getGameLoaded() {

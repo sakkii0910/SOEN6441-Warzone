@@ -55,7 +55,7 @@ public class MapReader {
      * @param p_FileName The name of the map file to read.
      * @throws Exception If an error occurs while reading the map file.
      */
-    public static void readMap(GameMap p_GameMap, String p_FileName) throws Exception {
+    public void readMap(GameMap p_GameMap, String p_FileName) throws Exception {
         d_Logger.log("Reading map file: " + p_FileName);
 
         try {
@@ -87,7 +87,7 @@ public class MapReader {
      * @param p_GameMap The game map object to populate.
      * @throws Exception If an error occurs while reading the continents.
      */
-    public static void readContinents(GameMap p_GameMap) throws Exception {
+    public void readContinents(GameMap p_GameMap) throws Exception {
         while ((d_CurrentLine = d_Buffer.readLine()) != null) {
             if (d_CurrentLine.equals("")) {
                 break;
@@ -104,7 +104,7 @@ public class MapReader {
      * @param p_GameMap The game map object to populate.
      * @throws Exception If an error occurs while reading the countries.
      */
-    public static void readCountries(GameMap p_GameMap) throws Exception {
+    public void readCountries(GameMap p_GameMap) throws Exception {
         while ((d_CurrentLine = d_Buffer.readLine()) != null) {
             if (d_CurrentLine.equals("")) {
                 break;
@@ -121,7 +121,7 @@ public class MapReader {
      * @param p_GameMap The game map object to populate.
      * @throws Exception If an error occurs while reading the borders.
      */
-    public static void readBorders(GameMap p_GameMap) throws Exception {
+    public void readBorders(GameMap p_GameMap) throws Exception {
         while ((d_CurrentLine = d_Buffer.readLine()) != null) {
             if (d_CurrentLine.equals("")) {
                 break;
@@ -142,12 +142,12 @@ public class MapReader {
      * @return True if the map was saved successfully, false otherwise.
      * @throws Exception If an error occurs while saving the map file.
      */
-    public static boolean saveMap(GameMap p_GameMap, String p_FileName) throws Exception {
+    public boolean saveMap(GameMap p_GameMap, String p_FileName) throws Exception {
         d_Logger.log("Saving map file: " + p_FileName);
 
         try {
             // Create a new file or overwrite the existing file
-            File l_File = new File("maps/" + p_FileName);
+            File l_File = new File("maps/" + p_FileName + ".domination");
             l_File.createNewFile();
 
             BufferedWriter l_BufferedWriter = new BufferedWriter(new FileWriter(l_File));
