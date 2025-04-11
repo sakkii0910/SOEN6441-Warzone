@@ -40,7 +40,19 @@ public abstract class PlayerStrategy {
             case "human": {
                 return new HumanStrategy();
             }
-            // TODO: will add later on
+            case "random":{
+                return new RandomPlayerStrategy();
+            }
+            case "aggressive": {
+                return new AggressivePlayerStrategy();
+            }
+            case "benevolent": {
+                return new BenevolentPlayerStrategy();
+            }
+            case "cheater": {
+                return new CheaterStrategy();
+            }
+
         }
         throw new IllegalStateException("not a valid player type");
     }
