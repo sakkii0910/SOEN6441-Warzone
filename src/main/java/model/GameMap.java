@@ -7,20 +7,22 @@ import utils.Adapter;
 import utils.MapReader;
 import utils.logger.LogEntryBuffer;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Represents the game map for the Warzone game.
- * @author  Sakshi Sudhir Mulik
+ *
+ * @author Sakshi Sudhir Mulik
  * @author Taha Mirza
  * @author Shariq Anwar
  */
-public class GameMap {
-    private final HashMap<String, Continent> continents;
-    private final HashMap<String, Country> countries;
+public class GameMap implements Serializable {
+    private HashMap<String, Continent> continents;
+    private HashMap<String, Country> countries;
     private static GameMap d_GameMap;
 
-    private final HashMap<String, Player> d_players;
+    private HashMap<String, Player> d_players;
 
     /**
      * Logger instance
@@ -384,6 +386,7 @@ public class GameMap {
 
     /**
      * Get the current game phase
+     *
      * @return gamephase object
      */
     public GamePhase getGamePhase() {
@@ -399,10 +402,20 @@ public class GameMap {
         this.d_GamePhase = dGamePhase;
     }
 
+    /**
+     * Gets d current player.
+     *
+     * @return the d current player
+     */
     public Player getD_CurrentPlayer() {
         return d_CurrentPlayer;
     }
 
+    /**
+     * Sets d current player.
+     *
+     * @param d_CurrentPlayer the d current player
+     */
     public void setD_CurrentPlayer(Player d_CurrentPlayer) {
         this.d_CurrentPlayer = d_CurrentPlayer;
     }
@@ -410,7 +423,9 @@ public class GameMap {
     /**
      * Saves map as a file, if valid with the specified name.
      *
+     * @param p_gameMapName    the p game map name
      * @param p_saveAsConquest to get user input
+     * @return the boolean
      * @throws Exception files exception of correctness
      */
     public boolean saveMap(String p_gameMapName, boolean p_saveAsConquest) throws Exception {
@@ -432,9 +447,11 @@ public class GameMap {
         }
         return false;
     }
-    
-     /** Get game load status
-     * @return
+
+    /**
+     * Get game load status
+     *
+     * @return game loaded
      */
     public Boolean getGameLoaded() {
         return d_GameLoaded;
@@ -442,72 +459,78 @@ public class GameMap {
 
     /**
      * Set game load status
+     *
      * @param p_gameLoaded game load status
      */
     public void setGameLoaded(Boolean p_gameLoaded) {
         d_GameLoaded = p_gameLoaded;
     }
 
+    /**
+     * Flush game map.
+     */
     public void flushGameMap() {
         GameMap.getInstance().continents.clear();
         GameMap.getInstance().countries.clear();
         GameMap.getInstance().d_players.clear();
     }
 
-    /** 
+    /**
      * Build the game progress
+     *
      * @param p_GameMap game instance
-     * @return the set game phase
      */
-    public GamePhase gamePlayBuilder(GameMap p_GameMap) {
+    public void gamePlayBuilder(GameMap p_GameMap) {
         this.flushGameMap();
         d_GameMap.setGameLoaded(true);
-    
-        // Add continents
-        for (Map.Entry<String, Continent> entry : p_GameMap.getContinents().entrySet()) {
-            String continentName = entry.getKey();
-            int armies = entry.getValue().getD_ContinentArmies();
-            addContinent(continentName, armies);
-        }
-    
-        // Add countries
-        for (Map.Entry<String, Country> entry : p_GameMap.getCountries().entrySet()) {
-            String l_continent = entry.getValue().getD_CountryContinent().getD_ContinentName();
-            this.addCountry(entry.getKey(), l_continent);
-        }
-    
-        // Add neighbours
-        for (Continent continent : p_GameMap.getContinents().values()) {
-            for (Country country : continent.getD_ContinentCountries()) {
-                for (Country neighbor : country.getD_CountryNeighbors()) {
-                    p_GameMap.addNeighbor(country.getD_CountryName(), neighbor.getD_CountryName());
-                }
-            }
-        }
-    
-        // Add players, captured countries and reinforcement armies
-        for (Map.Entry<String, Player> entry : p_GameMap.getPlayers().entrySet()) {
-            String playerName = entry.getKey();
-            Player player = entry.getValue();
-    
-            this.addPlayer(playerName);
-            this.getPlayer(playerName).setCapturedCountries(player.getCapturedCountries());
-            this.getPlayer(playerName).setReinforcementArmies(player.getReinforcementArmies());
-        }
-    
-        this.setGamePhase(p_GameMap.getGamePhase());
-        this.setD_CurrentPlayer(p_GameMap.getD_CurrentPlayer());
-    
-        // Set player orders and cards
-        for (Map.Entry<String, Player> entry : p_GameMap.getPlayers().entrySet()) {
-            String playerName = entry.getKey();
-            Player player = entry.getValue();
-    
-            this.getPlayer(playerName).setOrders(player.getOrders());
-            this.getPlayer(playerName).setPlayerCards(player.getPlayerCards());
-        }
-    
-        return p_GameMap.getGamePhase();
+
+        this.continents = p_GameMap.getContinents();
+        this.countries = p_GameMap.getCountries();
+        this.d_players = p_GameMap.getPlayers();
+
+//        // Add continents
+//        for (Map.Entry<String, Continent> entry : p_GameMap.getContinents().entrySet()) {
+//            String continentName = entry.getKey();
+//            int armies = entry.getValue().getD_ContinentArmies();
+//            addContinent(continentName, armies);
+//        }
+//
+//        // Add countries
+//        for (Map.Entry<String, Country> entry : p_GameMap.getCountries().entrySet()) {
+//            String l_continent = entry.getValue().getD_CountryContinent().getD_ContinentName();
+//            this.addCountry(entry.getKey(), l_continent);
+//        }
+//
+//        // Add neighbours
+//        for (Continent continent : p_GameMap.getContinents().values()) {
+//            for (Country country : continent.getD_ContinentCountries()) {
+//                for (Country neighbor : country.getD_CountryNeighbors()) {
+//                    p_GameMap.addNeighbor(country.getD_CountryName(), neighbor.getD_CountryName());
+//                }
+//            }
+//        }
+//
+//        // Add players, captured countries and reinforcement armies
+//        for (Map.Entry<String, Player> entry : p_GameMap.getPlayers().entrySet()) {
+//            String playerName = entry.getKey();
+//            Player player = entry.getValue();
+//
+//            this.addPlayer(playerName);
+//            this.getPlayer(playerName).setCapturedCountries(player.getCapturedCountries());
+//            this.getPlayer(playerName).setReinforcementArmies(player.getReinforcementArmies());
+//        }
+//
+//        this.setGamePhase(p_GameMap.getGamePhase());
+//        this.setD_CurrentPlayer(p_GameMap.getD_CurrentPlayer());
+//
+//        // Set player orders and cards
+//        for (Map.Entry<String, Player> entry : p_GameMap.getPlayers().entrySet()) {
+//            String playerName = entry.getKey();
+//            Player player = entry.getValue();
+//
+//            this.getPlayer(playerName).setOrders(player.getOrders());
+//            this.getPlayer(playerName).setPlayerCards(player.getPlayerCards());
+//        }
     }
     
 }

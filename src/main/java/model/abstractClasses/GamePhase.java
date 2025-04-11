@@ -1,11 +1,13 @@
 package model.abstractClasses;
 import utils.GameEngine;
 
+import java.io.Serializable;
+
 /**
  * The type Game phase.
  *  @author Taha Mirza
  */
-public abstract class GamePhase {
+public abstract class GamePhase implements Serializable {
 
     protected GameEngine d_GameEngine;
 
