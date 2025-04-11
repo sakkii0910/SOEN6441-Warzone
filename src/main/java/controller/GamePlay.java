@@ -22,7 +22,7 @@ import utils.logger.LogEntryBuffer;
 public class GamePlay extends GameController {
     private final Scanner SCANNER = new Scanner(System.in);
 
-    private final List<String> CLI_COMMANDS = Arrays.asList("gameplayer", "assigncountries", "loadmap", "showmap", "savegame", "loadgame");
+    private final List<String> CLI_COMMANDS = Arrays.asList("gameplayer", "assigncountries", "loadmap", "showmap");
 
     /**
      * Logger instance
@@ -130,21 +130,6 @@ public class GamePlay extends GameController {
                                 d_Logger.log("Map loaded successfully.");
                             } else {
                                 d_Logger.log("Invalid command. Usage: loadmap <filename>");
-                            }
-                            break;
-                        case "savegame": 
-                            if (l_Commands.length == 1) {
-                                GameProgress.saveGameProgress(d_GameMap, l_Commands[0]);
-                                // d_GameMap.setGamePhase(d_MapEditorPhase);
-                                // return d_MapEditorPhase;
-                            }
-                            break;
-                        case "loadgame":
-                            if (l_Commands.length == 1) {
-                                GamePhase l_GameLoaded = GameProgress.loadGameProgress(l_Commands[0]);
-                                // if (!l_GameLoaded.equals(GamePhase.StartUp)) {
-                                //     return l_GameLoaded;
-                                // }
                             }
                             break;
                         case "showmap":

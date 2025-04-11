@@ -42,6 +42,7 @@ public class GameProgress {
             p_GameMap.flushGameMap();
             return true;
         } catch (Exception e) {
+            d_Logger.log("The game has not been saved, continue to play.");
             d_Logger.log(e.toString());
             return false;
         }
@@ -64,7 +65,6 @@ public class GameProgress {
             return GameMap.getInstance().gamePlayBuilder(l_loadedMap);
         } catch (Exception e) {
             d_Logger.log("File could not be loaded. Starting new game.");
-            // return GamePhase.StartUp;
             return null;
         }
     }
@@ -74,8 +74,9 @@ public class GameProgress {
      */
     public static void showFiles() throws IOException {
         if (new File(FILEPATH).exists()) {
-            d_Logger.log("\t\t\t Load Game");
-            d_Logger.log("\t=======================\n");
+            d_Logger.log("\n=======================");
+            d_Logger.log("\tSaved Game List....");
+            d_Logger.log("=======================\n");
             Files.walk(Path.of(FILEPATH))
                     .filter(path -> path.toFile().isFile())
                     .forEach(path -> {
