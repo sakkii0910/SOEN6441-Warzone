@@ -5,6 +5,7 @@ import model.abstractClasses.GameController;
 import model.gamePhases.ExecuteOrderPhase;
 import model.order.Order;
 import utils.GameEngine;
+import utils.GameProgress;
 import utils.logger.LogEntryBuffer;
 
 import java.util.*;
@@ -73,6 +74,10 @@ public class IssueOrder extends GameController {
                     if (Commands.equals("pass")) {
                         break;
                     }
+                    if (Commands.split(" ")[0].equals("savegame") && l_IssueCommand) {
+                        // d_GameMap.setGamePhase(d_MapEditorPhase);
+                        // return d_MapEditorPhase;
+                    }
                 }
                 if (!Commands.equals("pass")) {
                     d_Logger.log(l_Player.getD_Name() + " has issued this order :- " + Commands);
@@ -114,7 +119,7 @@ public class IssueOrder extends GameController {
      * @return true if the command is correct else false
      */
     public boolean validateCommand(String p_CommandArr, Player p_Player) {
-        List<String> l_Commands = Arrays.asList("deploy", "advance", "bomb", "blockade", "airlift", "negotiate");
+        List<String> l_Commands = Arrays.asList("deploy", "advance", "bomb", "blockade", "airlift", "negotiate", "savegame");
         String[] l_CommandArr = p_CommandArr.split(" ");
         if (p_CommandArr.toLowerCase().contains("pass")) {
             p_Player.setD_TurnCompleted(true);
@@ -149,6 +154,16 @@ public class IssueOrder extends GameController {
                     return false;
                 }
                 break;
+            case "savegame":
+                System.out.println("Are you sure you want to save the file? Enter Yes/No.");
+                String l_Input = new Scanner(System.in).nextLine();
+                if (l_Input.equalsIgnoreCase("Yes")) {
+                    GameProgress.saveGameProgress(d_GameMap, l_CommandArr[1]);
+                    return true;
+                } else {
+                    d_Logger.log("The game has not been saved, continue to play.");
+                    return false;
+                }
             default:
                 break;
 

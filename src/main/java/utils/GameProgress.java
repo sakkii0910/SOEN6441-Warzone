@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import model.GameMap;
+import model.abstractClasses.GamePhase;
 import utils.logger.LogEntryBuffer;
 
 public class GameProgress {
@@ -49,7 +50,7 @@ public class GameProgress {
     /**
      * Function to load game
      */
-    public static void loadGameProgress(String p_fileName) {
+    public static GamePhase loadGameProgress(String p_fileName) {
         FileInputStream l_Fs;
         GameMap l_loadedMap;
         try {
@@ -60,10 +61,11 @@ public class GameProgress {
             d_Logger.log("Game loaded successfully");
             l_Os.close();
             // Load the game
-            GameMap.getInstance().gamePlayBuilder(l_loadedMap);
+            return GameMap.getInstance().gamePlayBuilder(l_loadedMap);
         } catch (Exception e) {
             d_Logger.log("File could not be loaded. Starting new game.");
-            // ADD STARTUP PHASE
+            // return GamePhase.StartUp;
+            return null;
         }
     }
 
