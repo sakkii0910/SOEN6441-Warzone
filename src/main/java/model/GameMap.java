@@ -426,21 +426,29 @@ public class GameMap {
         GameMap.getInstance().d_players.clear();
     }
 
+    /** 
+     * Build the game progress
+     * @param p_GameMap game instance
+     * @return the set game phase
+     */
     public GamePhase gamePlayBuilder(GameMap p_GameMap) {
         this.flushGameMap();
         d_GameMap.setGameLoaded(true);
     
+        // Add continents
         for (Map.Entry<String, Continent> entry : p_GameMap.getContinents().entrySet()) {
             String continentName = entry.getKey();
             int armies = entry.getValue().getD_ContinentArmies();
             addContinent(continentName, armies);
         }
     
+        // Add countries
         for (Map.Entry<String, Country> entry : p_GameMap.getCountries().entrySet()) {
             String l_continent = entry.getValue().getD_CountryContinent().getD_ContinentName();
             this.addCountry(entry.getKey(), l_continent);
         }
     
+        // Add neighbours
         for (Continent continent : p_GameMap.getContinents().values()) {
             for (Country country : continent.getD_ContinentCountries()) {
                 for (Country neighbor : country.getD_CountryNeighbors()) {
@@ -449,6 +457,7 @@ public class GameMap {
             }
         }
     
+        // Add players, captured countries and reinforcement armies
         for (Map.Entry<String, Player> entry : p_GameMap.getPlayers().entrySet()) {
             String playerName = entry.getKey();
             Player player = entry.getValue();
@@ -461,6 +470,7 @@ public class GameMap {
         this.setGamePhase(p_GameMap.getGamePhase());
         this.setD_CurrentPlayer(p_GameMap.getD_CurrentPlayer());
     
+        // Set player orders and cards
         for (Map.Entry<String, Player> entry : p_GameMap.getPlayers().entrySet()) {
             String playerName = entry.getKey();
             Player player = entry.getValue();
