@@ -94,6 +94,14 @@ public class Player implements Serializable {
     }
 
     /**
+     * Set the captured countries
+     * @param p_CapturedCountries list of countries captured
+     */
+    public void setCapturedCountries(List<Country> p_CapturedCountries) {
+        this.d_CapturedCountries = p_CapturedCountries;
+    }
+
+    /**
      * Create a list of countries assigned to the player.
      *
      * @param p_Capture the p capture
@@ -125,6 +133,14 @@ public class Player implements Serializable {
      */
     public int getReinforcementArmies() {
         return d_ReinforcementArmies;
+    }
+
+    /**
+     * Set reinforcement armies for players
+     * @param p_AssignedArmies armies assigned to a player
+     */
+    public void setReinforcementArmies(int p_AssignedArmies) {
+        this.d_ReinforcementArmies = p_AssignedArmies;
     }
 
     /**

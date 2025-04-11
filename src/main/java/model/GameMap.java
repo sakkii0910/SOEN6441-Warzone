@@ -2,6 +2,9 @@ package model;
 
 import model.abstractClasses.GamePhase;
 import model.strategy.player.PlayerStrategy;
+import utils.Adaptee;
+import utils.Adapter;
+import utils.MapReader;
 import utils.logger.LogEntryBuffer;
 
 import java.util.*;
@@ -29,7 +32,15 @@ public class GameMap {
      */
     private Player d_CurrentPlayer;
 
+    /**
+     * Gamephase object
+     */
+    private GamePhase d_GamePhase;
 
+    /**
+     * To check if game has loaded
+     */
+    private Boolean d_GameLoaded = false;
 
     /**
      * Constructor initializes map components.
@@ -372,12 +383,20 @@ public class GameMap {
     }
 
     /**
+     * Get the current game phase
+     * @return gamephase object
+     */
+    public GamePhase getGamePhase() {
+        return d_GamePhase;
+    }
+
+    /**
      * Sets game phase.
      *
      * @param dGamePhase the d game phase
      */
     public void setGamePhase(GamePhase dGamePhase) {
-
+        this.d_GamePhase = dGamePhase;
     }
 
     public Player getD_CurrentPlayer() {
@@ -387,4 +406,108 @@ public class GameMap {
     public void setD_CurrentPlayer(Player d_CurrentPlayer) {
         this.d_CurrentPlayer = d_CurrentPlayer;
     }
+
+    /**
+     * Saves map as a file, if valid with the specified name.
+     *
+     * @param p_saveAsConquest to get user input
+     * @throws Exception files exception of correctness
+     */
+    public boolean saveMap(String p_gameMapName, boolean p_saveAsConquest) throws Exception {
+        MapReader l_SaveMap = p_saveAsConquest ? new Adapter(new Adaptee()) : new MapReader();
+
+        boolean l_Bool = true;
+        while (l_Bool) {
+            if (p_gameMapName.isEmpty()) {
+                throw new Exception("Please enter the file name:");
+            } else {
+                if (l_SaveMap.saveMap(d_GameMap, p_gameMapName)) {
+                    d_Logger.log("Map validated & saved successfully.");
+                    return true;
+                } else {
+                    d_Logger.log("Map validated but could not be saved.");
+                }
+                l_Bool = false;
+            }
+        }
+        return false;
+    }
+    
+     /** Get game load status
+     * @return
+     */
+    public Boolean getGameLoaded() {
+        return d_GameLoaded;
+    }
+
+    /**
+     * Set game load status
+     * @param p_gameLoaded game load status
+     */
+    public void setGameLoaded(Boolean p_gameLoaded) {
+        d_GameLoaded = p_gameLoaded;
+    }
+
+    public void flushGameMap() {
+        GameMap.getInstance().continents.clear();
+        GameMap.getInstance().countries.clear();
+        GameMap.getInstance().d_players.clear();
+    }
+
+    /** 
+     * Build the game progress
+     * @param p_GameMap game instance
+     * @return the set game phase
+     */
+    public GamePhase gamePlayBuilder(GameMap p_GameMap) {
+        this.flushGameMap();
+        d_GameMap.setGameLoaded(true);
+    
+        // Add continents
+        for (Map.Entry<String, Continent> entry : p_GameMap.getContinents().entrySet()) {
+            String continentName = entry.getKey();
+            int armies = entry.getValue().getD_ContinentArmies();
+            addContinent(continentName, armies);
+        }
+    
+        // Add countries
+        for (Map.Entry<String, Country> entry : p_GameMap.getCountries().entrySet()) {
+            String l_continent = entry.getValue().getD_CountryContinent().getD_ContinentName();
+            this.addCountry(entry.getKey(), l_continent);
+        }
+    
+        // Add neighbours
+        for (Continent continent : p_GameMap.getContinents().values()) {
+            for (Country country : continent.getD_ContinentCountries()) {
+                for (Country neighbor : country.getD_CountryNeighbors()) {
+                    p_GameMap.addNeighbor(country.getD_CountryName(), neighbor.getD_CountryName());
+                }
+            }
+        }
+    
+        // Add players, captured countries and reinforcement armies
+        for (Map.Entry<String, Player> entry : p_GameMap.getPlayers().entrySet()) {
+            String playerName = entry.getKey();
+            Player player = entry.getValue();
+    
+            this.addPlayer(playerName);
+            this.getPlayer(playerName).setCapturedCountries(player.getCapturedCountries());
+            this.getPlayer(playerName).setReinforcementArmies(player.getReinforcementArmies());
+        }
+    
+        this.setGamePhase(p_GameMap.getGamePhase());
+        this.setD_CurrentPlayer(p_GameMap.getD_CurrentPlayer());
+    
+        // Set player orders and cards
+        for (Map.Entry<String, Player> entry : p_GameMap.getPlayers().entrySet()) {
+            String playerName = entry.getKey();
+            Player player = entry.getValue();
+    
+            this.getPlayer(playerName).setOrders(player.getOrders());
+            this.getPlayer(playerName).setPlayerCards(player.getPlayerCards());
+        }
+    
+        return p_GameMap.getGamePhase();
+    }
+    
 }

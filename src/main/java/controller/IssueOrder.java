@@ -3,17 +3,20 @@ package controller;
 import model.*;
 import model.abstractClasses.GameController;
 import model.gamePhases.ExecuteOrderPhase;
+import model.gamePhases.InitialPhase;
 import model.order.Order;
 import utils.GameEngine;
+import utils.GameProgress;
 import utils.logger.LogEntryBuffer;
 
 import java.util.*;
 
 /**
  * The type Issue order.
+ *
  * @author Taha Mirza
  * @author Poorav Panchal
- * @author  Shariq Anwar
+ * @author Shariq Anwar
  */
 public class IssueOrder extends GameController {
 
@@ -73,6 +76,12 @@ public class IssueOrder extends GameController {
                     if (Commands.equals("pass")) {
                         break;
                     }
+                    if (Commands.split(" ")[0].equals("savegame") && l_IssueCommand) {
+                        d_NextPhase = new InitialPhase(this.d_GameEngine);
+                        this.d_GameEngine.setGamePhase(this.d_NextPhase);
+                        this.d_GameMap.setGamePhase(this.d_NextPhase);
+                        return;
+                    }
                 }
                 if (!Commands.equals("pass")) {
                     d_Logger.log(l_Player.getD_Name() + " has issued this order :- " + Commands);
@@ -83,7 +92,7 @@ public class IssueOrder extends GameController {
             }
         }
 
-        for(Player l_Player : d_Players.values()) {
+        for (Player l_Player : d_Players.values()) {
             l_Player.setD_TurnCompleted(false);
         }
 
@@ -114,7 +123,7 @@ public class IssueOrder extends GameController {
      * @return true if the command is correct else false
      */
     public boolean validateCommand(String p_CommandArr, Player p_Player) {
-        List<String> l_Commands = Arrays.asList("deploy", "advance", "bomb", "blockade", "airlift", "negotiate");
+        List<String> l_Commands = Arrays.asList("deploy", "advance", "bomb", "blockade", "airlift", "negotiate", "savegame");
         String[] l_CommandArr = p_CommandArr.split(" ");
         if (p_CommandArr.toLowerCase().contains("pass")) {
             p_Player.setD_TurnCompleted(true);
@@ -136,7 +145,7 @@ public class IssueOrder extends GameController {
                     d_Logger.log("The number format is invalid");
                     return false;
                 }
-                if(Integer.parseInt(l_CommandArr[2]) < 0){
+                if (Integer.parseInt(l_CommandArr[2]) < 0) {
                     d_Logger.log("The number format is invalid");
                     return false;
                 }
@@ -149,6 +158,15 @@ public class IssueOrder extends GameController {
                     return false;
                 }
                 break;
+            case "savegame":
+                System.out.println("Are you sure you want to save the file? Enter Yes/No.");
+                String l_Input = new Scanner(System.in).nextLine();
+                if (l_Input.equalsIgnoreCase("Yes")) {
+                    return GameProgress.saveGameProgress(d_GameMap, l_CommandArr[1]);
+                } else {
+                    d_Logger.log("User cancelled the game save.");
+                    return false;
+                }
             default:
                 break;
 

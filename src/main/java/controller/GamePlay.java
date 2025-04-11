@@ -1,5 +1,9 @@
 package controller;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -9,7 +13,10 @@ import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
 import model.gamePhases.IssueOrderPhase;
 import model.gamePhases.ReinforcementPhase;
+import utils.Adaptee;
+import utils.Adapter;
 import utils.GameEngine;
+import utils.GameProgress;
 import utils.MapReader;
 import utils.logger.LogEntryBuffer;
 
@@ -51,7 +58,7 @@ public class GamePlay extends GameController {
             d_Logger.log("List of Game Play Commands ");
             d_Logger.log("To add or remove a player: gameplayer -add playername -remove playername");
             d_Logger.log("To assign countries to all players: assigncountries");
-            d_Logger.log("To load a domination map from the provided file: loadmap <filename>");
+            d_Logger.log("To load a domination/conquest map from the provided file: loadmap <filename>");
             d_Logger.log("To show all countries, continents, armies and ownership: showmap");
             d_Logger.log("To start the game: exit");
             d_Logger.log("-----------------------------------------------------------------------------------------");
@@ -125,7 +132,7 @@ public class GamePlay extends GameController {
                         case "loadmap": // Add this case for the loadmap command
                             if (l_Commands.length == 2) {
                                 d_Logger.log("Loading map file: " + l_Commands[1]); // Debug
-                                MapReader.readMap(d_GameMap, l_Commands[1]); // Call the readMap method
+                                loadMap(l_Commands[1]); // Call the readMap method
                                 d_Logger.log("Map loaded successfully.");
                             } else {
                                 d_Logger.log("Invalid command. Usage: loadmap <filename>");
@@ -145,6 +152,17 @@ public class GamePlay extends GameController {
             } else {
                 d_Logger.log("Invalid command.");
             }
+        }
+    }
+
+    private void loadMap(String p_Filename) throws Exception {
+        boolean l_ShouldUseConquestAdapter = p_Filename.endsWith(".conquest");
+
+        MapReader l_MapReader = l_ShouldUseConquestAdapter ? new Adapter(new Adaptee()) : new MapReader();
+        l_MapReader.readMap(d_GameMap, p_Filename);
+
+        if (!MapReader.validateMap(d_GameMap)) {
+            throw new Exception("Invalid Map");
         }
     }
 
