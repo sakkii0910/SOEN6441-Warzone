@@ -51,7 +51,7 @@ public class GameProgress {
     /**
      * Function to load game
      */
-    public static GamePhase loadGameProgress(String p_fileName) {
+    public static boolean loadGameProgress(String p_fileName) {
         FileInputStream l_Fs;
         GameMap l_loadedMap;
         try {
@@ -62,10 +62,12 @@ public class GameProgress {
             d_Logger.log("Game loaded successfully");
             l_Os.close();
             // Load the game
-            return GameMap.getInstance().gamePlayBuilder(l_loadedMap);
+            GameMap.getInstance().gamePlayBuilder(l_loadedMap);
+            return true;
         } catch (Exception e) {
-            d_Logger.log("File could not be loaded. Starting new game.");
-            return null;
+            d_Logger.log(e.getMessage());
+            d_Logger.log("File could not be loaded. Going back to menu.");
+            return false;
         }
     }
 

@@ -7,13 +7,14 @@ import model.gamePhases.ExitGamePhase;
 import model.gamePhases.InitialPhase;
 import utils.logger.LogEntryBuffer;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * The type Game Engine.
  * @author Taha Mirza
  */
-public class GameEngine {
+public class GameEngine implements Serializable {
 
     private GamePhase d_GamePhase;
     private static GameSettings d_GameSettings;

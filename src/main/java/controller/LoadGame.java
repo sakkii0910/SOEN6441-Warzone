@@ -4,6 +4,7 @@ import model.GameMap;
 import model.abstractClasses.GameController;
 import model.abstractClasses.GamePhase;
 import model.gamePhases.InitialPhase;
+import model.gamePhases.IssueOrderPhase;
 import model.gamePhases.StartUpPhase;
 import utils.GameEngine;
 import utils.GameProgress;
@@ -54,9 +55,10 @@ public class LoadGame extends GameController {
                 this.d_GameMap.setGamePhase(d_NextPhase);
                 break;
             } else if (l_Commands[0].equalsIgnoreCase("loadgame") && l_Commands.length == 2) {
-                d_NextPhase = GameProgress.loadGameProgress(l_Commands[1]);
-                if(d_NextPhase == null){
-                    d_NextPhase = new StartUpPhase(this.d_GameEngine);
+                if (!GameProgress.loadGameProgress(l_Commands[1])) {
+                    d_NextPhase = new InitialPhase(this.d_GameEngine);
+                } else {
+                    d_NextPhase = new IssueOrderPhase(this.d_GameEngine);
                 }
                 this.d_GameEngine.setGamePhase(d_NextPhase);
                 this.d_GameMap.setGamePhase(d_NextPhase);

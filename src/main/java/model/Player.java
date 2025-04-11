@@ -45,7 +45,6 @@ public class Player implements Serializable {
      */
     public Player(PlayerStrategy p_PlayerStrategy) {
         this.d_PlayerStrategy = p_PlayerStrategy;
-        this.d_ReinforcementArmies = 5;
     }
 
     /**
