@@ -197,9 +197,12 @@ public class MapEditor extends GameController {
                         case "showmap":
                             d_GameMap.displayMap();
                             break;
+
+                        //may get an issue
                         case "editmap":
                             if (l_Commands.length == 2) {
-                                MapReader.readMap(d_GameMap, l_Commands[1]);
+                                MapReader l_MapReader = new MapReader();
+                                l_MapReader.readMap(d_GameMap, l_Commands[1]);
                             }
                             break;
                         case "validatemap":
@@ -212,12 +215,20 @@ public class MapEditor extends GameController {
                         case "savemap":
                             if (l_Commands.length == 2) {
                                 if (MapReader.validateMap(d_GameMap)) {
-                                    boolean l_HasSaved = MapReader.saveMap(d_GameMap, l_Commands[1]);
-                                    if (l_HasSaved) {
-                                        d_Logger.log("Map validated & saved successfully.");
-                                    } else {
-                                        d_Logger.log("Map validated but could not be saved.");
+                                    d_Logger.log(" Which format do you want to save the file? Type the number.");
+                                    d_Logger.log("1. Domination map \n2. Conquest map");
+                                    Scanner l_Scanner = new Scanner(System.in);
+                                    String l_UserInput = l_Scanner.nextLine();
+                                    if (l_UserInput.equals("1")){
+                                        d_GameMap.saveMap(l_Commands[1], false);
+                                        d_Logger.log("The loaded file is of the format Domination map");
                                     }
+                                    else if (l_UserInput.equals("2")) {
+                                        d_GameMap.saveMap(l_Commands[1],true);
+                                        d_Logger.log("The loaded file is of the format Conquest map");
+                                    }
+                                    else
+                                        d_Logger.log("Please enter the right value");
                                 } else {
                                     d_Logger.log("Map is invalid. Please validate the map before saving.");
                                 }
