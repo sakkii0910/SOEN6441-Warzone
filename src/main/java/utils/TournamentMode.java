@@ -1,11 +1,16 @@
 
 package utils;
 
+import controller.ExecuteOrder;
+import controller.GamePlay;
+import controller.IssueOrder;
+import controller.Reinforcement;
 import model.Country;
 import model.GameMap;
 import model.Player;
 import model.gamePhases.ExitGamePhase;
 import model.gamePhases.ReinforcementPhase;
+import model.gamePhases.StartUpPhase;
 import model.strategy.player.PlayerStrategy;
 import utils.logger.LogEntryBuffer;
 
@@ -21,6 +26,17 @@ public class TournamentMode {
 
     private final Scanner scanner = new Scanner(System.in);
     private final LogEntryBuffer logger = LogEntryBuffer.getInstance();
+    private final GameMap gameMap;
+    private final GameEngine gameEngine;
+
+    /**
+     * Instantiates a new Tournament mode.
+     */
+    public TournamentMode(){
+        gameEngine = new GameEngine();
+        gameEngine.setGamePhase(new StartUpPhase(this.gameEngine));
+        gameMap = GameMap.getInstance();
+    }
 
     /**
      * Start tournament mode.
@@ -59,21 +75,22 @@ public class TournamentMode {
         Map<String, List<String>> results = new LinkedHashMap<>();
 
         for (String mapFile : mapFiles) {
+            GamePlay gamePlayController = (GamePlay) this.gameEngine.getGamePhase().getController();
             List<String> gameResults = new ArrayList<>();
 
             for (int gameNum = 1; gameNum <= numGames; gameNum++) {
                 logger.log("Playing Map: " + mapFile + " | Game: " + gameNum);
 
-                GameMap gameMap = GameMap.getInstance();
                 gameMap.resetGameMap();
                 gameMap.flushGameMap();
                 try {
-                    new MapReader().readMap(gameMap, mapFile);
-                     for (Country country : gameMap.getCountries().values()) {
-        country.setPlayer(null);
-    }
+                    gamePlayController.loadMap(mapFile);
+                    for (Country country : gameMap.getCountries().values()) {
+                        country.setPlayer(null);
+                    }
                 } catch (Exception e) {
                     logger.log("Map load failed for " + mapFile);
+                    System.out.println(e.getMessage());
                     gameResults.add("InvalidMap");
                     break; // Skip rest of the games for this map
                 }
@@ -95,22 +112,24 @@ public class TournamentMode {
 
                 gameMap.assignCountries();
 
-                GameEngine engine = new GameEngine();
                 boolean winnerFound = false;
                 int turnCount = 0;
 
                 while (turnCount < maxTurns) {
                     turnCount++;
-                    engine.setGamePhase(new ReinforcementPhase(engine));
-                    engine.start();
-                    if (isGameOver(gameMap)) {
+                    try {
+                        new Reinforcement(gameEngine).startPhase();
+                        new IssueOrder(gameEngine).startPhase();
+                        new ExecuteOrder(gameEngine).startPhase();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    if (gameEngine.getGamePhase() instanceof ExitGamePhase) {
                         winnerFound = true;
                         break;
                     }
                 }
 
-                engine.setGamePhase(new ExitGamePhase(engine));
-                engine.start();
 
                 Player winner = determineWinner(gameMap);
                 if (winnerFound && winner != null) {
@@ -124,6 +143,8 @@ public class TournamentMode {
             }
 
             results.put(mapFile, gameResults);
+
+            gameEngine.setGamePhase(new StartUpPhase(this.gameEngine));
         }
 
         logger.log("\n=========== TOURNAMENT RESULT ===========");
@@ -146,14 +167,14 @@ public class TournamentMode {
         logger.log("=========================================");
     }
 
-    private boolean isGameOver(GameMap gameMap) {
-        long playersWithCountries = gameMap.getPlayers().values().stream()
-                .filter(p -> !p.getCapturedCountries().isEmpty())
-                .count();
-        return playersWithCountries <= 1;
-    }
 
-    private Player determineWinner(GameMap gameMap) {
+    /**
+     * Determine winner player.
+     *
+     * @param gameMap the game map
+     * @return the player
+     */
+    public Player determineWinner(GameMap gameMap) {
         return gameMap.getPlayers().values().stream()
                 .max(Comparator.comparingInt(p -> p.getCapturedCountries().size()))
                 .orElse(null);
