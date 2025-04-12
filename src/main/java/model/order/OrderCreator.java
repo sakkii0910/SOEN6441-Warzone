@@ -85,6 +85,9 @@ public class OrderCreator implements Serializable {
         l_OrderInfo.setNumberOfArmy(l_NumberOfArmies);
         if(p_Player.getReinforcementArmies() > 0 && l_NumberOfArmies <= p_Player.getD_ArmiesToIssue() && l_NumberOfArmies > 0){
             p_Player.setD_ArmiesToIssue(p_Player.getD_ArmiesToIssue() - l_NumberOfArmies);
+        } else {
+            d_Logger.log("\nYou do not have enough armies left to deploy.\n" +
+                    "The order would be discarded during execution phase.\n");
         }
         return l_OrderInfo;
     }

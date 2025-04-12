@@ -7,6 +7,7 @@ import model.gamePhases.LoadGamePhase;
 import model.gamePhases.MapEditorPhase;
 import model.gamePhases.StartUpPhase;
 import utils.GameEngine;
+import utils.SingleGameMode;
 import utils.logger.LogEntryBuffer;
 
 import java.util.InputMismatchException;
@@ -41,6 +42,7 @@ public class MenuController extends GameController {
         d_Logger.log("  [1] Start New Game");
         d_Logger.log("  [2] Map Editing");
         d_Logger.log("  [3] Load Game");
+        d_Logger.log("  [4] Single Game Mode");
         d_Logger.log("  [5] Exit");
         d_Logger.log("=========================================");
         System.out.print("\tSelect an option: ");
@@ -58,6 +60,11 @@ public class MenuController extends GameController {
                 break;
             case 3:
                 this.d_NextPhase = new LoadGamePhase(this.d_GameEngine);
+                break;
+            case 4:
+                SingleGameMode mode = new SingleGameMode();
+                mode.startSingleGame();
+                this.d_NextPhase = new ExitGamePhase(this.d_GameEngine); // to return after game
                 break;
             case 5:
                 this.d_NextPhase = new ExitGamePhase(this.d_GameEngine);

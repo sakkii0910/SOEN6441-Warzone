@@ -18,6 +18,7 @@ import java.util.Random;
 
 /**
  * Random computer player strategy that makes random decisions.
+ *
  * @author Sakshi Sudhir Mulik
  * @version 1.0.0
  */
@@ -35,21 +36,25 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
 
         // Randomly choose between different order types
         int l_Choice = d_Random.nextInt(10); // 0-9
-
+        String command;
         // 40% chance for deploy, 30% for advance, 30% for card usage
-        if (l_Choice < 4) {
-            return tryRandomDeploy();
-        } else if (l_Choice < 7) {
-            return tryRandomAdvance();
+        if (l_Choice < 6) {
+            command = tryRandomDeploy();
+        } else if (l_Choice < 8) {
+            command = tryRandomAdvance();
         } else {
-            return tryRandomCard();
+            command = tryRandomCard();
         }
+        return command;
     }
+
     /**
      * Attempts to deploy armies to a random conquered country.
+     *
      * @return "pass" after attempting deployment
      */
     private String tryRandomDeploy() {
+        d_Logger.log("Trying Random Deploy");
         Country l_RandomCountry = getRandomConqueredCountry(d_Player);
         if (l_RandomCountry != null && d_Player.getD_ArmiesToIssue() > 0) {
             List<String> l_Commands = new ArrayList<>();
@@ -68,11 +73,14 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
         }
         return "pass";
     }
+
     /**
      * Attempts to advance armies from a random country to a random neighbor.
+     *
      * @return "pass" after attempting advance
      */
     private String tryRandomAdvance() {
+        d_Logger.log("Trying Random Advance");
         Country l_FromCountry = getRandomConqueredCountry(d_Player);
         if (l_FromCountry != null && l_FromCountry.getD_Armies() > 0) {
             Country l_ToCountry = getRandomNeighbor(l_FromCountry);
@@ -96,11 +104,14 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
         }
         return "pass";
     }
+
     /**
      * Attempts to use a random card from the player's hand.
+     *
      * @return "pass" after attempting card usage
      */
     private String tryRandomCard() {
+        d_Logger.log("Trying Random Card");
         if (d_Player.getPlayerCards().isEmpty()) {
             return "pass";
         }
@@ -121,8 +132,10 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
                 return "pass";
         }
     }
+
     /**
      * Attempts to use a bomb card on a random unconquered country.
+     *
      * @return "pass" after attempting bomb
      */
     private String tryBombCard() {
@@ -144,8 +157,10 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
         }
         return "pass";
     }
+
     /**
      * Attempts to use a blockade card on a random conquered country.
+     *
      * @return "pass" after attempting blockade
      */
     private String tryBlockadeCard() {
@@ -167,8 +182,10 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
         }
         return "pass";
     }
+
     /**
      * Attempts to airlift armies between two random conquered countries.
+     *
      * @return "pass" after attempting airlift
      */
     private String tryAirliftCard() {
@@ -193,8 +210,10 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
         }
         return "pass";
     }
+
     /**
      * Attempts to use a diplomacy card on a random player.
+     *
      * @return "pass" after attempting negotiate
      */
     private String tryDiplomacyCard() {
@@ -216,8 +235,10 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
         }
         return "pass";
     }
+
     /**
      * Gets a random country owned by the player.
+     *
      * @param p_Player the player whose countries to check
      * @return a random conquered country or null
      */
@@ -228,8 +249,10 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
         }
         return l_Countries.get(d_Random.nextInt(l_Countries.size()));
     }
+
     /**
      * Gets a random country not owned by the player.
+     *
      * @param p_Player the player whose enemies to check
      * @return a random unconquered country or null
      */
@@ -244,8 +267,10 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
         }
         return l_Unconquered.get(d_Random.nextInt(l_Unconquered.size()));
     }
+
     /**
      * Gets a random neighboring country of the given country.
+     *
      * @param p_Country the country to check neighbors of
      * @return a random neighbor country or null
      */
@@ -256,8 +281,10 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
         return new ArrayList<>(p_Country.getD_CountryNeighbors())
                 .get(d_Random.nextInt(p_Country.getD_CountryNeighbors().size()));
     }
+
     /**
      * Gets a random player other than the current player.
+     *
      * @return a random player or null
      */
     private Player getRandomPlayer() {

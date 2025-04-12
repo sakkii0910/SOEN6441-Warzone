@@ -149,6 +149,7 @@ public class Player implements Serializable {
      */
     public void assignReinforcements(int p_num) {
         d_ReinforcementArmies = p_num;
+        d_ArmiesToIssue = p_num;
         d_Logger.log("The player: " + getD_Name() + " is assigned " + p_num + " reinforcements.");
     }
 
