@@ -59,6 +59,7 @@ public class GameEngine implements Serializable {
         d_Logger.log("    Thank you for playing!    ");
         d_Logger.log("      Exiting the game...     ");
         d_Logger.log("==============================\n");
+        System.exit(0);
     }
 
 
