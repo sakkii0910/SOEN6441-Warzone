@@ -83,7 +83,6 @@ public class AggressivePlayerStrategy extends PlayerStrategy implements Serializ
     /**
      * Attempts to use a bomb card or execute an attack from the strongest country.
      *
-     * @return true if an attack or bomb order was executed, false otherwise
      */
     private void tryBombOrAttack() {
         // Try to use bomb card first
@@ -133,20 +132,11 @@ public class AggressivePlayerStrategy extends PlayerStrategy implements Serializ
         l_Commands.add(p_Target.getD_CountryName());
 
         d_Commands.add(String.join(" ", l_Commands));
-//        Order l_Order = new BombOrder();
-//        l_Order.setOrderInfo(OrderCreator.GenerateBombOrderInfo(
-//                l_Commands.toArray(new String[0]), d_Player));
-//
-//        IssueOrder.Commands = l_Order.getOrderInfo().getCommand();
-//        d_Logger.log(String.format("%s issuing new command: %s",
-//                d_Player.getD_Name(), IssueOrder.Commands));
-//        d_Player.issueOrder();
     }
 
     /**
      * Attempts to execute an attack from the strongest country to an adjacent enemy.
      *
-     * @return true if an attack was executed, false otherwise
      */
     private void executeStrongestAttack() {
         for (Country l_Country : d_OrderedCountries) {
@@ -174,14 +164,6 @@ public class AggressivePlayerStrategy extends PlayerStrategy implements Serializ
         l_Commands.add(String.valueOf(p_From.getD_Armies()));
 
         d_Commands.add(String.join(" ", l_Commands));
-//        Order l_Order = new AdvanceOrder();
-//        l_Order.setOrderInfo(OrderCreator.GenerateAdvanceOrderInfo(
-//                l_Commands.toArray(new String[0]), d_Player));
-//
-//        IssueOrder.Commands = l_Order.getOrderInfo().getCommand();
-//        d_Logger.log(String.format("%s issuing new command: %s",
-//                d_Player.getD_Name(), IssueOrder.Commands));
-//        d_Player.issueOrder();
     }
 
     /**
@@ -235,13 +217,5 @@ public class AggressivePlayerStrategy extends PlayerStrategy implements Serializ
         l_Commands.add(String.valueOf(p_From.getD_Armies()));
 
         d_Commands.add(String.join(" ", l_Commands));
-//        Order l_Order = new AdvanceOrder();
-//        l_Order.setOrderInfo(OrderCreator.GenerateAdvanceOrderInfo(
-//                l_Commands.toArray(new String[0]), d_Player));
-//
-//        IssueOrder.Commands = l_Order.getOrderInfo().getCommand();
-//        d_Logger.log(String.format("%s issuing new command: %s",
-//                d_Player.getD_Name(), IssueOrder.Commands));
-//        d_Player.issueOrder();
     }
 }

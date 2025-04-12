@@ -20,7 +20,7 @@ public class CheaterStrategy extends PlayerStrategy implements Serializable {
     /**
      * Logger Observable
      */
-    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
+    private final LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
     
     public String createCommand() {
         d_Player = GameMap.getInstance().getD_CurrentPlayer();
