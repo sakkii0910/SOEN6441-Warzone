@@ -4,21 +4,27 @@ package utils;
 import model.Country;
 import model.GameMap;
 import model.Player;
-import model.abstractClasses.GamePhase;
 import model.gamePhases.ExitGamePhase;
 import model.gamePhases.ReinforcementPhase;
 import model.strategy.player.PlayerStrategy;
-import utils.GameEngine;
-import utils.MapReader;
 import utils.logger.LogEntryBuffer;
 
 import java.util.*;
 
+/**
+ * The type Tournament mode.
+ *
+ * @author Taha Mirza
+ * @author Pruthvirajsinh Dodiya
+ */
 public class TournamentMode {
 
     private final Scanner scanner = new Scanner(System.in);
     private final LogEntryBuffer logger = LogEntryBuffer.getInstance();
 
+    /**
+     * Start tournament mode.
+     */
     public void startTournamentMode() {
         logger.log("\n===========================================");
         logger.log("************ TOURNAMENT GAME MODE ************");

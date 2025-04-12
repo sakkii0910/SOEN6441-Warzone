@@ -12,7 +12,7 @@ import java.util.Objects;
 /**
  * Class holding the properties of advance order
  *  @author Taha Mirza
- *   @author  Shariq Anwar
+ *  @author  Shariq Anwar
  */
 public class AdvanceOrder extends Order implements Serializable {
     /**
