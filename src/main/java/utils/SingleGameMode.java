@@ -43,7 +43,7 @@ public class SingleGameMode {
         logger.log("===========================================");
 
         // Step 1: Ask for and load map
-        String filename = null;
+        String filename;
         while (true) {
             try {
                 System.out.print("Enter map filename to load: ");
