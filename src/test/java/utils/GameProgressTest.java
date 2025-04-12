@@ -60,9 +60,9 @@ public class GameProgressTest {
      */
     @AfterEach
     public void tearDown() {
+        d_GameMap.flushGameMap();
         // Delete test file if it exists
         new File(GameProgress.FILEPATH + TEST_FILE).delete();
-        d_GameMap.flushGameMap();
     }
 
     /**
