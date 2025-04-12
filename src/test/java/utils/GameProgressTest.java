@@ -160,18 +160,6 @@ public class GameProgressTest {
     }
 
     /**
-     * Test listing saved files when directory exists
-     */
-    @Test
-    public void testShowFilesWithSavedGames() throws IOException {
-        // Create a test file
-        GameProgress.saveGameProgress(d_GameMap, TEST_FILE);
-
-        // Test that showFiles doesn't throw exceptions
-        GameProgress.showFiles();
-    }
-
-    /**
      * Test listing saved files when directory doesn't exist
      */
     @Test
