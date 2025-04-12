@@ -155,7 +155,7 @@ public class GamePlay extends GameController {
         }
     }
 
-    private void loadMap(String p_Filename) throws Exception {
+    public void loadMap(String p_Filename) throws Exception {
         boolean l_ShouldUseConquestAdapter = p_Filename.endsWith(".conquest");
 
         MapReader l_MapReader = l_ShouldUseConquestAdapter ? new Adapter(new Adaptee()) : new MapReader();
