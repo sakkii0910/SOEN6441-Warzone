@@ -20,7 +20,10 @@ public class TournamentMode {
     private final LogEntryBuffer logger = LogEntryBuffer.getInstance();
 
     public void startTournamentMode() {
-        logger.log("Starting Tournament Mode...");
+        logger.log("\n===========================================");
+        logger.log("************ TOURNAMENT GAME MODE ************");
+        logger.log("===========================================");
+
 
         System.out.print("Enter comma-separated map filenames (max 5): ");
         List<String> mapFiles = Arrays.stream(scanner.nextLine().split(","))
@@ -55,7 +58,6 @@ public class TournamentMode {
             for (int gameNum = 1; gameNum <= numGames; gameNum++) {
                 logger.log("Playing Map: " + mapFile + " | Game: " + gameNum);
 
-                //GameMap.resetInstance();
                 GameMap gameMap = GameMap.getInstance();
                 gameMap.resetGameMap();
                 gameMap.flushGameMap();
