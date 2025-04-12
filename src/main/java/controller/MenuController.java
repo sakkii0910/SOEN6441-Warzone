@@ -8,6 +8,7 @@ import model.gamePhases.MapEditorPhase;
 import model.gamePhases.StartUpPhase;
 import utils.GameEngine;
 import utils.SingleGameMode;
+import utils.TournamentMode;
 import utils.logger.LogEntryBuffer;
 
 import java.util.InputMismatchException;
@@ -43,6 +44,7 @@ public class MenuController extends GameController {
         d_Logger.log("  [2] Map Editing");
         d_Logger.log("  [3] Load Game");
         d_Logger.log("  [4] Single Game Mode");
+        d_Logger.log("  [5] Tournament Game Mode");
         d_Logger.log("  [5] Exit");
         d_Logger.log("=========================================");
         System.out.print("\tSelect an option: ");
@@ -66,6 +68,9 @@ public class MenuController extends GameController {
                 mode.startSingleGame();
                 break;
             case 5:
+                TournamentMode tournamentMode = new TournamentMode();
+                tournamentMode.startTournamentMode();
+            case 6:
                 this.d_NextPhase = new ExitGamePhase(this.d_GameEngine);
                 break;
             default:

@@ -29,8 +29,9 @@ public class SingleGameMode {
      */
     public void startSingleGame() {
         GamePlay gamePlayController = (GamePlay) this.gameEngine.getGamePhase().getController();
-
-        logger.log("Starting Single Game Mode...");
+        logger.log("\n===========================================");
+        logger.log("************ SINGLE GAME MODE ************");
+        logger.log("===========================================");
 
         // Step 1: Ask for and load map
         String filename = null;
