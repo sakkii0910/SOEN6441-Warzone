@@ -64,7 +64,6 @@ public class MenuController extends GameController {
             case 4:
                 SingleGameMode mode = new SingleGameMode();
                 mode.startSingleGame();
-                this.d_NextPhase = new ExitGamePhase(this.d_GameEngine); // to return after game
                 break;
             case 5:
                 this.d_NextPhase = new ExitGamePhase(this.d_GameEngine);

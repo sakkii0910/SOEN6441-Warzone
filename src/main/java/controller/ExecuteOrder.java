@@ -9,10 +9,13 @@ import model.gamePhases.ReinforcementPhase;
 import utils.GameEngine;
 import utils.logger.LogEntryBuffer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * The type Execute order.
+ *
  * @author Taha Mirza
  * @author Poorav Panchal
  */
@@ -46,7 +49,7 @@ public class ExecuteOrder extends GameController {
         int l_Counter = 0;
         while (l_Counter < d_players.size()) {
             for (Player l_Player : d_GameMap.getPlayers().values()) {
-                if(l_Player.isD_TurnCompleted()){
+                if (l_Player.isD_TurnCompleted()) {
                     continue;
                 }
                 d_Logger.log("\n\nCurrent Player Execution: " + l_Player.getD_Name());
@@ -77,15 +80,22 @@ public class ExecuteOrder extends GameController {
     /**
      * Is game won.
      */
-    public void isGameWon(){
+    public void isGameWon() {
+        List<String> playerToRemove = new ArrayList<>();
+
         for (Player l_player : d_players.values()) {
             if (l_player.getCapturedCountries().size() == d_GameMap.getCountries().size()) {
                 d_Logger.log("\n--------------- WINNER WINNER ---------------\n");
                 d_Logger.log("The Player " + l_player.getD_Name() + " has won the game");
                 d_NextPhase = new ExitGamePhase(this.d_GameEngine);
             }
+            if (l_player.getCapturedCountries().isEmpty()) {
+                d_Logger.log("\n--------------- LOSER LOSER ---------------\n");
+                playerToRemove.add(l_player.getD_Name());
+                d_Logger.log("The Player " + l_player.getD_Name() + " lost all its countries");
+            }
         }
-
+        d_GameMap.removePlayers(playerToRemove);
     }
 
 }

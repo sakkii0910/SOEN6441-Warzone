@@ -349,7 +349,7 @@ public class GameMap implements Serializable {
     /**
      * Remove player.
      *
-     * @param p_PlayerName the player name
+     * @param p_PlayerName the p player name
      */
     public void removePlayer(String p_PlayerName) {
         Player l_Player = this.getPlayer(p_PlayerName);
@@ -357,9 +357,27 @@ public class GameMap implements Serializable {
             d_Logger.log("\nPlayer with this name does not exist\n" + p_PlayerName);
             return;
         }
-        this.getPlayers().remove(l_Player.getD_Name());
-        d_Logger.log("Successfully deleted the player: " + p_PlayerName);
+        this.getPlayers().remove(p_PlayerName);
+        d_Logger.log("Removed the player: " + p_PlayerName);
     }
+
+    /**
+     * Remove players.
+     *
+     * @param playerNames the player names
+     */
+    public void removePlayers(List<String> playerNames) {
+        for (String name : playerNames) {
+            if (!getPlayers().containsKey(name)) {
+                d_Logger.log("\nPlayer with this name does not exist: " + name);
+                continue;
+            }
+
+            getPlayers().remove(name);
+            d_Logger.log("Removed the player: " + name);
+        }
+    }
+
 
     /**
      * Assign countries to player.

@@ -14,12 +14,13 @@ public class SingleGameMode {
 
     private final Scanner scanner = new Scanner(System.in);
     private final LogEntryBuffer logger = LogEntryBuffer.getInstance();
-    private final GameMap gameMap = GameMap.getInstance();
+    private final GameMap gameMap;
     private final GameEngine gameEngine;
 
-    public SingleGameMode(){
+    public SingleGameMode() {
         gameEngine = new GameEngine();
         gameEngine.setGamePhase(new StartUpPhase(this.gameEngine));
+        gameMap = GameMap.getInstance();
     }
 
     /**

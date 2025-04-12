@@ -25,7 +25,7 @@ import java.util.Random;
 public class RandomPlayerStrategy extends PlayerStrategy implements Serializable {
 
     private static final Random d_Random = new Random();
-    private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
+    private final LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
     private static GameMap d_GameMap;
 
     @Override
@@ -45,6 +45,10 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
         } else {
             command = tryRandomCard();
         }
+
+        if (command.equals("pass")){
+            d_Logger.log("Random player has passed his turns.");
+        }
         return command;
     }
 
@@ -62,14 +66,7 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
             l_Commands.add(l_RandomCountry.getD_CountryName());
             l_Commands.add(String.valueOf(d_Random.nextInt(d_Player.getD_ArmiesToIssue()) + 1));
 
-            Order l_Order = new DeployOrder();
-            l_Order.setOrderInfo(OrderCreator.GenerateDeployOrderInfo(
-                    l_Commands.toArray(new String[0]), d_Player));
-
-            IssueOrder.Commands = l_Order.getOrderInfo().getCommand();
-            d_Logger.log(String.format("%s issuing new command: %s",
-                    d_Player.getD_Name(), IssueOrder.Commands));
-            d_Player.issueOrder();
+            return String.join(" ", l_Commands);
         }
         return "pass";
     }
@@ -91,15 +88,7 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
                 l_Commands.add(l_ToCountry.getD_CountryName());
                 l_Commands.add(String.valueOf(d_Random.nextInt(l_FromCountry.getD_Armies()) + 1));
 
-                Order l_Order = new AdvanceOrder();
-                l_Order.setOrderInfo(OrderCreator.GenerateAdvanceOrderInfo(
-                        l_Commands.toArray(new String[0]), d_Player));
-
-                IssueOrder.Commands = l_Order.getOrderInfo().getCommand();
-                d_Logger.log(String.format("%s issuing new command: %s",
-                        d_Player.getD_Name(), IssueOrder.Commands));
-                d_Player.issueOrder();
-                return "pass";
+                return String.join(" ", l_Commands);
             }
         }
         return "pass";
@@ -145,15 +134,7 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
             l_Commands.add("bomb");
             l_Commands.add(l_Target.getD_CountryName());
 
-            Order l_Order = new BombOrder();
-            l_Order.setOrderInfo(OrderCreator.GenerateBombOrderInfo(
-                    l_Commands.toArray(new String[0]), d_Player));
-
-            IssueOrder.Commands = l_Order.getOrderInfo().getCommand();
-            d_Logger.log(String.format("%s issuing new command: %s",
-                    d_Player.getD_Name(), IssueOrder.Commands));
-            d_Player.issueOrder();
-            return "pass";
+            return String.join(" ", l_Commands);
         }
         return "pass";
     }
@@ -170,15 +151,7 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
             l_Commands.add("blockade");
             l_Commands.add(l_Target.getD_CountryName());
 
-            Order l_Order = new BlockadeOrder();
-            l_Order.setOrderInfo(OrderCreator.GenerateBlockadeOrderInfo(
-                    l_Commands.toArray(new String[0]), d_Player));
-
-            IssueOrder.Commands = l_Order.getOrderInfo().getCommand();
-            d_Logger.log(String.format("%s issuing new command: %s",
-                    d_Player.getD_Name(), IssueOrder.Commands));
-            d_Player.issueOrder();
-            return "pass";
+            return String.join(" ", l_Commands);
         }
         return "pass";
     }
@@ -198,15 +171,7 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
             l_Commands.add(l_To.getD_CountryName());
             l_Commands.add(String.valueOf(d_Random.nextInt(l_From.getD_Armies()) + 1));
 
-            Order l_Order = new AirliftOrder();
-            l_Order.setOrderInfo(OrderCreator.GenerateAirliftOrderInfo(
-                    l_Commands.toArray(new String[0]), d_Player));
-
-            IssueOrder.Commands = l_Order.getOrderInfo().getCommand();
-            d_Logger.log(String.format("%s issuing new command: %s",
-                    d_Player.getD_Name(), IssueOrder.Commands));
-            d_Player.issueOrder();
-            return "pass";
+            return String.join(" ", l_Commands);
         }
         return "pass";
     }
@@ -223,15 +188,7 @@ public class RandomPlayerStrategy extends PlayerStrategy implements Serializable
             l_Commands.add("negotiate");
             l_Commands.add(l_Target.getD_Name());
 
-            Order l_Order = new NegotiateOrder();
-            l_Order.setOrderInfo(OrderCreator.GenerateNegotiateOrderInfo(
-                    l_Commands.toArray(new String[0]), d_Player));
-
-            IssueOrder.Commands = l_Order.getOrderInfo().getCommand();
-            d_Logger.log(String.format("%s issuing new command: %s",
-                    d_Player.getD_Name(), IssueOrder.Commands));
-            d_Player.issueOrder();
-            return "pass";
+            return String.join(" ", l_Commands);
         }
         return "pass";
     }
