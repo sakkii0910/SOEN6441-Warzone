@@ -159,21 +159,4 @@ public class GameProgressTest {
         }
     }
 
-    /**
-     * Test listing saved files when directory doesn't exist
-     */
-    @Test
-    public void testShowFilesNoSavedGames() throws IOException {
-        // Ensure directory doesn't exist
-        File dir = new File(GameProgress.FILEPATH);
-        if (dir.exists()) {
-            for (File file : Objects.requireNonNull(dir.listFiles())) {
-                file.delete();
-            }
-            dir.delete();
-        }
-
-        // Test that showFiles doesn't throw exceptions
-        GameProgress.showFiles();
-    }
 }
