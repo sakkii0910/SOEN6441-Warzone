@@ -2,37 +2,35 @@ package utils;
 
 import model.GameMap;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Objects;
 
-import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Test class for GameProgress saving and loading functionality
+ *
  * @author Sakshi Sudhir Mulik
  */
 public class GameProgressTest {
     /**
      * GameMap instance
      */
-    private GameMap d_GameMap;
+    private static GameMap d_GameMap;
 
     /**
      * Test file name
      */
-    private static final String TEST_FILE = "test_game.bin";
+    private static final String TEST_FILE = "test_game";
 
     /**
      * Setup test environment before each test
      */
-    @Before
+    @BeforeEach
     public void setUp() {
         d_GameMap = GameMap.getInstance();
 
@@ -60,11 +58,11 @@ public class GameProgressTest {
     /**
      * Clean up after each test
      */
-    @After
+    @AfterEach
     public void tearDown() {
+        d_GameMap.flushGameMap();
         // Delete test file if it exists
         new File(GameProgress.FILEPATH + TEST_FILE).delete();
-        d_GameMap.flushGameMap();
     }
 
     /**
@@ -80,8 +78,8 @@ public class GameProgressTest {
 
         // Verify file was created
         File savedFile = new File(GameProgress.FILEPATH + TEST_FILE + ".bin");
-        assertTrue("File should exist after saving", savedFile.exists());
-        assertTrue("Save operation should return true", result);
+        assertTrue(savedFile.exists());
+        assertTrue(result);
 
         // Clean up
         savedFile.delete();
@@ -105,21 +103,20 @@ public class GameProgressTest {
 
         // 2. Save the game first
         boolean saveResult = GameProgress.saveGameProgress(d_GameMap, TEST_FILE);
-        assertTrue("Game should save successfully", saveResult);
+        assertTrue(saveResult);
 
         // 3. Verify the file was created
         File savedFile = new File(GameProgress.FILEPATH + TEST_FILE + ".bin");
-        assertTrue("Saved file should exist", savedFile.exists());
+        assertTrue(savedFile.exists());
 
         // 4. Test loading the game
         boolean loadResult = GameProgress.loadGameProgress(TEST_FILE + ".bin");
-        assertTrue("Game should load successfully", loadResult);
+        assertTrue(loadResult);
 
         // 5. Verify the loaded game state
         GameMap loadedMap = GameMap.getInstance();
-        assertNotNull("Loaded GameMap should not be null", loadedMap);
-        assertEquals("Should have same number of continents",
-                d_GameMap.getContinents().size(),
+        assertNotNull(loadedMap);
+        assertEquals(d_GameMap.getContinents().size(),
                 loadedMap.getContinents().size());
 
         // 6. Cleanup
