@@ -8,7 +8,7 @@ import utils.GameEngine;
 /**
  * The type Issue order phase.
  *  @author Taha Mirza
- *   @author  Shariq Anwar
+ *  @author  Shariq Anwar
  */
 public class IssueOrderPhase extends GamePhase {
 

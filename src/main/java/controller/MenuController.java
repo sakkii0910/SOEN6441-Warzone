@@ -16,8 +16,9 @@ import java.util.Scanner;
 
 /**
  * The type Menu controller.
- *  @author Taha Mirza
- *  @author Poorav Panchal
+ *
+ * @author Taha Mirza
+ * @author Poorav Panchal
  */
 public class MenuController extends GameController {
 
@@ -26,6 +27,11 @@ public class MenuController extends GameController {
      */
     private LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
+    /**
+     * Instantiates a new Menu controller.
+     *
+     * @param p_GameEngine the p game engine
+     */
     public MenuController(GameEngine p_GameEngine) {
         super(p_GameEngine);
     }

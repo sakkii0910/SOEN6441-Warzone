@@ -10,6 +10,12 @@ import utils.logger.LogEntryBuffer;
 
 import java.util.*;
 
+/**
+ * The type Single game mode.
+ *
+ * @author Taha Mirza
+ * @author Pruthvirajsinh Dodiya
+ */
 public class SingleGameMode {
 
     private final Scanner scanner = new Scanner(System.in);
@@ -17,6 +23,9 @@ public class SingleGameMode {
     private final GameMap gameMap;
     private final GameEngine gameEngine;
 
+    /**
+     * Instantiates a new Single game mode.
+     */
     public SingleGameMode() {
         gameEngine = new GameEngine();
         gameEngine.setGamePhase(new StartUpPhase(this.gameEngine));

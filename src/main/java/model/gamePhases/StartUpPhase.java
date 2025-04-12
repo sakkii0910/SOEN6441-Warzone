@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * The type Start up phase.
- *  @author Taha Mirza
+ * @author Taha Mirza
  */
 public class StartUpPhase extends GamePhase {
 
