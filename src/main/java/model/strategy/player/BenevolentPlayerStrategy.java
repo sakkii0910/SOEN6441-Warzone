@@ -30,9 +30,9 @@ public class BenevolentPlayerStrategy extends PlayerStrategy implements Serializ
     private static final Random d_Random = new Random();
     private final LogEntryBuffer d_Logger = LogEntryBuffer.getInstance();
 
-    private static int d_Option = 1;
-    private static Country d_WeakestCountry;
-    private static Set<Country> d_NeighborCountries;
+    private int d_Option = 1;
+    private Country d_WeakestCountry;
+    private Set<Country> d_NeighborCountries;
 
     @Override
     public String createCommand() {
