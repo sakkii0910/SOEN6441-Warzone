@@ -2,9 +2,7 @@ package utils;
 
 import model.GameMap;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -22,12 +20,12 @@ public class GameProgressTest {
     /**
      * GameMap instance
      */
-    private GameMap d_GameMap;
+    private static GameMap d_GameMap;
 
     /**
      * Test file name
      */
-    private static final String TEST_FILE = "test_game.bin";
+    private static final String TEST_FILE = "test_game";
 
     /**
      * Setup test environment before each test
