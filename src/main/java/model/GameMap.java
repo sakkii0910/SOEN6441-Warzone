@@ -488,49 +488,13 @@ public class GameMap implements Serializable {
         this.countries = p_GameMap.getCountries();
         this.d_players = p_GameMap.getPlayers();
 
-//        // Add continents
-//        for (Map.Entry<String, Continent> entry : p_GameMap.getContinents().entrySet()) {
-//            String continentName = entry.getKey();
-//            int armies = entry.getValue().getD_ContinentArmies();
-//            addContinent(continentName, armies);
-//        }
-//
-//        // Add countries
-//        for (Map.Entry<String, Country> entry : p_GameMap.getCountries().entrySet()) {
-//            String l_continent = entry.getValue().getD_CountryContinent().getD_ContinentName();
-//            this.addCountry(entry.getKey(), l_continent);
-//        }
-//
-//        // Add neighbours
-//        for (Continent continent : p_GameMap.getContinents().values()) {
-//            for (Country country : continent.getD_ContinentCountries()) {
-//                for (Country neighbor : country.getD_CountryNeighbors()) {
-//                    p_GameMap.addNeighbor(country.getD_CountryName(), neighbor.getD_CountryName());
-//                }
-//            }
-//        }
-//
-//        // Add players, captured countries and reinforcement armies
-//        for (Map.Entry<String, Player> entry : p_GameMap.getPlayers().entrySet()) {
-//            String playerName = entry.getKey();
-//            Player player = entry.getValue();
-//
-//            this.addPlayer(playerName);
-//            this.getPlayer(playerName).setCapturedCountries(player.getCapturedCountries());
-//            this.getPlayer(playerName).setReinforcementArmies(player.getReinforcementArmies());
-//        }
-//
-//        this.setGamePhase(p_GameMap.getGamePhase());
-//        this.setD_CurrentPlayer(p_GameMap.getD_CurrentPlayer());
-//
-//        // Set player orders and cards
-//        for (Map.Entry<String, Player> entry : p_GameMap.getPlayers().entrySet()) {
-//            String playerName = entry.getKey();
-//            Player player = entry.getValue();
-//
-//            this.getPlayer(playerName).setOrders(player.getOrders());
-//            this.getPlayer(playerName).setPlayerCards(player.getPlayerCards());
-//        }
     }
-    
+
+    /**
+     * Reset instance.
+     */
+    public static void resetInstance() {
+        d_GameMap = null;
+    }
+
 }
